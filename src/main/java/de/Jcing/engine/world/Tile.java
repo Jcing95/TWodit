@@ -9,6 +9,7 @@ import de.Jcing.Main;
 import de.Jcing.engine.Trigger;
 import de.Jcing.engine.entity.Entity;
 import de.Jcing.engine.graphics.Drawable;
+import de.Jcing.engine.world.generation.Generator;
 import de.Jcing.geometry.Rectangle;
 import de.Jcing.image.Image;
 
@@ -20,7 +21,7 @@ public class Tile implements Drawable {
 	private LinkedList<Entity> entities;
 	private LinkedList<Trigger> triggers;
 	
-	private Image testBack = new Image(new File("gfx/terrain"));
+	private Image testBack = new Image(new File(Main.RESSOURCES+"gfx/terrain"));
 	
 	private boolean collision;
 	
@@ -37,7 +38,7 @@ public class Tile implements Drawable {
 		textures = new LinkedList<>();
 		entities = new LinkedList<>();
 		triggers = new LinkedList<>();
-		texIndex = (int)(Math.random()*1000);
+		texIndex = Generator.getValue(chunk.getX()*Chunk.TILE_COUNT+x, chunk.getY()+Chunk.TILE_COUNT+y);
 		textures.add(testBack);
 //		System.out.println(texIndex);
 	}

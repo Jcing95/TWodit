@@ -38,7 +38,7 @@ public class Game {
 		Label fpsLabel = new Label("FPS: ", 5, 5);
 		fpsLabel.getOnClick().add(() -> System.exit(0));
 		fpsLabel.listenOnMouse();
-		Main.getWindow().addDrawable(fpsLabel);
+		Main.getWindow().gui().addComponent(fpsLabel);
 		new Task(() -> tick(), 60);
 		new Task(() -> fpsLabel.setText("FPS: " + Main.getWindow().getFPS()), 1);
 		
@@ -50,7 +50,7 @@ public class Game {
 		exit.setPosition(Window.PIXEL_WIDTH-exit.getWidth(),0);
 		exit.getOnClick().add(() -> System.exit(0));
 		exit.listenOnMouse();
-		Main.getWindow().addDrawable(exit);
+		Main.getWindow().gui().addComponent(exit);
 		
 		testEntity = new Entity(mainStage,0,0,20,20);
 		testEntity.setAnim(Entity.ON_LEFT, new Image("gfx/player/left"));

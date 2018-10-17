@@ -57,6 +57,14 @@ public class Chunk implements Drawable{
 	public int getYOffset() {
 		return (int) (y * TILE_COUNT * Tile.TILE_PIXELS - stage.getCamera().y*Main.getWindow().getPixelSize());
 	}
+	
+	public int getX() {
+		return x;
+	}
+	
+	public int getY() {
+		return y;
+	}
 
 	@Override
 	public void draw(Graphics2D g) {

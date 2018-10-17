@@ -22,6 +22,7 @@ import de.Jcing.engine.io.Mouse;
 import de.Jcing.engine.world.Tile;
 import de.Jcing.tasks.Task;
 import de.Jcing.util.Point;
+import de.Jcing.window.gui.Container;
 
 public class Window {
 	
@@ -40,6 +41,8 @@ public class Window {
 	private Canvas canvas;
 	
 	private LinkedList<Drawable> drawables;
+	
+	private Container gui;
 	
 	private Task task;
 
@@ -72,6 +75,7 @@ public class Window {
 		canvas.requestFocus();
 		
 		drawables = new LinkedList<>();
+		gui = new Container(0,0,PIXEL_WIDTH,PIXEL_HEIGHT);
 		
 		Graphics2D initGraphics = new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB).createGraphics();
 		//TODO: set font and init other flags.
@@ -96,7 +100,7 @@ public class Window {
 		for(Drawable d : drawables) {
 			d.draw(g);
 		}
-		
+		gui.draw(g);
 		double imageWidth = canvas.getWidth();
 		if(imageWidth / 16 * 9 > canvas.getHeight())
 			imageWidth = canvas.getHeight() / 9.0 * 16;
@@ -136,6 +140,10 @@ public class Window {
 	
 	public void removeDrawable(Drawable drawable) {
 		drawables.remove(drawable);
+	}
+	
+	public Container gui() {
+		return gui;
 	}
 
 	

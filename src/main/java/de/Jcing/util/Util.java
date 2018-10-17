@@ -14,7 +14,7 @@ public class Util {
 	
 	public static BufferedImage fastScaleUp(BufferedImage img, int factor) {
 		BufferedImage result = new BufferedImage(img.getWidth()*factor, img.getHeight()*factor, img.getType());
-		int[] rgb = result.getRGB(0, 0, result.getWidth(), result.getHeight(), null, 0, result.getWidth());
+//		int[] rgb = result.getRGB(0, 0, result.getWidth(), result.getHeight(), null, 0, result.getWidth());
 		
 		for (int y = 0; y < result.getHeight(); y++) {
 			for (int x = 0; x < result.getWidth(); x++) {

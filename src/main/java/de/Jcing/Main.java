@@ -13,6 +13,8 @@ public class Main {
 	
 	private static Window window;
 	
+	public static final String RESSOURCES = "src/main/resources/";
+	
 	
 	public static void main(String[] args) {	
 		window = new Window();
@@ -22,7 +24,6 @@ public class Main {
 			if(key == KeyEvent.VK_ESCAPE)
 				finish();
 		});
-		
 		
 		Clock.start();
 	}

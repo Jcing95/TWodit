@@ -3,6 +3,7 @@ package de.Jcing.image;
 import java.io.File;
 import java.util.ArrayList;
 
+import de.Jcing.Main;
 import de.Jcing.tasks.Clock;
 
 public class Image {
@@ -18,6 +19,14 @@ public class Image {
 	private boolean isAnimation;
 	
 	public Image(File f) {
+		init(f);
+	}
+	
+	protected void init(String s) {
+		init(new File(Main.RESSOURCES+s));
+	}
+	
+	protected void init(File f) {
 		if(f.isFile()) {
 			//load single Image
 			//TODO: file no Image error handling here
@@ -60,7 +69,7 @@ public class Image {
 	}
 	
 	public Image(String string) {
-		this(new File(string));
+		init(string);
 	}
 
 	public Frame get() {

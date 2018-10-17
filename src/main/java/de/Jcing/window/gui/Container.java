@@ -12,7 +12,7 @@ public class Container extends Component {
 	
 	public Container(int x, int y, int w, int h) {
 		super(x,y,w,h);		
-
+		subComponents = new HashSet<>();
 	}
 	
 	public void addComponent(Component c) {
