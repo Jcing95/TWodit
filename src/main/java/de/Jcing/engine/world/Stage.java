@@ -10,7 +10,7 @@ import de.Jcing.engine.graphics.Drawable;
 import de.Jcing.tasks.Clock;
 import de.Jcing.util.Point;
 
-public class Stage implements Drawable{
+public class Stage implements Drawable {
 
 	private HashMap<Point, Chunk> chunks;
 	private HashMap<Integer, Entity> entities;

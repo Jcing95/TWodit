@@ -9,11 +9,13 @@ import de.Jcing.engine.io.KeyBoard;
 import de.Jcing.engine.world.Stage;
 import de.Jcing.engine.world.Tile;
 import de.Jcing.image.Image;
+import de.Jcing.tasks.Clock;
 import de.Jcing.tasks.Task;
 import de.Jcing.util.Point;
 import de.Jcing.window.Window;
 import de.Jcing.window.gui.Button;
 import de.Jcing.window.gui.Label;
+import de.Jcing.window.gui.ProgressBar;
 
 public class Game {
 	
@@ -51,6 +53,13 @@ public class Game {
 		exit.getOnClick().add(() -> System.exit(0));
 		exit.listenOnMouse();
 		Main.getWindow().gui().addComponent(exit);
+		
+		ProgressBar bar = new ProgressBar(65,10,100,20);
+		
+		new Task(()->bar.setPercentage(Clock.millis()/100%100),60);
+		
+		Main.getWindow().gui().addComponent(bar);
+		
 		
 		testEntity = new Entity(mainStage,0,0,20,20);
 		testEntity.setAnim(Entity.ON_LEFT, new Image("gfx/player/left"));
