@@ -21,7 +21,7 @@ public class Tile implements Drawable {
 	private LinkedList<Entity> entities;
 	private LinkedList<Trigger> triggers;
 	
-	private Image testBack = new Image(new File(Main.RESSOURCES+"gfx/terrain"));
+	private Image testBack = new Image(new File(Main.RESSOURCES+"gfx/terrain/grass"));
 	
 	private boolean collision;
 	
@@ -38,7 +38,7 @@ public class Tile implements Drawable {
 		textures = new LinkedList<>();
 		entities = new LinkedList<>();
 		triggers = new LinkedList<>();
-		texIndex = Generator.getValue(chunk.getX()*Chunk.TILE_COUNT+x, chunk.getY()+Chunk.TILE_COUNT+y);
+		texIndex = (int)(Math.random()*1000);//Generator.getValue(chunk.getX()*Chunk.TILE_COUNT+x, chunk.getY()+Chunk.TILE_COUNT+y);
 		textures.add(testBack);
 //		System.out.println(texIndex);
 	}

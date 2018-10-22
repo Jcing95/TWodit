@@ -29,8 +29,9 @@ public class Game {
 		
 		mainStage = new Stage();
 		camera = new Point(0,0);
-		for (int i = -10; i < 10; i++) {
-			for (int j = -10; j < 10; j++) {
+		System.out.println("initializing..");
+		for (int i = -20; i < 20; i++) {
+			for (int j = -20; j < 20; j++) {
 				mainStage.addChunk(i, j);
 			}
 		}

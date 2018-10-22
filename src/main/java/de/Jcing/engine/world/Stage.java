@@ -3,12 +3,13 @@ package de.Jcing.engine.world;
 import java.awt.Graphics2D;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Set;
 
 import de.Jcing.Main;
 import de.Jcing.engine.entity.Entity;
 import de.Jcing.engine.graphics.Drawable;
-import de.Jcing.tasks.Clock;
 import de.Jcing.util.Point;
+import de.Jcing.util.Pointmask;
 
 public class Stage implements Drawable {
 
@@ -36,15 +37,20 @@ public class Stage implements Drawable {
 		//update stage camera here for consistent offset during rendering.
 		camera = Main.getGame().getCamera().clone();
 		
-		Runnable[] chunkDrawings = new Runnable[chunks.size()];
-		int i = 0;
-		
-		for(Point pt : chunks.keySet()) {
-			chunkDrawings[i] = () -> chunks.get(pt).draw(g);
-			i++;
+//		Runnable[] chunkDrawings = new Runnable[chunks.size()];
+//		int i = 0;
+//		
+//		for(Point pt : chunks.keySet()) {
+//			chunkDrawings[i] = () -> chunks.get(pt).draw(g);
+//			i++;
+//		}
+//		
+//		Clock.schedule(true, chunkDrawings);
+//		Point cameraChunk = getChunkPosFromWorldPos(camera.x, camera.y);
+//		Set<Chunk> drawChunks = Pointmask.getFromPointMap(chunks, cameraChunk.getX(), cameraChunk.getY(), 3);
+		for(Chunk c : chunks.values()) {
+			c.draw(g);
 		}
-		
-		Clock.schedule(true, chunkDrawings);
 		
 		for(Integer e : entities.keySet())
 			entities.get(e).draw(g);
@@ -59,6 +65,10 @@ public class Stage implements Drawable {
 	}
 	
 	public Chunk getChunkAtWorldPos(double x, double y) {
+		return chunks.get(getChunkPosFromWorldPos(x, y));
+	}
+	
+	public Point getChunkPosFromWorldPos(double x, double y) {
 		//if negative: decrement against "-0"
 		int xChunk = (int) (x/Chunk.TILE_COUNT);
 		if(x < 0)
@@ -67,7 +77,7 @@ public class Stage implements Drawable {
 		int yChunk = (int) (y/Chunk.TILE_COUNT);
 		if(y < 0)
 			yChunk --;
-		return chunks.get(new Point(xChunk, yChunk));
+		return new Point(xChunk,yChunk);
 	}
 	
 	public Tile getTileAtWorldPos(double x, double y) {

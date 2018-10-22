@@ -40,10 +40,6 @@ public class Chunk implements Drawable{
 	}
 	
 	public boolean isOnScreen() {
-		Main.getWindow();
-		Main.getWindow();
-		Main.getWindow();
-		Main.getWindow();
 		return getXOffset() >= 0 && getXOffset() <= Window.PIXEL_WIDTH ||
 				getXOffset() + TILE_COUNT*Tile.TILE_PIXELS >= 0 && getXOffset() + TILE_COUNT*Tile.TILE_PIXELS <= Window.PIXEL_WIDTH ||
 				getYOffset() >= 0 && getYOffset() <= Window.PIXEL_HEIGHT ||
