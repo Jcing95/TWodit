@@ -8,19 +8,22 @@ public class Task {
 	protected Thread th;
 
 	protected int TPS;
-	
+	private String name;
 	public int tps;
 	
 	public Task(Runnable routine) {
-		this.routine = routine;
-		TPS = -1;
+		new Task(routine, -1);
 	}
 	
 	public Task(Runnable routine, int tps) {
+		new Task(routine, tps, Clock.getGlobalScene());
+	}
+	
+	public Task(Runnable routine, int tps, Scene scene) {
 		this.TPS = tps;
 		waitingTime = 1000.0 / tps;
 		this.routine = routine;
-		Clock.addTask(this);
+		scene.addTask(this);
 	}
 	
 	protected Runnable wrapper = () -> {
@@ -29,10 +32,13 @@ public class Task {
 			running = false;
 	};
 	
-	public void start() {
-		running = true;
-		pause = false;
-		Clock.execute(this);
+	public Task start() {
+		if(!running) {
+			running = true;
+			pause = false;
+			Clock.execute(this);
+		}
+		return this;
 	}
 	
 	public void finish() {
@@ -69,6 +75,14 @@ public class Task {
 
 	public boolean isFinished() {
 		return !running;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

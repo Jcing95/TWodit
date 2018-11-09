@@ -67,8 +67,7 @@ public class Window {
 		
 		frame.add(canvas);
 		frame.addWindowListener(windowListener);
-//		frame.setUndecorated(true);
-//		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+		
 		frame.pack();
 		frame.setVisible(true);
 		frame.requestFocus();

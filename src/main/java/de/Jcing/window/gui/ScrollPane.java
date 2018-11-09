@@ -26,7 +26,7 @@ public class ScrollPane extends Container {
 		canvas.draw(g);
 	}
 	
-	
+	//TODO: implement scrolling + scrollbar
 	
 	
 }

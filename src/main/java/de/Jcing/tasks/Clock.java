@@ -1,6 +1,6 @@
 package de.Jcing.tasks;
 
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -8,26 +8,46 @@ import de.Jcing.util.Util;
 
 public class Clock {
 
-	private static LinkedList<Task> tasks = new LinkedList<>();
+//	private static LinkedList<Task> tasks = new LinkedList<>();
+	
+	private static HashMap<Integer,Scene> scenes = new HashMap<>();
+	private static Scene mainScene = new Scene("global");
+	
 	private static long startMillis = System.currentTimeMillis();
 	public static final int NUM_CORES = Runtime.getRuntime().availableProcessors()/2;
 	public static final int RESERVED_CORES = 1;
 	
+	
+	static {
+		scenes.put(mainScene.hashCode(), mainScene);	
+	}
+	
 	private Clock() {
+		
 	}
 
 	protected static void addTask(Task task) {
-		tasks.add(task);
+		mainScene.addTask(task);
 	}
 
 	public static void start() {
-		for(Task t : tasks)
-			t.start();
+		mainScene.start();
 	}
 
 	public static void stop() {
-		for(Task t : tasks)
-			t.finish();
+		mainScene.finish();
+	}
+	
+	public static void startAll() {
+		for(Scene s : scenes.values()) {
+			s.start();
+		}
+	}
+	
+	public static void stopAll() {
+		for(Scene s : scenes.values()) {
+			s.finish();
+		}
 	}
 	
 	public static long millis() {
@@ -67,7 +87,10 @@ public class Clock {
 		}).start();
 	}
 
+	@SuppressWarnings("unused")
+	@Deprecated
 	public static void schedule(boolean blocking, Runnable ...runnables) {
+		//TODO: feed tasks
 		int numThreads = NUM_CORES - RESERVED_CORES;
 		if(numThreads < 1) {
 			for(Runnable r : runnables)
@@ -126,6 +149,10 @@ public class Clock {
 		}
 //		System.out.println("FIN");
 
+	}
+
+	public static Scene getGlobalScene() {
+		return mainScene;
 	}
 
 }

@@ -80,7 +80,7 @@ public class Entity implements Drawable {
 		return occupationMask;
 	}
 
-	protected Set<Tile> checkTileOccupation() {
+	protected Set<Tile> checkTileOccupation(double x, double y) {
 		HashSet<Tile> occupiedTiles = new HashSet<>();
 		for (Point pt : tileOccupationMask) {
 			occupiedTiles.add(stage.getTileAtWorldPos(pt.x + x, pt.y + y));
@@ -94,7 +94,22 @@ public class Entity implements Drawable {
 		nextX = x + speedX;
 		nextY = y + speedY;
 		
-		Set<Tile> nextOccupiedTiles = checkTileOccupation();
+		Set<Tile> nextOccupiedTiles = checkTileOccupation(nextX, nextY);
+		
+		boolean positiveX = speedX > 0;
+		boolean positiveY = speedY > 0;
+		
+		for(Tile t: nextOccupiedTiles) {
+			
+			if(t!= null && t.hasCollision()) {
+				if(positiveX) {
+					
+				}
+				if(positiveY) {
+					
+				}
+			}
+		}
 		
 		boolean collided = checkCollision(nextOccupiedTiles) || checkCollision(occupiedTiles);
 		

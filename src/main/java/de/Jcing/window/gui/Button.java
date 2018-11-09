@@ -7,9 +7,10 @@ import java.awt.image.BufferedImage;
 public class Button extends Canvas {
 	
 	
-	public static final int DEFAULT = 0;
-	public static final int HOVERED = 1;
-	public static final int PRESSED = 2;
+	public static final int COLOR_DEFAULT = 0;
+	public static final int COLOR_HOVERED = 1;
+	public static final int COLOR_PRESSED = 2;
+	public static final int COLOR_TEXT = 3;
 	
 	public static final Color[] DEFAULT_BACK = { new Color(60,60,120), new Color(100,100,160), new Color(40,40,100) };
 	
@@ -19,7 +20,7 @@ public class Button extends Canvas {
 	
 	protected int currentCanvas;
 	
-	protected Color[] background = {DEFAULT_BACK[0],DEFAULT_BACK[1],DEFAULT_BACK[2]};
+	protected Color[] colors = {DEFAULT_BACK[0],DEFAULT_BACK[1],DEFAULT_BACK[2]};
 	
 	protected BufferedImage[] canvases;
 	
@@ -29,12 +30,35 @@ public class Button extends Canvas {
 		this.label = new Label(label, DEFAULT_PADDING, DEFAULT_PADDING);
 		canvases = new BufferedImage[3];		
 		setSize(DEFAULT_PADDING*2+this.label.getWidth(), DEFAULT_PADDING*2 + this.label.getHeight());
+		handleMouse = true;
 	}
 	
 	public void setText(String text) {
 		label.setText(text);
 		setSize(DEFAULT_PADDING*2+this.label.getWidth(), DEFAULT_PADDING*2 + this.label.getHeight());
 		updateCanvasSize();
+		updateCanvas();
+	}
+	
+	public void setColor(int index, Color color) {
+		colors[index] = color;
+		updateCanvas();
+	}
+	
+	public void setColors(Color... colors) {
+		int index= 0;
+		//first the background colors
+		for (; index < this.colors.length && index < colors.length; index++) {
+			if(colors[index] != null) {
+				this.colors[index] = colors[index];
+			};
+		}
+		//then the text color
+		if(colors.length > index)
+			label.setColor(colors[index]);
+		
+		//future colors (maybe borders etc.)
+		
 		updateCanvas();
 	}
 	
@@ -50,7 +74,7 @@ public class Button extends Canvas {
 	protected void updateCanvas() {
 		for (int i = 0; i < canvases.length; i++) {
 			Graphics2D g = canvases[i].createGraphics();
-			g.setColor(background[i]);
+			g.setColor(colors[i]);
 			g.fillRect(0, 0, bounds.getWidth(), bounds.getHeight());
 //			g.translate(DEFAULT_PADDING, DEFAULT_PADDING);
 			label.draw(g);
@@ -69,17 +93,17 @@ public class Button extends Canvas {
 	@Override
 	public void draw(Graphics2D g) {
 		if(press) {
-			canvas = canvases[PRESSED];
+			canvas = canvases[COLOR_PRESSED];
 		} else if (hovered) {
-			canvas = canvases[HOVERED];
+			canvas = canvases[COLOR_HOVERED];
 		} else {
-			canvas = canvases[DEFAULT];
+			canvas = canvases[COLOR_DEFAULT];
 		}
 		super.draw(g);	
 	}
 
 	public void setBackground(Color color, int index) {
-		this.background[index] = color;
+		this.colors[index] = color;
 		updateCanvas();
 	}
 	

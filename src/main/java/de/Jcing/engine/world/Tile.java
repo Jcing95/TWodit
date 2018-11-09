@@ -9,7 +9,6 @@ import de.Jcing.Main;
 import de.Jcing.engine.Trigger;
 import de.Jcing.engine.entity.Entity;
 import de.Jcing.engine.graphics.Drawable;
-import de.Jcing.engine.world.generation.Generator;
 import de.Jcing.geometry.Rectangle;
 import de.Jcing.image.Image;
 
@@ -47,6 +46,12 @@ public class Tile implements Drawable {
 		//TODO: catch invalid images for Tiles
 		textures.add(img);
 	}
+	
+	public void popTexture() {
+		textures.removeLast();
+	}
+	
+	
 
 	@Override
 	public void draw(Graphics2D g) {
@@ -74,6 +79,14 @@ public class Tile implements Drawable {
 	
 	public int getYOnScreen() {
 		return y * TILE_PIXELS + chunk.getYOffset();
+	}
+	
+	public int getWorldX() {
+		return x * chunk.getX()*Chunk.TILE_COUNT;
+	}
+	
+	public int getWorldY() {
+		return y * chunk.getY()*Chunk.TILE_COUNT;
 	}
 	
 	public void removeFrame(boolean last) {
