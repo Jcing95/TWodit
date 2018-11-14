@@ -42,6 +42,7 @@ public class Window {
 	private Canvas canvas;
 	
 	private LinkedList<Drawable> drawables;
+	private Drawable[] nextDrawables;
 	
 	private Container gui;
 	
@@ -75,6 +76,8 @@ public class Window {
 		canvas.requestFocus();
 		
 		drawables = new LinkedList<>();
+		nextDrawables = new Drawable[0];
+		
 		gui = new Container(0,0,PIXEL_WIDTH,PIXEL_HEIGHT);
 		
 		Graphics2D initGraphics = new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB).createGraphics();
@@ -96,8 +99,7 @@ public class Window {
 		//draw everything on buffer for later scaling.
 		BufferedImage buffer = new BufferedImage(PIXEL_WIDTH, PIXEL_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
 		Graphics2D g = buffer.createGraphics();
-		
-		for(Drawable d : drawables) {
+		for(Drawable d : nextDrawables) {
 			d.draw(g);
 		}
 		gui.draw(g);
@@ -127,6 +129,8 @@ public class Window {
 		g2.dispose();
 		bs.show();
 		
+		nextDrawables = new Drawable[drawables.size()];
+		drawables.toArray(nextDrawables);
 	}
 	
 	public void finish() {

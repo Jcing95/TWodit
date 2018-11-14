@@ -1,18 +1,18 @@
 package de.Jcing.window.gui;
 
 import java.awt.Graphics2D;
-import java.util.HashSet;
+import java.util.LinkedList;
 
 import de.Jcing.Main;
 import de.Jcing.engine.io.Mouse;
 
 public class Container extends Component {
 	
-	protected HashSet<Component> subComponents;
+	protected LinkedList<Component> subComponents;
 	
 	public Container(int x, int y, int w, int h) {
 		super(x,y,w,h);		
-		subComponents = new HashSet<>();
+		subComponents = new LinkedList<>();
 	}
 	
 	public void addComponent(Component c) {

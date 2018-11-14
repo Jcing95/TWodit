@@ -8,6 +8,7 @@ import de.Jcing.engine.entity.Entity;
 import de.Jcing.engine.io.KeyBoard;
 import de.Jcing.engine.world.Stage;
 import de.Jcing.engine.world.Tile;
+import de.Jcing.game.menu.PauseMenu;
 import de.Jcing.image.Image;
 import de.Jcing.tasks.Clock;
 import de.Jcing.tasks.Scene;
@@ -29,6 +30,8 @@ public class Game {
 	private boolean isIntitialized;
 	
 	private Scene gameScene;
+	
+	private boolean pauseToggled;
 		
 	public Game () {
 		isIntitialized = false;
@@ -85,7 +88,7 @@ public class Game {
 			camera.x = testEntity.getX()*Tile.TILE_PIXELS/Main.getWindow().getPixelSize() - Window.PIXEL_WIDTH/2;
 			camera.y = testEntity.getY()*Tile.TILE_PIXELS/Main.getWindow().getPixelSize() - Window.PIXEL_HEIGHT/2;
 		});
-		
+		KeyBoard.listenOnToggle(KeyEvent.VK_P);
 		gameScene.start();
 		isIntitialized = true;
 	}
@@ -109,20 +112,19 @@ public class Game {
 		if(KeyBoard.isPressed(KeyEvent.VK_D) || KeyBoard.isPressed(KeyEvent.VK_RIGHT))
 			x = 0.01f;
 //		
+		pauseToggled = KeyBoard.isToggled(KeyEvent.VK_P);
 		
-		if(KeyBoard.isPressed(KeyEvent.VK_P)) {
+		if(pauseToggled) {
 			Main.getWindow().gui().setVisible(false);
 			Main.getWindow().gui().unlisten();
+			pause(true);
+			new PauseMenu();
 		} else {
 			Main.getWindow().gui().setVisible(true);
 			Main.getWindow().gui().listenOnMouse();
 		}
-//		if() {
-//			
-//		}
 		
 		if(KeyBoard.isPressed(KeyEvent.VK_SHIFT)) {
-			System.out.println("SHIFT");
 			x *= 2;
 			y *= 2;
 		}
@@ -133,6 +135,10 @@ public class Game {
 
 	public boolean isInitialized() {
 		return isIntitialized;
-	}	
+	}
+	
+	public void pause(boolean pause) {
+		gameScene.pause(pause);
+	}
 	
 }

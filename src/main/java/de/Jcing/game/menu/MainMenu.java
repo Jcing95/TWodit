@@ -1,4 +1,4 @@
-package de.Jcing.game;
+package de.Jcing.game.menu;
 
 import java.awt.Color;
 

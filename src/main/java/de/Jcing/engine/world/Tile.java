@@ -57,13 +57,12 @@ public class Tile implements Drawable {
 	public void draw(Graphics2D g) {
 		int xOff = getXOnScreen();
 		int yOff = getYOnScreen();
-		if(hovered()) {
-			g.setColor(Color.white);
-			g.fillRect(xOff, yOff, TILE_PIXELS, TILE_PIXELS);
-		}
-		if(!hovered())
 		for(Image i : textures) {
 			g.drawImage(i.get(texIndex).get(), xOff, yOff, null);
+		}
+		if(hovered()) {
+			g.setColor(new Color(255,255,255,55));
+			g.fillRect(xOff, yOff, TILE_PIXELS, TILE_PIXELS);
 		}
 	}
 	

@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 
 import de.Jcing.engine.io.KeyBoard;
 import de.Jcing.game.Game;
-import de.Jcing.game.MainMenu;
+import de.Jcing.game.menu.MainMenu;
 import de.Jcing.tasks.Clock;
 import de.Jcing.window.Window;
 
