@@ -63,6 +63,8 @@ public class Clock {
 		int ticks = 0;
 		while (task.running) {
 			while (task.pause) {
+				ticks = 0;
+				task.tps = 0;
 				Util.sleep((long) task.waitingTime);
 			}
 			if (task.running == false) {
@@ -84,6 +86,7 @@ public class Clock {
 			if (difft > 0)
 				Util.sleep((long)(difft));
 		}
+		task.finished = true;
 		}).start();
 	}
 

@@ -7,22 +7,24 @@ public class Task {
 	protected Runnable routine;
 	protected Thread th;
 
+	protected boolean finished;
 	protected int TPS;
 	private String name;
 	public int tps;
 	
 	public Task(Runnable routine) {
-		new Task(routine, -1);
+		this(routine, -1);
 	}
 	
 	public Task(Runnable routine, int tps) {
-		new Task(routine, tps, Clock.getGlobalScene());
+		this(routine, tps, Clock.getGlobalScene());
 	}
 	
 	public Task(Runnable routine, int tps, Scene scene) {
 		this.TPS = tps;
 		waitingTime = 1000.0 / tps;
 		this.routine = routine;
+		finished = false;
 		scene.addTask(this);
 	}
 	
@@ -62,7 +64,10 @@ public class Task {
 		else
 			return false;
 	}
-
+	
+	public boolean isFinished() {
+		return finished;
+	}
 
 	public void pause(boolean pause) {
 		this.pause = pause;
@@ -71,10 +76,6 @@ public class Task {
 
 	public boolean isPaused() {
 		return pause;
-	}
-
-	public boolean isFinished() {
-		return !running;
 	}
 
 	public String getName() {

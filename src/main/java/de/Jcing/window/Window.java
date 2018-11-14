@@ -22,6 +22,7 @@ import de.Jcing.engine.io.Mouse;
 import de.Jcing.engine.world.Tile;
 import de.Jcing.tasks.Task;
 import de.Jcing.util.Point;
+import de.Jcing.util.Util;
 import de.Jcing.window.gui.Container;
 
 public class Window {
@@ -129,7 +130,8 @@ public class Window {
 	}
 	
 	public void finish() {
-		task.finish();
+		while(!task.isFinished())
+			Util.sleep(20);
 		frame.dispose();
 	}
 	

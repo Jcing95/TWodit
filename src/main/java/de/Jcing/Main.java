@@ -37,8 +37,7 @@ public class Main {
 	}
 	
 	public static void finish() {	
-		Clock.stop();
-		
+		Clock.stopAll();
 		window.finish();
 	}
 	
