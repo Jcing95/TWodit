@@ -11,6 +11,7 @@ public class Scene {
 	public Scene(String name) {
 		this.name = name;
 		tasks = new HashSet<>();
+		Clock.addScene(this);
 	}
 	
 	public Scene start() {

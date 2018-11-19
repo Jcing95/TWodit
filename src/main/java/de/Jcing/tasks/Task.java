@@ -12,15 +12,16 @@ public class Task {
 	private String name;
 	public int tps;
 	
-	public Task(Runnable routine) {
-		this(routine, -1);
+	public Task(Runnable routine, String name) {
+		this(routine, name, -1);
 	}
 	
-	public Task(Runnable routine, int tps) {
-		this(routine, tps, Clock.getGlobalScene());
+	public Task(Runnable routine, String name, int tps) {
+		this(routine, name,  tps, Clock.getGlobalScene());
 	}
 	
-	public Task(Runnable routine, int tps, Scene scene) {
+	public Task(Runnable routine, String name, int tps, Scene scene) {
+		this.name = name;
 		this.TPS = tps;
 		waitingTime = 1000.0 / tps;
 		this.routine = routine;
@@ -44,6 +45,7 @@ public class Task {
 	}
 	
 	public void finish() {
+		System.err.println("Task " + name + " finishing...");
 		running = false;
 		pause = false;
 	}

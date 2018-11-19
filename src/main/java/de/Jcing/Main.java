@@ -41,6 +41,10 @@ public class Main {
 		window.finish();
 	}
 	
+	public static MainMenu getMainMenu() {
+		return mainMenu;
+	}
+	
 	public static Window getWindow() {
 		return window;
 	}

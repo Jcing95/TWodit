@@ -92,7 +92,7 @@ public class Window {
 			if(key == KeyEvent.VK_P)
 				task.pause(false);
 		});
-		task = new Task(() -> render(), 144);
+		task = new Task(() -> render(),"draw window", 144);
 	}
 	
 	public void render() {

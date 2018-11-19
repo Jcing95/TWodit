@@ -51,6 +51,10 @@ public class Tile implements Drawable {
 		textures.removeLast();
 	}
 	
+	public void incrementIndex() {
+		texIndex++;
+	}
+	
 	
 
 	@Override

@@ -26,8 +26,15 @@ public class Stage implements Drawable {
 	}
 	
 	public void tick() {
-		for (Entity e: entities.values())
-			e.tick();
+		if(Main.getGame() != null && Main.getGame().isInitialized() && camera != null) {
+			for (Entity e: entities.values())
+				e.tick();
+			
+			for(Chunk c : chunks.values()) {
+				if(c.isHovered())
+					c.incAll();
+			}
+		}
 	}
 	
 	@Override

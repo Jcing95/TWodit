@@ -38,6 +38,10 @@ public class Clock {
 		mainScene.finish();
 	}
 	
+	protected static void addScene(Scene s) {
+		scenes.put(s.hashCode(), s);
+	}
+	
 	public static void startAll() {
 		for(Scene s : scenes.values()) {
 			s.start();
@@ -73,7 +77,6 @@ public class Clock {
 			ticks++;			
 			lastTick = System.currentTimeMillis();
 			task.wrapper.run();
-			
 			if (System.currentTimeMillis() - lastSec >= 1000) {
 				task.tps = ticks;
 				ticks = 0;

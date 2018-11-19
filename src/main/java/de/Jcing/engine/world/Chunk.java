@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 
 import de.Jcing.Main;
 import de.Jcing.engine.graphics.Drawable;
+import de.Jcing.engine.io.Mouse;
 import de.Jcing.window.Window;
 
 public class Chunk implements Drawable{
@@ -44,6 +45,21 @@ public class Chunk implements Drawable{
 				getXOffset() + TILE_COUNT*Tile.TILE_PIXELS >= 0 && getXOffset() + TILE_COUNT*Tile.TILE_PIXELS <= Window.PIXEL_WIDTH ||
 				getYOffset() >= 0 && getYOffset() <= Window.PIXEL_HEIGHT ||
 				getYOffset() + TILE_COUNT*Tile.TILE_PIXELS >= 0 && getYOffset() + TILE_COUNT*Tile.TILE_PIXELS <= Window.PIXEL_HEIGHT;
+	}
+	
+	public boolean isHovered() {
+		int mx = Mouse.getX();
+		int my = Mouse.getY();
+		return getXOffset() * Main.getWindow().getPixelSize() <= mx && (getXOffset() + TILE_COUNT*Tile.TILE_PIXELS)* Main.getWindow().getPixelSize() >= mx &&
+				getYOffset() * Main.getWindow().getPixelSize() <= my && (getYOffset() + TILE_COUNT*Tile.TILE_PIXELS)* Main.getWindow().getPixelSize() >= my;
+	}
+	
+	public void incAll() {
+		for (int xt = 0; xt < tiles.length; xt++) {
+			for (int yt = 0; yt < tiles.length; yt++) {
+				tiles[xt][yt].incrementIndex();
+			}
+		}
 	}
 	
 	public int getXOffset() {

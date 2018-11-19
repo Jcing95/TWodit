@@ -54,8 +54,8 @@ public class Game {
 		fpsLabel.getOnClick().add(() -> System.exit(0));
 		fpsLabel.listenOnMouse();
 		Main.getWindow().gui().addComponent(fpsLabel);
-		new Task(() -> tick(), 60,gameScene);
-		new Task(() -> fpsLabel.setText("FPS: " + Main.getWindow().getFPS()), 1, gameScene);
+		new Task(() -> tick(), "GameTick",60,gameScene);
+		new Task(() -> fpsLabel.setText("FPS: " + Main.getWindow().getFPS()),"FPS updater",1, gameScene);
 		System.out.println("added FPS label..");
 
 		Button exit = new Button("X", Window.PIXEL_WIDTH-20, 0);
@@ -70,7 +70,7 @@ public class Game {
 		System.out.println("added exit button..");
 
 		ProgressBar bar = new ProgressBar(65,10,100,20);
-		new Task(()->bar.setPercentage(Clock.millis()/100%100),60,gameScene);
+		new Task(()->bar.setPercentage(Clock.millis()/100%100),"ProgressBar updater",60,gameScene);
 		Main.getWindow().gui().addComponent(bar);
 		System.out.println("added progress bar..");
 
