@@ -19,15 +19,18 @@ public class Main {
 	public static final String RESSOURCES = "src/main/resources/";
 	
 	
-	public static void main(String[] args) {	
+	public static void main(String[] args) {
+		//initialize Window and main menu
 		window = new Window();
 		mainMenu = new MainMenu();
+		
+		//Add Keyboard binding to exit game
 		KeyBoard.addBinding(KeyBoard.ONPRESS, (key) -> {
 			if(key == KeyEvent.VK_ESCAPE)
 				finish();
 		});
 		
-		
+		//Start the main scene.
 		Clock.start();
 		
 	}
@@ -37,7 +40,9 @@ public class Main {
 	}
 	
 	public static void finish() {	
+		//stop all scenes
 		Clock.stopAll();
+		//finish window to dispose swing frame
 		window.finish();
 	}
 	

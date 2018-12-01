@@ -91,5 +91,16 @@ public class Chunk implements Drawable{
 	public boolean isLoaded() {
 		return loaded;
 	}
+
+	public void click() {
+		for (int xt = 0; xt < tiles.length; xt++) {
+			for (int yt = 0; yt < tiles.length; yt++) {
+				if(tiles[xt][yt].hovered()) {
+					tiles[xt][yt].incrementIndex();
+					return;
+				}
+			}
+		}
+	}
 	
 }

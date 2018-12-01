@@ -30,10 +30,10 @@ public class Stage implements Drawable {
 			for (Entity e: entities.values())
 				e.tick();
 			
-			for(Chunk c : chunks.values()) {
-				if(c.isHovered())
-					c.incAll();
-			}
+//			for(Chunk c : chunks.values()) {
+//				if(c.isHovered())
+//					c.incAll();
+//			}
 		}
 	}
 	
@@ -105,11 +105,12 @@ public class Stage implements Drawable {
 	}
 	
 	public void handleClick() {
-		//TODO: implement chunk clicks
-	}
-	
-	public void handleMouseMovement() {
-		//TODO: implement chunk mouse movement
+		for(Chunk c : chunks.values()) {
+			if(c.isHovered()) {
+				c.click();
+				return;
+			}
+		}
 	}
 	
 	public int addEntity(Entity entity) {

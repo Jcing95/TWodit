@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import de.Jcing.Main;
 import de.Jcing.tasks.Clock;
+import de.Jcing.util.Util;
 
 public class Image {
 	
@@ -78,7 +79,7 @@ public class Image {
 	
 	public Frame get(int index) {
 		if(hasMultiple) {
-			return frames.get(index % frames.size()).get(index);
+			return frames.get(Util.fastABS(index % frames.size())).get(index);
 		}
 		if(isAnimation) {
 			return frames.get(index % frames.size()).get(index);

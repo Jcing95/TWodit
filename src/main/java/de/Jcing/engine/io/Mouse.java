@@ -3,6 +3,8 @@ package de.Jcing.engine.io;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -24,6 +26,8 @@ public class Mouse {
 
 	public static final int ONMOVE = 20;
 	public static final int ONDRAG = 21;
+	
+	public static final int ONWHEEL = 30;
 
 	private static final LinkedList<Binding> onPress = new LinkedList<>();
 	private static final LinkedList<Binding> onRelease = new LinkedList<>();
@@ -32,6 +36,7 @@ public class Mouse {
 	private static final LinkedList<Binding> onExit = new LinkedList<>();
 	private static final LinkedList<Binding> onMove = new LinkedList<>();
 	private static final LinkedList<Binding> onDrag = new LinkedList<>();
+	private static final LinkedList<Binding> onWheel = new LinkedList<>();
 
 	public static final int LEFT = MouseEvent.BUTTON1;
 //	public static final int RIGHT = MouseEvent.BUTTON2;
@@ -47,6 +52,7 @@ public class Mouse {
 			bindings.put(ONEXIT, onExit);
 			bindings.put(ONMOVE, onMove);
 			bindings.put(ONDRAG, onDrag);
+			bindings.put(ONWHEEL, onWheel);
 		}
 	}
 
@@ -124,6 +130,16 @@ public class Mouse {
 					b.onAction(e.getButton());
 			}
 		}
+	};
+	
+	public static final MouseWheelListener mouseWheelListener = new MouseWheelListener() {
+
+		@Override
+		public void mouseWheelMoved(MouseWheelEvent e) {
+			for (Binding b : onWheel)
+				b.onAction(e.getWheelRotation());
+		}
+		
 	};
 
 	public static Binding addBinding(int KEY, Binding binding) {

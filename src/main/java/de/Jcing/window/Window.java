@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferStrategy;
@@ -55,6 +54,7 @@ public class Window {
 	private int yOffset;
 	
 	public Window() {
+		//initialize Swing frame and canvas
 		frame = new JFrame(TITLE);
 		canvas = new Canvas();
 		canvas.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
@@ -63,10 +63,11 @@ public class Window {
 		canvas.setBackground(DEFAULT_BACKGROUND);
 		canvas.setForeground(DEFAULT_FOREGROUND);
 		
+		//add global listener for KeyBoard and Mouse classes to work
 		canvas.addKeyListener(KeyBoard.keyListener);
 		canvas.addMouseListener(Mouse.mouseListener);
 		canvas.addMouseMotionListener(Mouse.mouseMotionListener);
-		
+		canvas.addMouseWheelListener(Mouse.mouseWheelListener);
 		frame.add(canvas);
 		frame.addWindowListener(windowListener);
 		
@@ -75,23 +76,21 @@ public class Window {
 		frame.requestFocus();
 		canvas.requestFocus();
 		
+		//drawables are all things to draw into the frame later on
 		drawables = new LinkedList<>();
+		//nextDrawables to buffer them to prevent concurrent modifications
 		nextDrawables = new Drawable[0];
 		
+		//main container with the size of the Window. 
 		gui = new Container(0,0,PIXEL_WIDTH,PIXEL_HEIGHT);
 		
+		
+		//initialize the Graphics2D object. 
 		Graphics2D initGraphics = new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB).createGraphics();
 		//TODO: set font and init other flags.
 		fontMetrics = initGraphics.getFontMetrics();
 		
-		KeyBoard.addBinding(KeyBoard.ONPRESS, (key) -> {
-			if(key == KeyEvent.VK_P)
-				task.pause(true);
-		});
-		KeyBoard.addBinding(KeyBoard.ONPRESS, (key) -> {
-			if(key == KeyEvent.VK_P)
-				task.pause(false);
-		});
+		//primary render task. max 144 times/second
 		task = new Task(() -> render(),"draw window", 144);
 	}
 	

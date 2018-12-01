@@ -1,6 +1,7 @@
 package de.Jcing.util;
 
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 public class Util {
 
@@ -24,6 +25,15 @@ public class Util {
 		}
 		
 		return result;
+	}
+	
+	public static int seededRandom(long seed) {
+		Random r = new Random(seed);
+		return r.nextInt();
+	}
+	
+	public static int fastABS(int value) {
+		return value < 0 ? -value : value;
 	}
 	
 }

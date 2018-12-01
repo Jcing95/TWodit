@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import de.Jcing.Main;
 import de.Jcing.engine.entity.Entity;
 import de.Jcing.engine.io.KeyBoard;
+import de.Jcing.engine.io.Mouse;
 import de.Jcing.engine.world.Stage;
 import de.Jcing.engine.world.Tile;
 import de.Jcing.game.menu.PauseMenu;
@@ -18,6 +19,7 @@ import de.Jcing.window.Window;
 import de.Jcing.window.gui.Button;
 import de.Jcing.window.gui.Label;
 import de.Jcing.window.gui.ProgressBar;
+import de.Jcing.window.gui.ScrollPane;
 
 public class Game {
 	
@@ -64,13 +66,22 @@ public class Game {
 		exit.setBackground(new Color(220,80,80), Button.COLOR_HOVERED);
 		exit.setBackground(new Color(180,10,10), Button.COLOR_PRESSED);
 		exit.setPosition(Window.PIXEL_WIDTH-exit.getWidth(),0);
-		exit.getOnClick().add(() -> System.exit(0));
+		exit.getOnClick().add(() -> Main.finish());
 		exit.listenOnMouse();
 		Main.getWindow().gui().addComponent(exit);
+		
+		ScrollPane pane = new ScrollPane(20,20,100,100);
+		Button test = new Button("text" , 10, 10);
+		pane.addComponent(test);
+		pane.listenOnMouse();
+		test.listenOnMouse();
+		Main.getWindow().gui().addComponent(pane);
+		
+		
 		System.out.println("added exit button..");
 
-		ProgressBar bar = new ProgressBar(65,10,100,20);
-		new Task(()->bar.setPercentage(Clock.millis()/100%100),"ProgressBar updater",60,gameScene);
+		ProgressBar bar = new ProgressBar(65,10,100,5);
+		new Task(()->bar.setPercentage(Clock.millis()/20%100),"ProgressBar updater",60,gameScene);
 		Main.getWindow().gui().addComponent(bar);
 		System.out.println("added progress bar..");
 
@@ -90,6 +101,7 @@ public class Game {
 		});
 		KeyBoard.listenOnToggle(KeyEvent.VK_P);
 		gameScene.start();
+		Mouse.addBinding(Mouse.ONCLICK, (i) -> mainStage.handleClick());
 		isIntitialized = true;
 	}
 	

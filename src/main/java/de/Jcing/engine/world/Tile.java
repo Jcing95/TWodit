@@ -3,7 +3,9 @@ package de.Jcing.engine.world;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.File;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 import de.Jcing.Main;
 import de.Jcing.engine.Trigger;
@@ -11,12 +13,14 @@ import de.Jcing.engine.entity.Entity;
 import de.Jcing.engine.graphics.Drawable;
 import de.Jcing.geometry.Rectangle;
 import de.Jcing.image.Image;
+import de.Jcing.util.Util;
 
 public class Tile implements Drawable {
 	
 	public static final int TILE_PIXELS = 32;
 	
 	private LinkedList<Image> textures;
+	private LinkedList<Integer> textureIndices;
 	private LinkedList<Entity> entities;
 	private LinkedList<Trigger> triggers;
 	
@@ -26,18 +30,15 @@ public class Tile implements Drawable {
 	
 	private Chunk chunk;
 	private int x, y;
-	
-	private int texIndex;
-	
-	
+		
 	public Tile(int x, int y, Chunk chunk) {
 		this.chunk = chunk;
 		this.x = x;
 		this.y = y;
 		textures = new LinkedList<>();
+		textureIndices = new LinkedList<>();
 		entities = new LinkedList<>();
 		triggers = new LinkedList<>();
-		texIndex = (int)(Math.random()*1000);//Generator.getValue(chunk.getX()*Chunk.TILE_COUNT+x, chunk.getY()+Chunk.TILE_COUNT+y);
 		textures.add(testBack);
 //		System.out.println(texIndex);
 	}
@@ -45,14 +46,25 @@ public class Tile implements Drawable {
 	public void addTexture(Image img) {
 		//TODO: catch invalid images for Tiles
 		textures.add(img);
+		textureIndices.add(null);
+	}
+	
+	public void addTexture(Image img, int index) {
+		textures.add(img);
+		textureIndices.add(index);
 	}
 	
 	public void popTexture() {
 		textures.removeLast();
+		textureIndices.removeLast();
 	}
 	
 	public void incrementIndex() {
-		texIndex++;
+		try {
+		textureIndices.add(textureIndices.removeLast() + 1);
+		} catch (NoSuchElementException e) {
+			textureIndices.add(Util.seededRandom(hashCode())+1);
+		}
 	}
 	
 	
@@ -61,8 +73,16 @@ public class Tile implements Drawable {
 	public void draw(Graphics2D g) {
 		int xOff = getXOnScreen();
 		int yOff = getYOnScreen();
-		for(Image i : textures) {
-			g.drawImage(i.get(texIndex).get(), xOff, yOff, null);
+		Iterator<Integer> indexIter = textureIndices.iterator();
+		Iterator<Image> texIter = textures.iterator();
+		while(texIter.hasNext()) {
+			int index;
+			try {
+				index = indexIter.next();
+			} catch (NoSuchElementException e) {
+				index = Util.seededRandom(hashCode());
+			}
+			g.drawImage(texIter.next().get(index).get(), xOff, yOff, null);
 		}
 		if(hovered()) {
 			g.setColor(new Color(255,255,255,55));
