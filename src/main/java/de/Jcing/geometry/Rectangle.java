@@ -32,6 +32,22 @@ public class Rectangle {
 		return 0;
 	}
 	
+	@Override
+	public Rectangle clone() {
+		return new Rectangle(x, y, width, height);
+	}
+	
+	@Override 
+	public String toString() {
+		return "Rectangle: (" + x + "|" + y + ") - W: " + width + ", h: " + height;
+	} 
+	
+	public Rectangle translate(Rectangle parent) {
+		if(parent == null)
+			return clone();
+		return new Rectangle(parent.x+x, parent.y+y,width,height);
+	}
+
 	public int getX() {
 		return (int)x;
 	}
@@ -46,5 +62,9 @@ public class Rectangle {
 	
 	public int getHeight() {
 		return (int)height;
+	}
+
+	public Point getOrigin() {
+		return new Point(x,y);
 	}
 }

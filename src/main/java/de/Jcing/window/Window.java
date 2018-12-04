@@ -19,6 +19,7 @@ import de.Jcing.engine.graphics.Drawable;
 import de.Jcing.engine.io.KeyBoard;
 import de.Jcing.engine.io.Mouse;
 import de.Jcing.engine.world.Tile;
+import de.Jcing.tasks.Clock;
 import de.Jcing.tasks.Task;
 import de.Jcing.util.Point;
 import de.Jcing.util.Util;
@@ -84,7 +85,6 @@ public class Window {
 		//main container with the size of the Window. 
 		gui = new Container(0,0,PIXEL_WIDTH,PIXEL_HEIGHT);
 		
-		
 		//initialize the Graphics2D object. 
 		Graphics2D initGraphics = new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB).createGraphics();
 		//TODO: set font and init other flags.
@@ -92,6 +92,7 @@ public class Window {
 		
 		//primary render task. max 144 times/second
 		task = new Task(() -> render(),"draw window", 144);
+		Clock.doLater(() -> gui.listenOnMouse(),100);
 	}
 	
 	public void render() {

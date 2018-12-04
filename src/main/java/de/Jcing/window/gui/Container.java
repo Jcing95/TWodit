@@ -3,33 +3,49 @@ package de.Jcing.window.gui;
 import java.awt.Graphics2D;
 import java.util.LinkedList;
 
-import de.Jcing.Main;
 import de.Jcing.engine.io.Mouse;
+import de.Jcing.util.Point;
 
 public class Container extends Component {
 	
 	protected LinkedList<Component> subComponents;
+	protected boolean unhovered;
 	
 	public Container(int x, int y, int w, int h) {
 		super(x,y,w,h);		
 		subComponents = new LinkedList<>();
+		unhovered = false;
 	}
 	
 	public void addComponent(Component c) {
-		subComponents.add(c);
-		c.setParent(this);
+		synchronized(this) {
+			subComponents.add(c);
+			c.setParent(this);
+		}
 	}
 	
 	@Override
 	public void paint(Graphics2D g) {
-		for (Component c: subComponents)
-			c.draw(g);
+		synchronized(this) {
+			for (Component c: subComponents)
+				c.draw(g);
+		}
 	}
 
-	protected void mouseMove() {
-		hovered = bounds.contains(Main.getWindow().getMouseOnCanvas());
-		for(Component c : subComponents) {
-			c.mouseMove();
+	protected void mouseMove(Point translatedMouse) {
+		hovered = bounds.contains(translatedMouse);
+		if(hovered) {
+			unhovered = false;
+			for(Component c : subComponents) {
+				c.mouseMove(translatedMouse.translate(bounds.getOrigin().invert()));
+			}
+		} else {
+			if(!unhovered) {
+				unhovered = true;
+				for(Component c : subComponents) {
+					c.hovered = false;
+				}
+			}
 		}
 	}
 	

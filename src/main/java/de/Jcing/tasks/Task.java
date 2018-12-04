@@ -8,7 +8,7 @@ public class Task {
 	protected Thread th;
 
 	protected boolean finished;
-	protected int TPS;
+	protected double TPS;
 	private String name;
 	public int tps;
 	
@@ -16,11 +16,11 @@ public class Task {
 		this(routine, name, -1);
 	}
 	
-	public Task(Runnable routine, String name, int tps) {
+	public Task(Runnable routine, String name, double tps) {
 		this(routine, name,  tps, Clock.getGlobalScene());
 	}
 	
-	public Task(Runnable routine, String name, int tps, Scene scene) {
+	public Task(Runnable routine, String name, double tps, Scene scene) {
 		this.name = name;
 		this.TPS = tps;
 		waitingTime = 1000.0 / tps;
@@ -50,7 +50,7 @@ public class Task {
 		pause = false;
 	}
 
-	public int getTps() {
+	public double getTps() {
 		return TPS;
 	}
 	

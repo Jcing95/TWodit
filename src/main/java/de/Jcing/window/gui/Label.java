@@ -34,15 +34,15 @@ public class Label extends Component {
 	public void setText(String text) {
 		this.text = text;
 		setWidth(Main.getWindow().getFontMetrics().stringWidth(text)+DEFAULT_PADDING*2);
-//		System.out.println(bounds.width);
 	}
 	
 	public String getText() {
 		return text;
 	}
 
-	public void setColor(Color color) {
+	public Label setColor(Color color) {
 		this.color = color;
+		return this;
 	}
 	
 }

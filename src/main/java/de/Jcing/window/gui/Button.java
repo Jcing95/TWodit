@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage;
 
 public class Button extends Canvas {
 	
-	
 	public static final int COLOR_DEFAULT = 0;
 	public static final int COLOR_HOVERED = 1;
 	public static final int COLOR_PRESSED = 2;
@@ -14,9 +13,7 @@ public class Button extends Canvas {
 	
 	public static final Color[] DEFAULT_BACK = { new Color(60,60,120), new Color(100,100,160), new Color(40,40,100) };
 	
-	public static int DEFAULT_PADDING = 2;
-	
-	protected Label label;
+	public static final int DEFAULT_PADDING = 2;
 	
 	protected int currentCanvas;
 	
@@ -24,6 +21,7 @@ public class Button extends Canvas {
 	
 	protected BufferedImage[] canvases;
 	
+	protected Label label;
 	
 	public Button(String label, int x, int y) {
 		super(x,y,0,0);
@@ -64,7 +62,6 @@ public class Button extends Canvas {
 	
 	@Override
 	public void setSize(int w, int h) {
-//		((Component)this).setSize(w, h);
 		bounds.width = w;
 		bounds.height = h;
 		updateCanvasSize();
@@ -76,12 +73,10 @@ public class Button extends Canvas {
 			Graphics2D g = canvases[i].createGraphics();
 			g.setColor(colors[i]);
 			g.fillRect(0, 0, bounds.getWidth(), bounds.getHeight());
-//			g.translate(DEFAULT_PADDING, DEFAULT_PADDING);
 			label.draw(g);
 			g.dispose();
 		}
-	}
-	
+	}	
 	
 	protected void updateCanvasSize() {
 		for (int i = 0; i < canvases.length; i++) {

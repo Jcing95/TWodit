@@ -9,13 +9,18 @@ import de.Jcing.engine.graphics.Drawable;
 import de.Jcing.engine.io.Binding;
 import de.Jcing.engine.io.Mouse;
 import de.Jcing.geometry.Rectangle;
+import de.Jcing.util.Point;
 
 public abstract class Component implements Drawable {
 
-	protected boolean visible;
+	protected Container parent;
+
 	protected Rectangle bounds;
 
-	protected Container parent;
+	protected LinkedList<Runnable> onClick;
+	protected HashSet<Binding> bindings;
+
+	protected boolean visible;
 
 	protected boolean hovered;
 	protected boolean press;
@@ -23,12 +28,12 @@ public abstract class Component implements Drawable {
 	protected boolean verticalCentered;
 	protected boolean horizontalCentered;
 
-	protected LinkedList<Runnable> onClick;
 	protected boolean handleMouse;
-
 	protected boolean isVisible;
 
-	protected HashSet<Binding> bindings;
+	public Component(int x, int y) {
+		this(x,y,0,0);
+	}
 
 	public Component(int x, int y, int w, int h) {
 		bounds = new Rectangle(x, y, w, h);
@@ -38,17 +43,10 @@ public abstract class Component implements Drawable {
 		isVisible = true;
 	}
 
-	public Component(int x, int y) {
-		bounds = new Rectangle(x, y, 0, 0);
-	}
 
-	protected void setParent(Container parent) {
-		this.parent = parent;
-	}
-
-	protected void mouseMove() {
+	protected void mouseMove(Point translatedMouse) {
 		if (handleMouse) {
-			hovered = bounds.contains(Main.getWindow().getMouseOnCanvas());
+			hovered = bounds.contains(translatedMouse);
 		}
 	}
 
@@ -67,6 +65,8 @@ public abstract class Component implements Drawable {
 		}
 	}
 
+	protected abstract void paint(Graphics2D g);
+
 	@Override
 	public void draw(Graphics2D g) {
 		if (isVisible) {
@@ -76,7 +76,6 @@ public abstract class Component implements Drawable {
 		}
 	}
 
-	protected abstract void paint(Graphics2D g);
 
 	protected void click() {
 		for (Runnable r : onClick)
@@ -86,7 +85,7 @@ public abstract class Component implements Drawable {
 	public void listenOnMouse() {
 		handleMouse = true;
 		if (parent == null) {
-			bindings.add(Mouse.addBinding(Mouse.ONMOVE, (i) -> mouseMove()));
+			bindings.add(Mouse.addBinding(Mouse.ONMOVE, (i) -> mouseMove(Main.getWindow().getMouseOnCanvas())));
 			bindings.add(Mouse.addBinding(Mouse.ONPRESS, (i) -> mouseClick()));
 			bindings.add(Mouse.addBinding(Mouse.ONRELEASE, (i) -> mouseClick()));
 		}
@@ -97,32 +96,6 @@ public abstract class Component implements Drawable {
 		for (Binding b : bindings) {
 			Mouse.removeBinding(b);
 		}
-	}
-
-	public void setWidth(int w) {
-		bounds.width = w;
-	}
-
-	public void setHeight(int h) {
-		bounds.height = h;
-	}
-
-	public void setSize(int w, int h) {
-		bounds.width = w;
-		bounds.height = h;
-	}
-
-	public LinkedList<Runnable> getOnClick() {
-		return onClick;
-	}
-
-	public Rectangle getBounds() {
-		return bounds;
-	}
-
-	public void setPosition(double x, double y) {
-		bounds.x = x;
-		bounds.y = y;
 	}
 
 	public void centerVertical(boolean center) {
@@ -145,6 +118,15 @@ public abstract class Component implements Drawable {
 		}
 	}
 
+	public LinkedList<Runnable> getOnClick() {
+		return onClick;
+	}
+
+	public Rectangle getBounds() {
+		return bounds;
+	}
+
+	
 	public int getWidth() {
 		return bounds.getWidth();
 	}
@@ -152,7 +134,29 @@ public abstract class Component implements Drawable {
 	public int getHeight() {
 		return bounds.getHeight();
 	}
+	
+	protected void setParent(Container parent) {
+		this.parent = parent;
+	}	
+	
+	public void setPosition(double x, double y) {
+		bounds.x = x;
+		bounds.y = y;
+	}
+	
+	public void setWidth(int w) {
+		bounds.width = w;
+	}
 
+	public void setHeight(int h) {
+		bounds.height = h;
+	}
+
+	public void setSize(int w, int h) {
+		bounds.width = w;
+		bounds.height = h;
+	}
+	
 	public void setVisible(boolean visible) {
 		isVisible = visible;
 	}

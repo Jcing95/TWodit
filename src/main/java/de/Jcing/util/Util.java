@@ -35,5 +35,9 @@ public class Util {
 	public static int fastABS(int value) {
 		return value < 0 ? -value : value;
 	}
+
+	public static double fastABS(double value) {
+		return value < 0 ? -value : value;
+	}
 	
 }

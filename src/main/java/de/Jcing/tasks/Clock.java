@@ -161,4 +161,11 @@ public class Clock {
 		return mainScene;
 	}
 
+	public static void doLater(Runnable toDo, int delay) {
+		new Thread(() ->  {
+			Util.sleep(delay);
+			toDo.run();
+		}).start();
+	}
+
 }

@@ -38,5 +38,6 @@ public class Canvas extends Component {
 	
 	public Graphics2D getGraphics() {
 		return (Graphics2D) canvas.getGraphics();
-	}	
+	}
+	
 }

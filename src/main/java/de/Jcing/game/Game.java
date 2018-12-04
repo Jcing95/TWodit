@@ -15,13 +15,20 @@ import de.Jcing.tasks.Clock;
 import de.Jcing.tasks.Scene;
 import de.Jcing.tasks.Task;
 import de.Jcing.util.Point;
+import de.Jcing.util.Strings;
 import de.Jcing.window.Window;
 import de.Jcing.window.gui.Button;
 import de.Jcing.window.gui.Label;
 import de.Jcing.window.gui.ProgressBar;
 import de.Jcing.window.gui.ScrollPane;
+import de.Jcing.window.gui.TextPane;
+import de.Jcing.window.gui.animator.Move;
+import de.Jcing.window.gui.utillities.Group;
 
 public class Game {
+	
+	
+	public static final int RADIUS = 7;
 	
 	private Stage mainStage;
 	
@@ -34,6 +41,8 @@ public class Game {
 	private Scene gameScene;
 	
 	private boolean pauseToggled;
+	
+	
 		
 	public Game () {
 		isIntitialized = false;
@@ -41,8 +50,8 @@ public class Game {
 		System.out.println("initializing..");
 		mainStage = new Stage();
 		camera = new Point(0,0);
-		for (int i = -20; i < 20; i++) {
-			for (int j = -20; j < 20; j++) {
+		for (int i = -RADIUS; i < RADIUS; i++) {
+			for (int j = -RADIUS; j < RADIUS; j++) {
 				mainStage.addChunk(i, j);
 			}
 		}
@@ -70,11 +79,14 @@ public class Game {
 		exit.listenOnMouse();
 		Main.getWindow().gui().addComponent(exit);
 		
-		ScrollPane pane = new ScrollPane(20,20,100,100);
-		Button test = new Button("text" , 10, 10);
+		ScrollPane pane = new ScrollPane(5,Window.PIXEL_HEIGHT-100,Window.PIXEL_WIDTH-10,95).setBackground(new Color(47, 71, 109));
+		TextPane test = new TextPane(Strings.SHORT_STORY , 5, 10, pane.getWidth()-20, pane.getHeight());
+		test.setColor(new Color(206, 215, 229));
 		pane.addComponent(test);
 		pane.listenOnMouse();
 		test.listenOnMouse();
+		Move mover = new Move(new Group(pane), Move.UP, 90);
+		pane.getOnClick().add(() -> mover.reverse().start(600));
 		Main.getWindow().gui().addComponent(pane);
 		
 		

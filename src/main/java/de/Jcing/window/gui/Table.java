@@ -8,6 +8,7 @@ public class Table extends ScrollPane {
 	
 	public Table(int x, int y, int w, int h) {
 		super(x, y, w, h);
+		//TODO: implement Table
 	}
 	
 	public Table setRows(int rows) {
@@ -20,6 +21,5 @@ public class Table extends ScrollPane {
 		return this;
 	}
 	
-	//TODO: implement Table
 
 }
