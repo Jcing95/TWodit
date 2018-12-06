@@ -40,4 +40,7 @@ public class Util {
 		return value < 0 ? -value : value;
 	}
 	
+	public static float fastABS(float value) {
+		return value < 0 ? -value : value;
+	}
 }

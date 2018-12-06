@@ -18,11 +18,12 @@ import de.Jcing.util.Point;
 import de.Jcing.util.Strings;
 import de.Jcing.window.Window;
 import de.Jcing.window.gui.Button;
+import de.Jcing.window.gui.ImageView;
 import de.Jcing.window.gui.Label;
 import de.Jcing.window.gui.ProgressBar;
 import de.Jcing.window.gui.ScrollPane;
 import de.Jcing.window.gui.TextPane;
-import de.Jcing.window.gui.animator.Move;
+import de.Jcing.window.gui.animator.Fader;
 import de.Jcing.window.gui.utillities.Group;
 
 public class Game {
@@ -41,7 +42,10 @@ public class Game {
 	private Scene gameScene;
 	
 	private boolean pauseToggled;
+	private boolean faded;
 	
+	private Fader guiFader;
+
 	
 		
 	public Game () {
@@ -50,12 +54,12 @@ public class Game {
 		System.out.println("initializing..");
 		mainStage = new Stage();
 		camera = new Point(0,0);
-		for (int i = -RADIUS; i < RADIUS; i++) {
-			for (int j = -RADIUS; j < RADIUS; j++) {
-				mainStage.addChunk(i, j);
-			}
-		}
-		System.out.println("chunks added...");
+//		for (int i = -RADIUS; i < RADIUS; i++) {
+//			for (int j = -RADIUS; j < RADIUS; j++) {
+//				mainStage.addChunk(i, j);
+//			}
+//		}
+//		System.out.println("chunks added...");
 
 		
 		Main.getWindow().addDrawable(mainStage);
@@ -79,22 +83,36 @@ public class Game {
 		exit.listenOnMouse();
 		Main.getWindow().gui().addComponent(exit);
 		
-		ScrollPane pane = new ScrollPane(5,Window.PIXEL_HEIGHT-100,Window.PIXEL_WIDTH-10,95).setBackground(new Color(47, 71, 109));
+		ScrollPane pane = new ScrollPane(5,Window.PIXEL_HEIGHT-100,Window.PIXEL_WIDTH-70,95).setBackground(new Color(47, 71, 109));
 		TextPane test = new TextPane(Strings.SHORT_STORY , 5, 10, pane.getWidth()-20, pane.getHeight());
 		test.setColor(new Color(206, 215, 229));
 		pane.addComponent(test);
 		pane.listenOnMouse();
 		test.listenOnMouse();
-		Move mover = new Move(new Group(pane), Move.UP, 90);
-		pane.getOnClick().add(() -> mover.reverse().start(600));
-		Main.getWindow().gui().addComponent(pane);
+		ImageView portrait = new ImageView(new Image("gfx/player/down").get(0),Window.PIXEL_WIDTH-55,Window.PIXEL_HEIGHT-100,60,60);
 		
+//		Fader fader = new Fader(new Group(pane), Fader.ALPHA, 0.01f, 1f);
+//		pane.getOnClick().add(() -> fader.reverse().start(300));
+		Main.getWindow().gui().addComponent(pane);
+		Main.getWindow().gui().addComponent(portrait);
+		guiFader = new Fader(new Group(Main.getWindow().gui()), Fader.ALPHA, 0, 1);
 		
 		System.out.println("added exit button..");
 
-		ProgressBar bar = new ProgressBar(65,10,100,5);
-		new Task(()->bar.setPercentage(Clock.millis()/20%100),"ProgressBar updater",60,gameScene);
-		Main.getWindow().gui().addComponent(bar);
+		ProgressBar health = new ProgressBar(Window.PIXEL_WIDTH-55,Window.PIXEL_HEIGHT-35,50,5);
+		ProgressBar stamina = new ProgressBar(Window.PIXEL_WIDTH-55,Window.PIXEL_HEIGHT-25,50,5);
+		ProgressBar hunger = new ProgressBar(Window.PIXEL_WIDTH-55,Window.PIXEL_HEIGHT-15,50,5);
+		health.setFront(Color.red);
+		stamina.setFront(Color.green.darker());
+		hunger.setFront(Color.orange.darker().darker());
+		new Task(()-> {
+			health.setPercentage(Clock.millis()/20%100);
+			stamina.setPercentage(Clock.millis()/10%100);
+			hunger.setPercentage(Clock.millis()/30%100);
+			},"ProgressBar updater",60,gameScene);
+		Main.getWindow().gui().addComponent(health);
+		Main.getWindow().gui().addComponent(stamina);
+		Main.getWindow().gui().addComponent(hunger);
 		System.out.println("added progress bar..");
 
 		
@@ -139,12 +157,18 @@ public class Game {
 		pauseToggled = KeyBoard.isToggled(KeyEvent.VK_P);
 		
 		if(pauseToggled) {
-			Main.getWindow().gui().setVisible(false);
+			if(!faded) {
+				guiFader.reverse().start(100);
+				faded = true;
+			}
 			Main.getWindow().gui().unlisten();
 			pause(true);
 			new PauseMenu();
 		} else {
-			Main.getWindow().gui().setVisible(true);
+			if(faded) {
+				guiFader.reverse().start(300);
+				faded = false;
+			}
 			Main.getWindow().gui().listenOnMouse();
 		}
 		

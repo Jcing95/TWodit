@@ -3,7 +3,7 @@ package de.Jcing.window.gui.animator;
 import de.Jcing.window.gui.Component;
 import de.Jcing.window.gui.utillities.Group;
 
-public class Move extends Animator {
+public class Mover extends Animator {
 
 	public static final int LEFT = -11;
 	public static final int RIGHT = 11;
@@ -15,14 +15,14 @@ public class Move extends Animator {
 	
 	protected double moved;
 
-	public Move(Group group, int direction, int pixels) {
+	public Mover(Group group, int direction, int pixels) {
 		super(group);
 		this.pixels = pixels;
 		this.direction = direction;
 		moved = 0;
 	}
 
-	public Move reverse() {
+	public Mover reverse() {
 		direction = -direction;
 		moved = (pixels - moved) % pixels;
 		return this;

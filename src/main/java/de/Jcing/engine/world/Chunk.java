@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import de.Jcing.Main;
 import de.Jcing.engine.graphics.Drawable;
 import de.Jcing.engine.io.Mouse;
+import de.Jcing.util.Point;
 import de.Jcing.window.Window;
 
 public class Chunk implements Drawable{
@@ -31,8 +32,12 @@ public class Chunk implements Drawable{
 		}
 	}
 	
+	public Chunk(Point p, Stage stage) {
+		this(p.getX(), p.getY(), stage);
+	}
+
 	public void load(boolean loaded) {
-		//TODO: handle chunkloading logic
+		System.out.println(loaded ? "loading" : "unloading" + " chunk " + new Point(x,y));
 		this.loaded = loaded;
 	}
 	

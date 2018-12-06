@@ -1,22 +1,22 @@
 package de.Jcing.window.gui;
 
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
-import de.Jcing.image.Image;
+import de.Jcing.image.Frame;
 
-public class ImageView extends Component {
+public class ImageView extends Canvas {
 	
-	Image img;
+	Frame img;
 	
-	public ImageView(Image img, int x, int y, int w, int h) {
+	public ImageView(Frame img, int x, int y, int w, int h) {
 		super(x, y, w, h);
 		this.img = img;
-		//TODO: make ImageView extends Canvas and do resizing and stuff once.
-	}
-
-	@Override
-	protected void paint(Graphics2D g) {
-		g.drawImage(img.get().get(), 0, 0, bounds.getWidth(), bounds.getHeight(), null);
+		Graphics2D g = getGraphics();
+		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g.drawImage(img.get(), 0, 0, w, h, null);
+		g.dispose();
+		//TODO: add more ImageView capabilities;
 	}
 
 }

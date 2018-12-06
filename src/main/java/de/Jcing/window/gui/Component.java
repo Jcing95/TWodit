@@ -12,7 +12,12 @@ import de.Jcing.geometry.Rectangle;
 import de.Jcing.util.Point;
 
 public abstract class Component implements Drawable {
-
+	
+	
+	public static final DrawHook DEFAULT_HOOK = new DrawHook() {};
+	
+	protected DrawHook customHook;
+	
 	protected Container parent;
 
 	protected Rectangle bounds;
@@ -69,11 +74,10 @@ public abstract class Component implements Drawable {
 
 	@Override
 	public void draw(Graphics2D g) {
-		if (isVisible) {
-			g.translate(bounds.getX(), bounds.getY());
-			paint(g);
-			g.translate(-bounds.getX(), -bounds.getY());
-		}
+		if(customHook == null)
+			DEFAULT_HOOK.draw(g,this);
+		else
+			customHook.draw(g,this);
 	}
 
 
@@ -160,5 +164,23 @@ public abstract class Component implements Drawable {
 	public void setVisible(boolean visible) {
 		isVisible = visible;
 	}
+
+	public void setDrawHook(DrawHook drawHook) {
+		customHook = drawHook;
+	}
+	
+	public interface DrawHook {
+
+		public default void draw(Graphics2D g, Component c) {
+			if (c.isVisible) {
+				g.translate(c.bounds.getX(), c.bounds.getY());
+				c.paint(g);
+				g.translate(-c.bounds.getX(), -c.bounds.getY());
+			}
+		}
+		
+	}
+
+
 
 }

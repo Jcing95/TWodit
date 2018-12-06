@@ -35,7 +35,6 @@ public abstract class Animator {
 	public Animator start(long duration) {
 		currentTick = 0;
 		totalTicks = duration / TPS;
-		System.out.println("totalTicks: " + totalTicks);
 		animate.start();
 		return this;
 	}

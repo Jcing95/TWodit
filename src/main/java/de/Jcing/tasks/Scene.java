@@ -6,6 +6,8 @@ public class Scene {
 	
 	private String name;
 	
+	private boolean pause;
+	
 	private HashSet<Task> tasks;
 	
 	public Scene(String name) {
@@ -28,6 +30,7 @@ public class Scene {
 	}
 	
 	public void pause(boolean pause) {
+		this.pause = pause;
 		for(Task t: tasks) {
 			t.pause(pause);
 		}
@@ -48,6 +51,10 @@ public class Scene {
 	
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public boolean isPaused() {
+		return pause;
 	}
 	
 }

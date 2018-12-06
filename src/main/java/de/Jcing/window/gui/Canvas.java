@@ -32,7 +32,7 @@ public class Canvas extends Component {
 	}
 	
 	@Override
-	public void paint(Graphics2D g) {
+	protected void paint(Graphics2D g) {
 		g.drawImage(canvas, 0, 0, null);
 	}
 	

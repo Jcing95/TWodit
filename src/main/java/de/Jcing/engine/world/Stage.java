@@ -2,6 +2,7 @@ package de.Jcing.engine.world;
 
 import java.awt.Graphics2D;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 import de.Jcing.Main;
@@ -10,10 +11,12 @@ import de.Jcing.engine.graphics.Drawable;
 import de.Jcing.util.Point;
 
 public class Stage implements Drawable {
+	
+	public static int loadedRadius = 5;
 
 	private HashMap<Point, Chunk> chunks;
 	private HashMap<Integer, Entity> entities;
-	private LinkedList<Integer> loadedChunks;
+	private HashSet<Point> loadedChunks;
 	
 	private Point camera;
 	
@@ -22,19 +25,36 @@ public class Stage implements Drawable {
 	public Stage() {
 		chunks = new HashMap<>();
 		entities = new HashMap<>();
-		loadedChunks = new LinkedList<>();
+		loadedChunks = new HashSet<>();
 	}
 	
 	public void tick() {
 		if(Main.getGame() != null && Main.getGame().isInitialized() && camera != null) {
+			updateChunks();
+
 			for (Entity e: entities.values())
 				e.tick();
-			
-//			for(Chunk c : chunks.values()) {
-//				if(c.isHovered())
-//					c.incAll();
-//			}
 		}
+	}
+	
+	private void updateChunks() {
+		for(Point p : loadedChunks) {
+			if(p.distance(camera) > loadedRadius)
+				chunks.get(p).load(false);
+		}
+		HashSet<Point> nextLoaded = new HashSet<>();
+		for(int x = camera.getX()-loadedRadius; x < camera.getX()+loadedRadius; x++) {
+			for(int y = camera.getY()-loadedRadius; y < camera.getY()+loadedRadius; y++) {
+				Point p = new Point(x,y);
+				if(p.distance(camera) <= loadedRadius && !loadedChunks.contains(p)) {
+					nextLoaded.add(p);
+					if(!chunks.containsKey(p))
+						chunks.put(p, new Chunk(p.getX(), p.getY(),this));
+					chunks.get(p).load(true);
+				}
+			}
+		}
+		loadedChunks = nextLoaded;
 	}
 	
 	@Override
@@ -54,8 +74,11 @@ public class Stage implements Drawable {
 	//		Clock.schedule(true, chunkDrawings);
 	//		Point cameraChunk = getChunkPosFromWorldPos(camera.x, camera.y);
 	//		Set<Chunk> drawChunks = Pointmask.getFromPointMap(chunks, cameraChunk.getX(), cameraChunk.getY(), 3);
-			for(Chunk c : chunks.values()) {
-				c.draw(g);
+			
+			for(Point p : loadedChunks) {
+				Chunk c = chunks.get(p);
+				if(c != null)
+					c.draw(g);
 			}
 			
 			for(Integer e : entities.keySet())

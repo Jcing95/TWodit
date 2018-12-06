@@ -13,7 +13,7 @@ public class Mouse {
 	public static int x, y;
 	public static int lx, ly;
 
-	public static final Object BLOCKER = new Object();
+	public static final Object BLOCKER = Mouse.class;
 
 	public static HashMap<Integer, Boolean> keys = new HashMap<>();
 
@@ -169,8 +169,10 @@ public class Mouse {
 	}
 
 	public static void removeBinding(Binding b) {
-		for(LinkedList<Binding> list : bindings.values()) {
-			list.remove(b);
+		synchronized(BLOCKER) {
+			for(LinkedList<Binding> list : bindings.values()) {
+				list.remove(b);
+			}
 		}
 	}
 

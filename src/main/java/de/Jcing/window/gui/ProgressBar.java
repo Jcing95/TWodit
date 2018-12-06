@@ -27,4 +27,12 @@ public class ProgressBar extends Component {
 		g.fillRect(0, 0, (int)(bounds.getWidth()/100.0*percentage), bounds.getHeight());
 	}
 
+	public void setFront(Color color) {
+		front = color;
+	}
+	
+	public void setBack(Color color) {
+		back = color;
+	}
+
 }

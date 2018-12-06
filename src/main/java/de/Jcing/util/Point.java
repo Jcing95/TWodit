@@ -16,6 +16,12 @@ public class Point implements Cloneable {
 	public int getY() {
 		return (int) y;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		Point p = (Point)o;
+		return p.x == x && p.y == y; 
+	}
 
 	@Override
 	public int hashCode() {
@@ -38,6 +44,10 @@ public class Point implements Cloneable {
 
 	public Point translate(Point translation) {
 		return new Point(x + translation.x, y + translation.y);
+	}
+
+	public double distance(Point point) {
+		return Math.sqrt((x*point.x)*(x*point.x)+(y*point.y)*(y*point.y));
 	}
 
 }
