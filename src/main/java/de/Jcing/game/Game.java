@@ -35,7 +35,7 @@ public class Game {
 	
 	private Point camera;
 
-	private Entity testEntity;
+	private Entity player;
 	
 	private boolean isIntitialized;
 	
@@ -116,18 +116,18 @@ public class Game {
 		System.out.println("added progress bar..");
 
 		
-		testEntity = new Entity(mainStage,0,0,20,20);
-		testEntity.setAnim(Entity.ON_LEFT, new Image("gfx/player/left"));
-		testEntity.setAnim(Entity.ON_RIGHT, new Image("gfx/player/right"));
-		testEntity.setAnim(Entity.ON_UP, new Image("gfx/player/up"));
-		testEntity.setAnim(Entity.ON_DOWN, new Image("gfx/player/down"));
-		mainStage.addEntity(testEntity);
+		player = new Entity(mainStage,0,0,20,20);
+		player.setAnim(Entity.ON_LEFT, new Image("gfx/player/left"));
+		player.setAnim(Entity.ON_RIGHT, new Image("gfx/player/right"));
+		player.setAnim(Entity.ON_UP, new Image("gfx/player/up"));
+		player.setAnim(Entity.ON_DOWN, new Image("gfx/player/down"));
+		mainStage.addEntity(player);
 		System.out.println("added entity..");
 
 		
-		testEntity.getOntick().add(() -> {
-			camera.x = testEntity.getX()*Tile.TILE_PIXELS/Main.getWindow().getPixelSize() - Window.PIXEL_WIDTH/2;
-			camera.y = testEntity.getY()*Tile.TILE_PIXELS/Main.getWindow().getPixelSize() - Window.PIXEL_HEIGHT/2;
+		player.getOntick().add(() -> {
+			camera.x = player.getX()*Tile.TILE_PIXELS/Main.getWindow().getPixelSize() - Window.PIXEL_WIDTH/2;
+			camera.y = player.getY()*Tile.TILE_PIXELS/Main.getWindow().getPixelSize() - Window.PIXEL_HEIGHT/2;
 		});
 		KeyBoard.listenOnToggle(KeyEvent.VK_P);
 		gameScene.start();
@@ -176,7 +176,7 @@ public class Game {
 			x *= 2;
 			y *= 2;
 		}
-		testEntity.accelerate(x, y);
+		player.accelerate(x, y);
 		
 		mainStage.tick();
 	}
@@ -187,6 +187,10 @@ public class Game {
 	
 	public void pause(boolean pause) {
 		gameScene.pause(pause);
+	}
+	
+	public Entity getPlayer() {
+		return player;
 	}
 	
 }

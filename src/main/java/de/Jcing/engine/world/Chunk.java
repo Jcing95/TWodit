@@ -37,7 +37,7 @@ public class Chunk implements Drawable{
 	}
 
 	public void load(boolean loaded) {
-		System.out.println(loaded ? "loading" : "unloading" + " chunk " + new Point(x,y));
+		System.out.println((loaded ? "loading" : "unloading") + " chunk " + new Point(x,y));
 		this.loaded = loaded;
 	}
 	
@@ -85,10 +85,12 @@ public class Chunk implements Drawable{
 
 	@Override
 	public void draw(Graphics2D g) {
-		if(isOnScreen())
-		for (int xt = 0; xt < tiles.length; xt++) {
-			for (int yt = 0; yt < tiles.length; yt++) {
-				tiles[xt][yt].draw(g);
+		if(isOnScreen()) {
+//			System.out.print("D");
+			for (int xt = 0; xt < tiles.length; xt++) {
+				for (int yt = 0; yt < tiles.length; yt++) {
+					tiles[xt][yt].draw(g);
+				}
 			}
 		}
 	}

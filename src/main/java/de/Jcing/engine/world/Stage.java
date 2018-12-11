@@ -1,6 +1,7 @@
 package de.Jcing.engine.world;
 
 import java.awt.Graphics2D;
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -38,25 +39,32 @@ public class Stage implements Drawable {
 	}
 	
 	private void updateChunks() {
+		HashSet<Point> toRemove = new HashSet<>();
 		for(Point p : loadedChunks) {
-			if(p.distance(camera) > loadedRadius)
+			if(p.distance(getChunkPosFromWorldPos(Main.getGame().getPlayer().getX(),Main.getGame().getPlayer().getY())) > loadedRadius) {
 				chunks.get(p).load(false);
+				toRemove.add(p);
+			}
 		}
-		HashSet<Point> nextLoaded = new HashSet<>();
+		for(Point p : toRemove)
+			loadedChunks.remove(p);
 		for(int x = camera.getX()-loadedRadius; x < camera.getX()+loadedRadius; x++) {
 			for(int y = camera.getY()-loadedRadius; y < camera.getY()+loadedRadius; y++) {
-				Point p = new Point(x,y);
-				if(p.distance(camera) <= loadedRadius && !loadedChunks.contains(p)) {
-					nextLoaded.add(p);
+				Point p = getChunkPosFromWorldPos(camera).translate(new Point(x,y));
+				if(p.distance(getChunkPosFromWorldPos(camera)) <= loadedRadius && !loadedChunks.contains(p)) {
+					loadedChunks.add(p);
 					if(!chunks.containsKey(p))
 						chunks.put(p, new Chunk(p.getX(), p.getY(),this));
 					chunks.get(p).load(true);
 				}
 			}
 		}
-		loadedChunks = nextLoaded;
 	}
 	
+	private Point getChunkPosFromWorldPos(Point point) {
+		return getChunkPosFromWorldPos(point.x, point.y);
+	}
+
 	@Override
 	public void draw(Graphics2D g) {
 		if(Main.getGame() != null && Main.getGame().isInitialized()) {
@@ -74,11 +82,15 @@ public class Stage implements Drawable {
 	//		Clock.schedule(true, chunkDrawings);
 	//		Point cameraChunk = getChunkPosFromWorldPos(camera.x, camera.y);
 	//		Set<Chunk> drawChunks = Pointmask.getFromPointMap(chunks, cameraChunk.getX(), cameraChunk.getY(), 3);
-			
+			try {
 			for(Point p : loadedChunks) {
+//				System.out.println("d: " + p);
 				Chunk c = chunks.get(p);
 				if(c != null)
 					c.draw(g);
+			}
+			} catch(ConcurrentModificationException e) {
+				System.err.println("mod!");
 			}
 			
 			for(Integer e : entities.keySet())
