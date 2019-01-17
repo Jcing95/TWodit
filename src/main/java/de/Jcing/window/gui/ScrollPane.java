@@ -5,14 +5,14 @@ import java.awt.Graphics2D;
 
 import de.Jcing.engine.io.Binding;
 import de.Jcing.engine.io.Mouse;
-import de.Jcing.tasks.Scene;
+import de.Jcing.tasks.Topic;
 import de.Jcing.tasks.Task;
 import de.Jcing.util.Point;
 import de.Jcing.util.Util;
 
 public class ScrollPane extends Container {
 	
-	private static final Scene SCROLLSCENE = new Scene("Scrollpanes");
+	private static final Topic SCROLLSCENE = new Topic("Scrollpanes");
 	
 	protected Canvas canvas;
 	

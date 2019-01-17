@@ -10,8 +10,8 @@ public class Clock {
 
 //	private static LinkedList<Task> tasks = new LinkedList<>();
 	
-	private static HashMap<Integer,Scene> scenes = new HashMap<>();
-	private static Scene mainScene = new Scene("global");
+	private static HashMap<Integer,Topic> scenes = new HashMap<>();
+	private static Topic mainScene = new Topic("global");
 	
 	private static long startMillis = System.currentTimeMillis();
 	public static final int NUM_CORES = Runtime.getRuntime().availableProcessors()/2;
@@ -38,18 +38,18 @@ public class Clock {
 		mainScene.finish();
 	}
 	
-	protected static void addScene(Scene s) {
+	protected static void addScene(Topic s) {
 		scenes.put(s.hashCode(), s);
 	}
 	
 	public static void startAll() {
-		for(Scene s : scenes.values()) {
+		for(Topic s : scenes.values()) {
 			s.start();
 		}
 	}
 	
 	public static void stopAll() {
-		for(Scene s : scenes.values()) {
+		for(Topic s : scenes.values()) {
 			s.finish();
 		}
 	}
@@ -157,7 +157,7 @@ public class Clock {
 
 	}
 
-	public static Scene getGlobalScene() {
+	public static Topic getGlobalScene() {
 		return mainScene;
 	}
 

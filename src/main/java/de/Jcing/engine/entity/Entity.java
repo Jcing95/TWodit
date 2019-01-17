@@ -6,6 +6,9 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.Jcing.Main;
 import de.Jcing.engine.graphics.Drawable;
 import de.Jcing.engine.world.Stage;
@@ -15,6 +18,8 @@ import de.Jcing.image.Image;
 import de.Jcing.util.Point;
 
 public class Entity implements Drawable {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(Entity.class);
 
 	public static final float DRAG = 0.75f;
 	public static final float MAXSPEED = 10;
@@ -35,7 +40,7 @@ public class Entity implements Drawable {
 	/**
 	 * world position in Tiles.
 	 */
-	protected double x, y;
+	protected Point position;
 
 	protected int w, h;
 
@@ -47,19 +52,22 @@ public class Entity implements Drawable {
 
 	protected LinkedList<Point> tileOccupationMask;
 	
+	protected HashSet<Tile> occupied;
+	
 	protected LinkedList<Runnable> onTick;
 	private double nextX;
 	private double nextY;
 
 	public Entity(Stage stage, double x, double y, int w, int h) {
 		this.stage = stage;
-		this.x = x;
-		this.y = y;
+		position = new Point(x,y);
 		this.w = w;
 		this.h = h;
 		onTick = new LinkedList<>();
 		tileOccupationMask = createOccupationMask(Tile.TILE_PIXELS);
 		sprite = new HashMap<>();
+		LOG.debug("creating entity at: " +  x + "|" + y + " w/ " + w + "*" + h + "px");
+		
 	}
 
 	private LinkedList<Point> createOccupationMask(int MAXDELTA) {
@@ -91,48 +99,48 @@ public class Entity implements Drawable {
 	
 	
 	public void tick() {
-		nextX = x + speedX;
-		nextY = y + speedY;
+		nextX = position.x + speedX;
+		nextY = position.y + speedY;
 		
-		Set<Tile> nextOccupiedTiles = checkTileOccupation(nextX, nextY);
+//		Set<Tile> nextOccupiedTiles = checkTileOccupation(nextX, nextY);
+//		
+//		boolean positiveX = speedX > 0;
+//		boolean positiveY = speedY > 0;
 		
-		boolean positiveX = speedX > 0;
-		boolean positiveY = speedY > 0;
+//		for(Tile t: nextOccupiedTiles) {
+//			
+//			if(t!= null && t.hasCollision()) {
+//				if(positiveX) {
+//					
+//				}
+//				if(positiveY) {
+//					
+//				}
+//			}
+//		}
 		
-		for(Tile t: nextOccupiedTiles) {
-			
-			if(t!= null && t.hasCollision()) {
-				if(positiveX) {
-					
-				}
-				if(positiveY) {
-					
-				}
-			}
-		}
-		
-		boolean collided = checkCollision(nextOccupiedTiles) || checkCollision(occupiedTiles);
-		
-		if (collided) {
-			correctMovement(nextOccupiedTiles);
-		}
+//		boolean collided = checkCollision(nextOccupiedTiles) || checkCollision(occupiedTiles);
+//		
+//		if (collided) {
+//			correctMovement(nextOccupiedTiles);
+//		}
 
-		if (occupiedTiles != null) {
-			for (Tile t : occupiedTiles) {
-				if (!nextOccupiedTiles.contains(t))
-					t.leave(this);
-			}
-			
-			for (Tile t : nextOccupiedTiles) {
-				if (!occupiedTiles.contains(t))
-					t.enter(this);
-			}
-		}
+//		if (occupiedTiles != null) {
+//			for (Tile t : occupiedTiles) {
+//				if (!nextOccupiedTiles.contains(t))
+//					t.leave(this);
+//			}
+//			
+//			for (Tile t : nextOccupiedTiles) {
+//				if (!occupiedTiles.contains(t))
+//					t.enter(this);
+//			}
+//		}
 		
-		occupiedTiles = nextOccupiedTiles;
+//		occupiedTiles = nextOccupiedTiles;
 		
-		x = nextX;
-		y = nextY;
+		position.x = nextX;
+		position.y = nextY;
 		
 		speedX *= DRAG;
 		speedY *= DRAG;
@@ -174,20 +182,21 @@ public class Entity implements Drawable {
 	
 	private boolean checkCollision(Set<Tile> nextOccupiedTiles) {
 		// TODO implement collision check and movement correction
-		HashSet<Tile> collisionTiles = new HashSet<>();
-		HashSet<Entity> collidedEntities = new HashSet<>();
-		for(Tile t: nextOccupiedTiles) {
-			if(t == null)
-				continue;
-			if(t.hasCollision())
-				collisionTiles.add(t);
-			for(Entity e : t.getEntities()) {
-				if(e.getFootPrint().collides(getFootPrint()))
-					collidedEntities.add(e);
-			}
-		}
-		
-		return collisionTiles.isEmpty() && collidedEntities.isEmpty();
+//		HashSet<Tile> collisionTiles = new HashSet<>();
+//		HashSet<Entity> collidedEntities = new HashSet<>();
+//		for(Tile t: nextOccupiedTiles) {
+//			if(t == null)
+//				continue;
+//			if(t.hasCollision())
+//				collisionTiles.add(t);
+//			for(Entity e : t.getEntities()) {
+//				if(e.getFootPrint().collides(getFootPrint()))
+//					collidedEntities.add(e);
+//			}
+//		}
+//		
+//		return collisionTiles.isEmpty() && collidedEntities.isEmpty();
+		return false;
 	}
 	
 	public Rectangle getFootPrint() {
@@ -206,8 +215,8 @@ public class Entity implements Drawable {
 	@Override
 	public void draw(Graphics2D g) {
 //		g.setColor(Color.CYAN);
-		int xPos = (int)(x*Tile.TILE_PIXELS/Main.getWindow().getPixelSize()-(Main.getGame().getCamera().x)); // (int) (stage.getCamera().x * Main.getWindow().getPixelSize() - x*Tile.TILE_PIXELS);
-		int yPos = (int)(y*Tile.TILE_PIXELS/Main.getWindow().getPixelSize()-(Main.getGame().getCamera().y)); // (int) (stage.getCamera().y * Main.getWindow().getPixelSize() - y*Tile.TILE_PIXELS);
+		int xPos = (int)(position.x*Tile.TILE_PIXELS/Main.getWindow().getPixelSize()-(Main.getGame().getCamera().x)); // (int) (stage.getCamera().x * Main.getWindow().getPixelSize() - x*Tile.TILE_PIXELS);
+		int yPos = (int)(position.y*Tile.TILE_PIXELS/Main.getWindow().getPixelSize()-(Main.getGame().getCamera().y)); // (int) (stage.getCamera().y * Main.getWindow().getPixelSize() - y*Tile.TILE_PIXELS);
 //		
 //		// System.out.println(" cam: " + xPos + " | " + yPos);
 //
@@ -224,11 +233,15 @@ public class Entity implements Drawable {
 	}
 
 	public double getX() {
-		return x;
+		return position.x;
 	}
 	
 	public double getY() {
-		return y;
+		return position.y;
+	}
+	
+	public Point getPosition() {
+		return position;
 	}
 
 	public void setAnim(int on, Image img) {

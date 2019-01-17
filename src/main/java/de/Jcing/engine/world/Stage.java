@@ -4,16 +4,23 @@ import java.awt.Graphics2D;
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.Jcing.Main;
 import de.Jcing.engine.entity.Entity;
 import de.Jcing.engine.graphics.Drawable;
+import de.Jcing.tasks.Task;
 import de.Jcing.util.Point;
+import de.Jcing.window.Window;
 
 public class Stage implements Drawable {
 	
-	public static int loadedRadius = 5;
+	private static final Logger LOG = LoggerFactory.getLogger(Stage.class);
+	
+	public static int loadingWidth = 5;
+	public static int loadingHeight = 5;
 
 	private HashMap<Point, Chunk> chunks;
 	private HashMap<Integer, Entity> entities;
@@ -21,48 +28,65 @@ public class Stage implements Drawable {
 	
 	private Point camera;
 	
+	private Point loadingAnchor;
+	
 	//TODO: implement and manage tilesets!
 	
 	public Stage() {
 		chunks = new HashMap<>();
 		entities = new HashMap<>();
 		loadedChunks = new HashSet<>();
+		loadingAnchor = new Point(0,0);
+	}
+	
+	public void setLoadingAnchor(Point pt) {
+		this.loadingAnchor = pt;
 	}
 	
 	public void tick() {
-		if(Main.getGame() != null && Main.getGame().isInitialized() && camera != null) {
-			updateChunks();
-
-			for (Entity e: entities.values())
-				e.tick();
-		}
+		
+		updateChunks();
+		for (Entity e: entities.values())
+			e.tick();
+				
 	}
 	
 	private void updateChunks() {
-		HashSet<Point> toRemove = new HashSet<>();
-		for(Point p : loadedChunks) {
-			if(p.distance(getChunkPosFromWorldPos(Main.getGame().getPlayer().getX(),Main.getGame().getPlayer().getY())) > loadedRadius) {
-				chunks.get(p).load(false);
-				toRemove.add(p);
+		final HashSet<Point> nextLoaded = new HashSet<>();
+		for(int x = loadingAnchor.getXi()-loadingWidth; x < loadingAnchor.getXi()+loadingWidth;x++) {
+			for(int y = loadingAnchor.getYi()-loadingHeight; y < loadingAnchor.getYi()+loadingHeight;y++) {
+				nextLoaded.add(new Point(x,y));
+				load(new Point(x,y));
 			}
 		}
-		for(Point p : toRemove)
-			loadedChunks.remove(p);
-		for(int x = camera.getX()-loadedRadius; x < camera.getX()+loadedRadius; x++) {
-			for(int y = camera.getY()-loadedRadius; y < camera.getY()+loadedRadius; y++) {
-				Point p = getChunkPosFromWorldPos(camera).translate(new Point(x,y));
-				if(p.distance(getChunkPosFromWorldPos(camera)) <= loadedRadius && !loadedChunks.contains(p)) {
-					loadedChunks.add(p);
-					if(!chunks.containsKey(p))
-						chunks.put(p, new Chunk(p.getX(), p.getY(),this));
-					chunks.get(p).load(true);
-				}
+		
+		final HashSet<Point> currentLoaded = loadedChunks;
+		loadedChunks = nextLoaded;
+		
+		for(Point p: currentLoaded) {
+			if(!nextLoaded.contains(p)) {
+				unload(p);
 			}
+		}
+
+		
+	}
+	
+	private void unload(Point p) {
+		if(chunks.containsKey(p)) {
+			chunks.get(p).load(false);
+			chunks.remove(p);
 		}
 	}
 	
-	private Point getChunkPosFromWorldPos(Point point) {
-		return getChunkPosFromWorldPos(point.x, point.y);
+	private void load(Point p) {
+		if(!chunks.containsKey(p))
+			chunks.put(p, new Chunk(p.getXi(), p.getYi(),this));
+		chunks.get(p).load(true);
+	}
+	
+	private Point getChunkPosFromPixel(Point point) {
+		return getChunkPosFromPixel(point.x, point.y);
 	}
 
 	@Override
@@ -120,6 +144,19 @@ public class Stage implements Drawable {
 		if(y < 0)
 			yChunk --;
 		return new Point(xChunk,yChunk);
+	}
+	
+	public Point getChunkPosFromPixel(double x, double y) {
+		
+		int xChunk = (int) ((x + getCamera().x - Window.PIXEL_WIDTH/2) / Main.getWindow().getPixelSize() / Chunk.TILE_COUNT * Tile.TILE_PIXELS);
+		int yChunk = (int) ((y + getCamera().y - Window.PIXEL_HEIGHT/2) / Main.getWindow().getPixelSize() / Chunk.TILE_COUNT * Tile.TILE_PIXELS);
+		
+		//System.out.println("x: " + x + " y: " + y + " c: " + xChunk + "|" + yChunk + " @cam " + getCamera() + " pxs: " + Main.getWindow().getPixelSize() + " TC: " + Chunk.TILE_COUNT + " TP: " + Tile.TILE_PIXELS);
+		if(x + getCamera().x < 0)
+			xChunk--;
+		if(y + getCamera().y < 0)
+			yChunk--;
+		return new Point(xChunk, yChunk);
 	}
 	
 	public Tile getTileAtWorldPos(double x, double y) {

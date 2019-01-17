@@ -3,18 +3,23 @@ package de.Jcing.game;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import de.Jcing.Main;
 import de.Jcing.engine.entity.Entity;
 import de.Jcing.engine.io.KeyBoard;
 import de.Jcing.engine.io.Mouse;
+import de.Jcing.engine.world.Chunk;
 import de.Jcing.engine.world.Stage;
 import de.Jcing.engine.world.Tile;
 import de.Jcing.game.menu.PauseMenu;
 import de.Jcing.image.Image;
 import de.Jcing.tasks.Clock;
-import de.Jcing.tasks.Scene;
 import de.Jcing.tasks.Task;
+import de.Jcing.tasks.Topic;
 import de.Jcing.util.Point;
+import de.Jcing.util.PointMorph;
 import de.Jcing.util.Strings;
 import de.Jcing.window.Window;
 import de.Jcing.window.gui.Button;
@@ -28,6 +33,7 @@ import de.Jcing.window.gui.utillities.Group;
 
 public class Game {
 	
+	private static final Logger LOG = LoggerFactory.getLogger(Game.class);
 	
 	public static final int RADIUS = 7;
 	
@@ -39,19 +45,19 @@ public class Game {
 	
 	private boolean isIntitialized;
 	
-	private Scene gameScene;
+	private Topic gameTopic;
 	
 	private boolean pauseToggled;
 	private boolean faded;
 	
 	private Fader guiFader;
-
 	
+	private PointMorph playerPosMorph;
 		
 	public Game () {
 		isIntitialized = false;
-		gameScene = new Scene("main game");
-		System.out.println("initializing..");
+		gameTopic = new Topic("main game");
+		LOG.info("initializing..");
 		mainStage = new Stage();
 		camera = new Point(0,0);
 //		for (int i = -RADIUS; i < RADIUS; i++) {
@@ -63,15 +69,15 @@ public class Game {
 
 		
 		Main.getWindow().addDrawable(mainStage);
-		System.out.println("started drawing..");
+		LOG.info("started drawing..");
 
 		Label fpsLabel = new Label("FPS: ", 5, 5);
 		fpsLabel.getOnClick().add(() -> System.exit(0));
 		fpsLabel.listenOnMouse();
 		Main.getWindow().gui().addComponent(fpsLabel);
-		new Task(() -> tick(), "GameTick",60,gameScene);
-		new Task(() -> fpsLabel.setText("FPS: " + Main.getWindow().getFPS()),"FPS updater",1, gameScene);
-		System.out.println("added FPS label..");
+		new Task(() -> tick(), "GameTick",60,gameTopic);
+		new Task(() -> fpsLabel.setText("FPS: " + Main.getWindow().getFPS()),"FPS updater",1, gameTopic);
+		LOG.info("added FPS label..");
 
 		Button exit = new Button("X", Window.PIXEL_WIDTH-20, 0);
 		exit.setTextColor(new Color(200,200,200));
@@ -97,7 +103,7 @@ public class Game {
 		Main.getWindow().gui().addComponent(portrait);
 		guiFader = new Fader(new Group(Main.getWindow().gui()), Fader.ALPHA, 0, 1);
 		
-		System.out.println("added exit button..");
+		LOG.info("added exit button..");
 
 		ProgressBar health = new ProgressBar(Window.PIXEL_WIDTH-55,Window.PIXEL_HEIGHT-35,50,5);
 		ProgressBar stamina = new ProgressBar(Window.PIXEL_WIDTH-55,Window.PIXEL_HEIGHT-25,50,5);
@@ -109,11 +115,11 @@ public class Game {
 			health.setPercentage(Clock.millis()/20%100);
 			stamina.setPercentage(Clock.millis()/10%100);
 			hunger.setPercentage(Clock.millis()/30%100);
-			},"ProgressBar updater",60,gameScene);
+			},"ProgressBar updater",60,gameTopic);
 		Main.getWindow().gui().addComponent(health);
 		Main.getWindow().gui().addComponent(stamina);
 		Main.getWindow().gui().addComponent(hunger);
-		System.out.println("added progress bar..");
+		LOG.info("added progress bar..");
 
 		
 		player = new Entity(mainStage,0,0,20,20);
@@ -122,7 +128,21 @@ public class Game {
 		player.setAnim(Entity.ON_UP, new Image("gfx/player/up"));
 		player.setAnim(Entity.ON_DOWN, new Image("gfx/player/down"));
 		mainStage.addEntity(player);
-		System.out.println("added entity..");
+		playerPosMorph = new PointMorph(player.getPosition()) {
+
+			@Override
+			public double morphX(double x) {
+				return x/Chunk.TILE_COUNT;
+			}
+
+			@Override
+			public double morphY(double y) {
+				return y/Chunk.TILE_COUNT;
+			}
+			
+		};
+		mainStage.setLoadingAnchor(playerPosMorph);
+		LOG.info("added entity..");
 
 		
 		player.getOntick().add(() -> {
@@ -130,7 +150,7 @@ public class Game {
 			camera.y = player.getY()*Tile.TILE_PIXELS/Main.getWindow().getPixelSize() - Window.PIXEL_HEIGHT/2;
 		});
 		KeyBoard.listenOnToggle(KeyEvent.VK_P);
-		gameScene.start();
+		gameTopic.start();
 		Mouse.addBinding(Mouse.ONCLICK, (i) -> mainStage.handleClick());
 		isIntitialized = true;
 	}
@@ -139,7 +159,8 @@ public class Game {
 		return camera;
 	}
 	
-	public void tick() {
+	public void tick() {	
+		
 		float x = 0;
 		float y = 0;
 		if(KeyBoard.isPressed(KeyEvent.VK_W) || KeyBoard.isPressed(KeyEvent.VK_UP))
@@ -186,7 +207,7 @@ public class Game {
 	}
 	
 	public void pause(boolean pause) {
-		gameScene.pause(pause);
+		gameTopic.pause(pause);
 	}
 	
 	public Entity getPlayer() {

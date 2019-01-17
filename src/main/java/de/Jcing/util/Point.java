@@ -9,11 +9,19 @@ public class Point implements Cloneable {
 		this.y = y;
 	}
 
-	public int getX() {
+	public double getXd() {
+		return x;
+	}
+
+	public double getYd() {
+		return y;
+	}
+	
+	public int getXi() {
 		return (int) x;
 	}
 
-	public int getY() {
+	public int getYi() {
 		return (int) y;
 	}
 	

@@ -2,7 +2,7 @@ package de.Jcing.tasks;
 
 import java.util.HashSet;
 
-public class Scene {
+public class Topic {
 	
 	private String name;
 	
@@ -10,13 +10,13 @@ public class Scene {
 	
 	private HashSet<Task> tasks;
 	
-	public Scene(String name) {
+	public Topic(String name) {
 		this.name = name;
 		tasks = new HashSet<>();
 		Clock.addScene(this);
 	}
 	
-	public Scene start() {
+	public Topic start() {
 		for (Task t: tasks) {
 			t.start();
 		}
@@ -36,7 +36,7 @@ public class Scene {
 		}
 	}
 	
-	public Scene addTask(Task t) {
+	public Topic addTask(Task t) {
 		tasks.add(t);
 		return this;
 	}

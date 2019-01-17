@@ -1,13 +1,13 @@
 package de.Jcing.window.gui.animator;
 
-import de.Jcing.tasks.Scene;
+import de.Jcing.tasks.Topic;
 import de.Jcing.tasks.Task;
 import de.Jcing.window.gui.Component;
 import de.Jcing.window.gui.utillities.Group;
 
 public abstract class Animator {
 	
-	public static final Scene ANIMATOR_SCENE = new Scene("Animator");
+	public static final Topic ANIMATOR_SCENE = new Topic("Animator");
 	public static final double TPS = 30;
 	
 	protected Group toAnimate;	

@@ -33,11 +33,11 @@ public class Chunk implements Drawable{
 	}
 	
 	public Chunk(Point p, Stage stage) {
-		this(p.getX(), p.getY(), stage);
+		this(p.getXi(), p.getYi(), stage);
 	}
 
 	public void load(boolean loaded) {
-		System.out.println((loaded ? "loading" : "unloading") + " chunk " + new Point(x,y));
+		//System.out.println((loaded ? "loading" : "unloading") + " chunk " + new Point(x,y));
 		this.loaded = loaded;
 	}
 	

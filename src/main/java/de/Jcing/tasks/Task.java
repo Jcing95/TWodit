@@ -1,4 +1,4 @@
-package de.Jcing.tasks;
+ package de.Jcing.tasks;
 
 public class Task {
 	
@@ -20,7 +20,7 @@ public class Task {
 		this(routine, name,  tps, Clock.getGlobalScene());
 	}
 	
-	public Task(Runnable routine, String name, double tps, Scene scene) {
+	public Task(Runnable routine, String name, double tps, Topic scene) {
 		this.name = name;
 		this.TPS = tps;
 		waitingTime = 1000.0 / tps;
