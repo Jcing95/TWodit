@@ -5,11 +5,14 @@ import java.awt.event.KeyEvent;
 import de.Jcing.engine.io.KeyBoard;
 import de.Jcing.game.Game;
 import de.Jcing.game.menu.MainMenu;
-import de.Jcing.tasks.Clock;
 import de.Jcing.window.Window;
+import de.jcing.utillities.log.Log;
+import de.jcing.utillities.task.Topic;
 
 public class Main {
-
+	
+	private static final Log log = new Log(Main.class);
+	
 	private static Game game;
 	
 	private static Window window;
@@ -30,18 +33,17 @@ public class Main {
 				finish();
 		});
 		
-		//Start the main scene.
-		Clock.start();
-		
+		//Start the main scene.		
 	}
 	
 	public static void initGame() {
 		game = new Game();
 	}
 	
-	public static void finish() {	
+	public static void finish() {
+		log.info("exit now");
 		//stop all scenes
-		Clock.stopAll();
+		Topic.stopAll();
 		//finish window to dispose swing frame
 		window.finish();
 	}

@@ -5,19 +5,16 @@ import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import de.Jcing.Main;
 import de.Jcing.engine.entity.Entity;
 import de.Jcing.engine.graphics.Drawable;
-import de.Jcing.tasks.Task;
 import de.Jcing.util.Point;
 import de.Jcing.window.Window;
+import de.jcing.utillities.log.Log;
 
 public class Stage implements Drawable {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(Stage.class);
+	private static final Log LOG = new Log(Stage.class);
 	
 	public static int loadingWidth = 5;
 	public static int loadingHeight = 5;

@@ -4,8 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 
 import de.Jcing.Main;
-import de.Jcing.tasks.Clock;
 import de.Jcing.util.Util;
+import de.jcing.utillities.task.Task;
 
 public class Image {
 	
@@ -74,7 +74,7 @@ public class Image {
 	}
 
 	public Frame get() {
-		return get((int)(Clock.millis() / frameTime));
+		return get((int)(Task.millis() / frameTime));
 	}
 	
 	public Frame get(int index) {

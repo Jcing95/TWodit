@@ -2,9 +2,7 @@ package de.Jcing.game;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.time.Clock;
 
 import de.Jcing.Main;
 import de.Jcing.engine.entity.Entity;
@@ -15,9 +13,6 @@ import de.Jcing.engine.world.Stage;
 import de.Jcing.engine.world.Tile;
 import de.Jcing.game.menu.PauseMenu;
 import de.Jcing.image.Image;
-import de.Jcing.tasks.Clock;
-import de.Jcing.tasks.Task;
-import de.Jcing.tasks.Topic;
 import de.Jcing.util.Point;
 import de.Jcing.util.PointMorph;
 import de.Jcing.util.Strings;
@@ -30,10 +25,13 @@ import de.Jcing.window.gui.ScrollPane;
 import de.Jcing.window.gui.TextPane;
 import de.Jcing.window.gui.animator.Fader;
 import de.Jcing.window.gui.utillities.Group;
+import de.jcing.utillities.log.Log;
+import de.jcing.utillities.task.Task;
+import de.jcing.utillities.task.Topic;
 
 public class Game {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(Game.class);
+	private static final Log LOG = new Log(Game.class);
 	
 	public static final int RADIUS = 7;
 	
@@ -53,6 +51,7 @@ public class Game {
 	private Fader guiFader;
 	
 	private PointMorph playerPosMorph;
+	Task tick;
 		
 	public Game () {
 		isIntitialized = false;
@@ -75,8 +74,8 @@ public class Game {
 		fpsLabel.getOnClick().add(() -> System.exit(0));
 		fpsLabel.listenOnMouse();
 		Main.getWindow().gui().addComponent(fpsLabel);
-		new Task(() -> tick(), "GameTick",60,gameTopic);
-		new Task(() -> fpsLabel.setText("FPS: " + Main.getWindow().getFPS()),"FPS updater",1, gameTopic);
+		tick = new Task(() -> tick()).name("GameTick").repeat(Task.perSecond(60)).inTopic(gameTopic);
+		new Task(() -> fpsLabel.setText("FPS: " + Main.getWindow().getFPS() + " - TPS: " + tick.getTps())).name("FPS updater").repeat(Task.perSecond(1)).inTopic(gameTopic);
 		LOG.info("added FPS label..");
 
 		Button exit = new Button("X", Window.PIXEL_WIDTH-20, 0);
@@ -112,10 +111,10 @@ public class Game {
 		stamina.setFront(Color.green.darker());
 		hunger.setFront(Color.orange.darker().darker());
 		new Task(()-> {
-			health.setPercentage(Clock.millis()/20%100);
-			stamina.setPercentage(Clock.millis()/10%100);
-			hunger.setPercentage(Clock.millis()/30%100);
-			},"ProgressBar updater",60,gameTopic);
+			health.setPercentage(Task.millis()/20%100);
+			stamina.setPercentage(Task.millis()/10%100);
+			hunger.setPercentage(Task.millis()/30%100);
+			}).name("ProgressBar updater").repeat(Task.perSecond(60)).inTopic(gameTopic);
 		Main.getWindow().gui().addComponent(health);
 		Main.getWindow().gui().addComponent(stamina);
 		Main.getWindow().gui().addComponent(hunger);

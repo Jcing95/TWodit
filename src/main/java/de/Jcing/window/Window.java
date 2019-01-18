@@ -19,11 +19,10 @@ import de.Jcing.engine.graphics.Drawable;
 import de.Jcing.engine.io.KeyBoard;
 import de.Jcing.engine.io.Mouse;
 import de.Jcing.engine.world.Tile;
-import de.Jcing.tasks.Clock;
-import de.Jcing.tasks.Task;
 import de.Jcing.util.Point;
 import de.Jcing.util.Util;
 import de.Jcing.window.gui.Container;
+import de.jcing.utillities.task.Task;
 
 public class Window {
 	
@@ -91,8 +90,8 @@ public class Window {
 		fontMetrics = initGraphics.getFontMetrics();
 		
 		//primary render task. max 144 times/second
-		task = new Task(() -> render(),"draw window", 144);
-		Clock.doLater(() -> gui.listenOnMouse(),100);
+		task = new Task(() -> render()).name("draw window").repeat(Task.perSecond(144)).start();
+		new Task(() -> gui.listenOnMouse()).delay(100).start();
 	}
 	
 	public void render() {
@@ -188,7 +187,7 @@ public class Window {
 	}
 	
 	public int getFPS() {
-		return task.tps;
+		return task.getTps();
 	}
 
 	public Point getMouseOnCanvas() {

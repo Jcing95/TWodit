@@ -6,9 +6,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import de.Jcing.Main;
 import de.Jcing.engine.graphics.Drawable;
 import de.Jcing.engine.world.Stage;
@@ -16,10 +13,11 @@ import de.Jcing.engine.world.Tile;
 import de.Jcing.geometry.Rectangle;
 import de.Jcing.image.Image;
 import de.Jcing.util.Point;
+import de.jcing.utillities.log.Log;
 
 public class Entity implements Drawable {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(Entity.class);
+	private static final Log LOG = new Log(Entity.class);
 
 	public static final float DRAG = 0.75f;
 	public static final float MAXSPEED = 10;

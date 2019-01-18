@@ -1,13 +1,13 @@
 package de.Jcing.window.gui.animator;
 
-import de.Jcing.tasks.Topic;
-import de.Jcing.tasks.Task;
 import de.Jcing.window.gui.Component;
 import de.Jcing.window.gui.utillities.Group;
+import de.jcing.utillities.task.Task;
+import de.jcing.utillities.task.Topic;
 
 public abstract class Animator {
 	
-	public static final Topic ANIMATOR_SCENE = new Topic("Animator");
+	public static final Topic ANIMATOR_TOPIC = new Topic("Animator");
 	public static final double TPS = 30;
 	
 	protected Group toAnimate;	
@@ -29,7 +29,7 @@ public abstract class Animator {
 		}else {
 			stop();
 		}
-	}, "Animating", TPS, ANIMATOR_SCENE);
+	}).name("Animating").repeat(Task.perSecond(TPS)).inTopic(ANIMATOR_TOPIC);
 	
 	
 	public Animator start(long duration) {
@@ -40,7 +40,7 @@ public abstract class Animator {
 	}
 	
 	public void stop() {
-		animate.finish();
+		animate.stop();
 	}
 	
 	

@@ -5,14 +5,14 @@ import java.awt.Graphics2D;
 
 import de.Jcing.engine.io.Binding;
 import de.Jcing.engine.io.Mouse;
-import de.Jcing.tasks.Topic;
-import de.Jcing.tasks.Task;
 import de.Jcing.util.Point;
 import de.Jcing.util.Util;
+import de.jcing.utillities.task.Task;
+import de.jcing.utillities.task.Topic;
 
 public class ScrollPane extends Container {
 	
-	private static final Topic SCROLLSCENE = new Topic("Scrollpanes");
+	private static final Topic SCROLLTOPIC = new Topic("Scrollpanes");
 	
 	protected Canvas canvas;
 	
@@ -80,11 +80,11 @@ public class ScrollPane extends Container {
 			yVel = 0;
 			finishScrolling();
 		}
-	}, "Scrolling", 30, SCROLLSCENE);
+	}).name("Scrolling").repeat(Task.perSecond(30)).inTopic(SCROLLTOPIC);
 
 	
 	protected void finishScrolling() {
-		scrollJob.finish();
+		scrollJob.stop();
 	}
 	
 	public ScrollPane setBackground(Color color) {
