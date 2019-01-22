@@ -1,33 +1,33 @@
-package de.Jcing.game;
+package de.jcing.game;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.time.Clock;
 
-import de.Jcing.Main;
-import de.Jcing.engine.entity.Entity;
-import de.Jcing.engine.io.KeyBoard;
-import de.Jcing.engine.io.Mouse;
-import de.Jcing.engine.world.Chunk;
-import de.Jcing.engine.world.Stage;
-import de.Jcing.engine.world.Tile;
-import de.Jcing.game.menu.PauseMenu;
-import de.Jcing.image.Image;
-import de.Jcing.util.Point;
-import de.Jcing.util.PointMorph;
-import de.Jcing.util.Strings;
-import de.Jcing.window.Window;
-import de.Jcing.window.gui.Button;
-import de.Jcing.window.gui.ImageView;
-import de.Jcing.window.gui.Label;
-import de.Jcing.window.gui.ProgressBar;
-import de.Jcing.window.gui.ScrollPane;
-import de.Jcing.window.gui.TextPane;
-import de.Jcing.window.gui.animator.Fader;
-import de.Jcing.window.gui.utillities.Group;
+import de.jcing.Main;
+import de.jcing.engine.entity.Entity;
+import de.jcing.engine.io.KeyBoard;
+import de.jcing.engine.io.Mouse;
+import de.jcing.engine.world.Chunk;
+import de.jcing.engine.world.Stage;
+import de.jcing.engine.world.Tile;
+import de.jcing.game.menu.PauseMenu;
+import de.jcing.image.Image;
+import de.jcing.util.Point;
+import de.jcing.util.PointMorph;
+import de.jcing.util.Strings;
 import de.jcing.utillities.log.Log;
 import de.jcing.utillities.task.Task;
 import de.jcing.utillities.task.Topic;
+import de.jcing.window.Window;
+import de.jcing.window.gui.Button;
+import de.jcing.window.gui.ImageView;
+import de.jcing.window.gui.Label;
+import de.jcing.window.gui.ProgressBar;
+import de.jcing.window.gui.ScrollPane;
+import de.jcing.window.gui.TextPane;
+import de.jcing.window.gui.animator.Fader;
+import de.jcing.window.gui.utillities.Group;
 
 public class Game {
 	

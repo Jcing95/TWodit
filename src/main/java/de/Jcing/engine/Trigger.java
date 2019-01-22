@@ -1,4 +1,4 @@
-package de.Jcing.engine;
+package de.jcing.engine;
 
 public class Trigger {
 

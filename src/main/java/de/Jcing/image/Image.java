@@ -1,10 +1,10 @@
-package de.Jcing.image;
+package de.jcing.image;
 
 import java.io.File;
 import java.util.ArrayList;
 
-import de.Jcing.Main;
-import de.Jcing.util.Util;
+import de.jcing.Main;
+import de.jcing.util.Util;
 import de.jcing.utillities.task.Task;
 
 public class Image {

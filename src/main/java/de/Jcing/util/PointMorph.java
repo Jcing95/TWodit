@@ -1,4 +1,4 @@
-package de.Jcing.util;
+package de.jcing.util;
 
 public abstract class PointMorph extends Point {
 	

@@ -1,7 +1,7 @@
-package de.Jcing.window.gui.animator;
+package de.jcing.window.gui.animator;
 
-import de.Jcing.window.gui.Component;
-import de.Jcing.window.gui.utillities.Group;
+import de.jcing.window.gui.Component;
+import de.jcing.window.gui.utillities.Group;
 
 public class Mover extends Animator {
 

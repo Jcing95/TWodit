@@ -1,4 +1,4 @@
-package de.Jcing.engine.entity;
+package de.jcing.engine.entity;
 
 import java.awt.Graphics2D;
 import java.util.HashMap;
@@ -6,13 +6,13 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
-import de.Jcing.Main;
-import de.Jcing.engine.graphics.Drawable;
-import de.Jcing.engine.world.Stage;
-import de.Jcing.engine.world.Tile;
-import de.Jcing.geometry.Rectangle;
-import de.Jcing.image.Image;
-import de.Jcing.util.Point;
+import de.jcing.Main;
+import de.jcing.engine.graphics.Drawable;
+import de.jcing.engine.world.Stage;
+import de.jcing.engine.world.Tile;
+import de.jcing.geometry.Rectangle;
+import de.jcing.image.Image;
+import de.jcing.util.Point;
 import de.jcing.utillities.log.Log;
 
 public class Entity implements Drawable {

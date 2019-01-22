@@ -1,8 +1,8 @@
-package de.Jcing.window.gui.utillities;
+package de.jcing.window.gui.utillities;
 
 import java.util.HashSet;
 
-import de.Jcing.window.gui.Component;
+import de.jcing.window.gui.Component;
 
 public class Group {
 	

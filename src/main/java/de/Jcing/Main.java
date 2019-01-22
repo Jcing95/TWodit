@@ -1,13 +1,13 @@
-package de.Jcing;
+package de.jcing;
 
 import java.awt.event.KeyEvent;
 
-import de.Jcing.engine.io.KeyBoard;
-import de.Jcing.game.Game;
-import de.Jcing.game.menu.MainMenu;
-import de.Jcing.window.Window;
+import de.jcing.engine.io.KeyBoard;
+import de.jcing.game.Game;
+import de.jcing.game.menu.MainMenu;
 import de.jcing.utillities.log.Log;
 import de.jcing.utillities.task.Topic;
+import de.jcing.window.Window;
 
 public class Main {
 	

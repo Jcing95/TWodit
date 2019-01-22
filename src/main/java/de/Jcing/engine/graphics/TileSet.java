@@ -1,8 +1,8 @@
-package de.Jcing.engine.graphics;
+package de.jcing.engine.graphics;
 
 import java.util.ArrayList;
 
-import de.Jcing.image.Image;
+import de.jcing.image.Image;
 
 public class TileSet {
 	

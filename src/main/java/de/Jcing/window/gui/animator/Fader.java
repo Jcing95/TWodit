@@ -1,13 +1,13 @@
-package de.Jcing.window.gui.animator;
+package de.jcing.window.gui.animator;
 
 import java.awt.AlphaComposite;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 
-import de.Jcing.util.Util;
-import de.Jcing.window.gui.Component;
-import de.Jcing.window.gui.Component.DrawHook;
-import de.Jcing.window.gui.utillities.Group;
+import de.jcing.util.Util;
+import de.jcing.window.gui.Component;
+import de.jcing.window.gui.Component.DrawHook;
+import de.jcing.window.gui.utillities.Group;
 
 public class Fader extends Animator {
 

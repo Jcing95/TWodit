@@ -1,4 +1,4 @@
-package de.Jcing.util;
+package de.jcing.util;
 
 import java.util.HashSet;
 import java.util.Map;

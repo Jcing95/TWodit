@@ -1,9 +1,9 @@
-package de.Jcing.window.gui;
+package de.jcing.window.gui;
 
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
-import de.Jcing.image.Frame;
+import de.jcing.image.Frame;
 
 public class ImageView extends Canvas {
 	

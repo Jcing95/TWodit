@@ -1,4 +1,4 @@
-package de.Jcing.window.gui;
+package de.jcing.window.gui;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;

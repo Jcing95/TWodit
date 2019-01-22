@@ -1,10 +1,10 @@
-package de.Jcing.window.gui;
+package de.jcing.window.gui;
 
 import java.awt.Graphics2D;
 import java.util.LinkedList;
 
-import de.Jcing.engine.io.Mouse;
-import de.Jcing.util.Point;
+import de.jcing.engine.io.Mouse;
+import de.jcing.util.Point;
 
 public class Container extends Component {
 	

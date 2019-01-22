@@ -1,6 +1,6 @@
-package de.Jcing.geometry;
+package de.jcing.geometry;
 
-import de.Jcing.util.Point;
+import de.jcing.util.Point;
 
 public class Rectangle {
 	

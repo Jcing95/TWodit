@@ -1,4 +1,4 @@
-package de.Jcing.engine.io;
+package de.jcing.engine.io;
 
 public interface Binding {
 	

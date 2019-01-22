@@ -1,15 +1,15 @@
-package de.Jcing.game.menu;
+package de.jcing.game.menu;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 
-import de.Jcing.Main;
-import de.Jcing.engine.io.KeyBoard;
-import de.Jcing.window.Window;
-import de.Jcing.window.gui.Button;
-import de.Jcing.window.gui.Canvas;
-import de.Jcing.window.gui.Container;
+import de.jcing.Main;
+import de.jcing.engine.io.KeyBoard;
+import de.jcing.window.Window;
+import de.jcing.window.gui.Button;
+import de.jcing.window.gui.Canvas;
+import de.jcing.window.gui.Container;
 
 public class PauseMenu extends Container{
 	

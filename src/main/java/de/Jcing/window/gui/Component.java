@@ -1,15 +1,15 @@
-package de.Jcing.window.gui;
+package de.jcing.window.gui;
 
 import java.awt.Graphics2D;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-import de.Jcing.Main;
-import de.Jcing.engine.graphics.Drawable;
-import de.Jcing.engine.io.Binding;
-import de.Jcing.engine.io.Mouse;
-import de.Jcing.geometry.Rectangle;
-import de.Jcing.util.Point;
+import de.jcing.Main;
+import de.jcing.engine.graphics.Drawable;
+import de.jcing.engine.io.Binding;
+import de.jcing.engine.io.Mouse;
+import de.jcing.geometry.Rectangle;
+import de.jcing.util.Point;
 
 public abstract class Component implements Drawable {
 	

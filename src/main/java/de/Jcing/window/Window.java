@@ -1,4 +1,4 @@
-package de.Jcing.window;
+package de.jcing.window;
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -14,15 +14,15 @@ import java.util.LinkedList;
 
 import javax.swing.JFrame;
 
-import de.Jcing.Main;
-import de.Jcing.engine.graphics.Drawable;
-import de.Jcing.engine.io.KeyBoard;
-import de.Jcing.engine.io.Mouse;
-import de.Jcing.engine.world.Tile;
-import de.Jcing.util.Point;
-import de.Jcing.util.Util;
-import de.Jcing.window.gui.Container;
+import de.jcing.Main;
+import de.jcing.engine.graphics.Drawable;
+import de.jcing.engine.io.KeyBoard;
+import de.jcing.engine.io.Mouse;
+import de.jcing.engine.world.Tile;
+import de.jcing.util.Point;
+import de.jcing.util.Util;
 import de.jcing.utillities.task.Task;
+import de.jcing.window.gui.Container;
 
 public class Window {
 	

@@ -1,9 +1,9 @@
-package de.Jcing.window.gui;
+package de.jcing.window.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import de.Jcing.Main;
+import de.jcing.Main;
 
 public class Label extends Component {
 	

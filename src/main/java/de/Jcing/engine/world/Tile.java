@@ -1,4 +1,4 @@
-package de.Jcing.engine.world;
+package de.jcing.engine.world;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -7,13 +7,13 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
-import de.Jcing.Main;
-import de.Jcing.engine.Trigger;
-import de.Jcing.engine.entity.Entity;
-import de.Jcing.engine.graphics.Drawable;
-import de.Jcing.geometry.Rectangle;
-import de.Jcing.image.Image;
-import de.Jcing.util.Util;
+import de.jcing.Main;
+import de.jcing.engine.Trigger;
+import de.jcing.engine.entity.Entity;
+import de.jcing.engine.graphics.Drawable;
+import de.jcing.geometry.Rectangle;
+import de.jcing.image.Image;
+import de.jcing.util.Util;
 
 public class Tile implements Drawable {
 	

@@ -1,16 +1,16 @@
-package de.Jcing.engine.world;
+package de.jcing.engine.world;
 
 import java.awt.Graphics2D;
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import de.Jcing.Main;
-import de.Jcing.engine.entity.Entity;
-import de.Jcing.engine.graphics.Drawable;
-import de.Jcing.util.Point;
-import de.Jcing.window.Window;
+import de.jcing.Main;
+import de.jcing.engine.entity.Entity;
+import de.jcing.engine.graphics.Drawable;
+import de.jcing.util.Point;
 import de.jcing.utillities.log.Log;
+import de.jcing.window.Window;
 
 public class Stage implements Drawable {
 	

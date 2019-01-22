@@ -1,12 +1,12 @@
-package de.Jcing.window.gui;
+package de.jcing.window.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import de.Jcing.engine.io.Binding;
-import de.Jcing.engine.io.Mouse;
-import de.Jcing.util.Point;
-import de.Jcing.util.Util;
+import de.jcing.engine.io.Binding;
+import de.jcing.engine.io.Mouse;
+import de.jcing.util.Point;
+import de.jcing.util.Util;
 import de.jcing.utillities.task.Task;
 import de.jcing.utillities.task.Topic;
 

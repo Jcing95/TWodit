@@ -1,12 +1,12 @@
-package de.Jcing.window.gui;
+package de.jcing.window.gui;
 
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.util.List;
 
-import de.Jcing.Main;
-import de.Jcing.window.gui.utillities.StringUtils;
+import de.jcing.Main;
+import de.jcing.window.gui.utillities.StringUtils;
 
 public class TextPane extends Label {
 	

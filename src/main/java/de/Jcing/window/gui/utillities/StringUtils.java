@@ -1,4 +1,4 @@
-package de.Jcing.window.gui.utillities;
+package de.jcing.window.gui.utillities;
 
 import java.awt.FontMetrics;
 import java.util.ArrayList;
