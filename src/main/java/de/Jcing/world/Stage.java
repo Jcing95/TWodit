@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream:src/main/java/de/Jcing/engine/world/Stage.java
-package de.jcing.engine.world;
-=======
 package de.jcing.world;
->>>>>>> Stashed changes:src/main/java/de/Jcing/world/Stage.java
 
 import java.awt.Graphics2D;
 import java.util.ConcurrentModificationException;
@@ -14,10 +10,7 @@ import de.jcing.engine.entity.Entity;
 import de.jcing.engine.graphics.Drawable;
 import de.jcing.util.Point;
 import de.jcing.utillities.log.Log;
-<<<<<<< Updated upstream:src/main/java/de/Jcing/engine/world/Stage.java
-=======
 import de.jcing.utillities.task.Task;
->>>>>>> Stashed changes:src/main/java/de/Jcing/world/Stage.java
 import de.jcing.window.Window;
 
 public class Stage implements Drawable {

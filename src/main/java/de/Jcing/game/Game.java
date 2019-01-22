@@ -7,17 +7,8 @@ import de.jcing.Main;
 import de.jcing.engine.entity.Entity;
 import de.jcing.engine.io.KeyBoard;
 import de.jcing.engine.io.Mouse;
-<<<<<<< Updated upstream
-import de.jcing.engine.world.Chunk;
-import de.jcing.engine.world.Stage;
-import de.jcing.engine.world.Tile;
 import de.jcing.game.menu.PauseMenu;
 import de.jcing.image.Image;
-import de.jcing.util.Point;
-=======
-import de.jcing.game.menu.PauseMenu;
-import de.jcing.image.Image;
->>>>>>> Stashed changes
 import de.jcing.util.PointMorph;
 import de.jcing.util.Strings;
 import de.jcing.utillities.log.Log;
@@ -32,12 +23,9 @@ import de.jcing.window.gui.ScrollPane;
 import de.jcing.window.gui.TextPane;
 import de.jcing.window.gui.animator.Fader;
 import de.jcing.window.gui.utillities.Group;
-<<<<<<< Updated upstream
-=======
 import de.jcing.world.Chunk;
 import de.jcing.world.Stage;
 import de.jcing.world.Tile;
->>>>>>> Stashed changes
 
 public class Game {
 	

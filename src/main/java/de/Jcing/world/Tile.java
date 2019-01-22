@@ -1,8 +1,5 @@
-<<<<<<< Updated upstream:src/main/java/de/Jcing/engine/world/Tile.java
-package de.jcing.engine.world;
-=======
+
 package de.jcing.world;
->>>>>>> Stashed changes:src/main/java/de/Jcing/world/Tile.java
 
 import java.awt.Color;
 import java.awt.Graphics2D;

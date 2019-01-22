@@ -1,9 +1,5 @@
-<<<<<<< Updated upstream:src/main/java/de/Jcing/engine/world/Chunk.java
-package de.jcing.engine.world;
-=======
 
 package de.jcing.world;
->>>>>>> Stashed changes:src/main/java/de/Jcing/world/Chunk.java
 
 import java.awt.Graphics2D;
 

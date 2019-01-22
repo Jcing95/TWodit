@@ -18,18 +18,11 @@ import de.jcing.Main;
 import de.jcing.engine.graphics.Drawable;
 import de.jcing.engine.io.KeyBoard;
 import de.jcing.engine.io.Mouse;
-<<<<<<< Updated upstream
-import de.jcing.engine.world.Tile;
-=======
->>>>>>> Stashed changes
 import de.jcing.util.Point;
 import de.jcing.util.Util;
 import de.jcing.utillities.task.Task;
 import de.jcing.window.gui.Container;
-<<<<<<< Updated upstream
-=======
 import de.jcing.world.Tile;
->>>>>>> Stashed changes
 
 public class Window {
 	
