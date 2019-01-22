@@ -14,6 +14,7 @@ public class MainMenu extends Container {
 	
 	public MainMenu() {
 		super(0,0,Window.PIXEL_WIDTH,Window.PIXEL_HEIGHT);
+		
 		play = new Button("   P L A Y   ",Window.PIXEL_WIDTH/2,Window.PIXEL_HEIGHT/3);
 		exit = new Button("   E X I T   ",Window.PIXEL_WIDTH/2,Window.PIXEL_HEIGHT/3*2);
 		play.centerHorizontal(true);

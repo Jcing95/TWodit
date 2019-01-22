@@ -2,7 +2,7 @@ package de.jcing.util;
 
 public class Point implements Cloneable {
 
-	public double x, y;
+	protected double x, y;
 
 	public Point(double x, double y) {
 		this.x = x;
@@ -23,6 +23,14 @@ public class Point implements Cloneable {
 
 	public int getYi() {
 		return (int) y;
+	}
+	
+	public void setX(double x) {
+		this.x = x;
+	}
+	
+	public void setY(double y) {
+		this.y = y;
 	}
 	
 	@Override
@@ -55,7 +63,15 @@ public class Point implements Cloneable {
 	}
 
 	public double distance(Point point) {
-		return Math.sqrt((x*point.x)*(x*point.x)+(y*point.y)*(y*point.y));
+		return Math.sqrt((getXd()-point.getXd())*(getXd()-point.getXd())+(getYd()-point.getYd())*(getYd()-point.getYd()));
+	}
+	
+	public double yDist(Point p) {
+		return Math.abs(p.getYd() - getYd());
+	}
+	
+	public double xDist(Point p) {
+		return Math.abs(p.getXd() - getXd());
 	}
 
 }

@@ -1,4 +1,9 @@
+<<<<<<< Updated upstream:src/main/java/de/Jcing/engine/world/Chunk.java
 package de.jcing.engine.world;
+=======
+
+package de.jcing.world;
+>>>>>>> Stashed changes:src/main/java/de/Jcing/world/Chunk.java
 
 import java.awt.Graphics2D;
 
@@ -10,7 +15,7 @@ import de.jcing.window.Window;
 
 public class Chunk implements Drawable{
 	
-	public static final int TILE_COUNT = 4;
+	public static final int TILE_COUNT = 8;
 	
 	private Tile[][] tiles;
 	private int x, y;
@@ -68,11 +73,11 @@ public class Chunk implements Drawable{
 	}
 	
 	public int getXOffset() {
-		return (int) (x * TILE_COUNT * Tile.TILE_PIXELS - stage.getCamera().x*Main.getWindow().getPixelSize());
+		return (int) (x * TILE_COUNT * Tile.TILE_PIXELS - stage.getFixedCamera().getXd()*Main.getWindow().getPixelSize());
 	}
 	
 	public int getYOffset() {
-		return (int) (y * TILE_COUNT * Tile.TILE_PIXELS - stage.getCamera().y*Main.getWindow().getPixelSize());
+		return (int) (y * TILE_COUNT * Tile.TILE_PIXELS - stage.getFixedCamera().getYd()*Main.getWindow().getPixelSize());
 	}
 	
 	public int getX() {
@@ -86,7 +91,6 @@ public class Chunk implements Drawable{
 	@Override
 	public void draw(Graphics2D g) {
 		if(isOnScreen()) {
-//			System.out.print("D");
 			for (int xt = 0; xt < tiles.length; xt++) {
 				for (int yt = 0; yt < tiles.length; yt++) {
 					tiles[xt][yt].draw(g);

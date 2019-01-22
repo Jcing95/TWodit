@@ -2,18 +2,22 @@ package de.jcing.game;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
-import java.time.Clock;
 
 import de.jcing.Main;
 import de.jcing.engine.entity.Entity;
 import de.jcing.engine.io.KeyBoard;
 import de.jcing.engine.io.Mouse;
+<<<<<<< Updated upstream
 import de.jcing.engine.world.Chunk;
 import de.jcing.engine.world.Stage;
 import de.jcing.engine.world.Tile;
 import de.jcing.game.menu.PauseMenu;
 import de.jcing.image.Image;
 import de.jcing.util.Point;
+=======
+import de.jcing.game.menu.PauseMenu;
+import de.jcing.image.Image;
+>>>>>>> Stashed changes
 import de.jcing.util.PointMorph;
 import de.jcing.util.Strings;
 import de.jcing.utillities.log.Log;
@@ -28,6 +32,12 @@ import de.jcing.window.gui.ScrollPane;
 import de.jcing.window.gui.TextPane;
 import de.jcing.window.gui.animator.Fader;
 import de.jcing.window.gui.utillities.Group;
+<<<<<<< Updated upstream
+=======
+import de.jcing.world.Chunk;
+import de.jcing.world.Stage;
+import de.jcing.world.Tile;
+>>>>>>> Stashed changes
 
 public class Game {
 	
@@ -37,8 +47,6 @@ public class Game {
 	
 	private Stage mainStage;
 	
-	private Point camera;
-
 	private Entity player;
 	
 	private boolean isIntitialized;
@@ -51,6 +59,8 @@ public class Game {
 	private Fader guiFader;
 	
 	private PointMorph playerPosMorph;
+	private PointMorph cameraMorph;
+	
 	Task tick;
 		
 	public Game () {
@@ -58,7 +68,6 @@ public class Game {
 		gameTopic = new Topic("main game");
 		LOG.info("initializing..");
 		mainStage = new Stage();
-		camera = new Point(0,0);
 //		for (int i = -RADIUS; i < RADIUS; i++) {
 //			for (int j = -RADIUS; j < RADIUS; j++) {
 //				mainStage.addChunk(i, j);
@@ -71,11 +80,13 @@ public class Game {
 		LOG.info("started drawing..");
 
 		Label fpsLabel = new Label("FPS: ", 5, 5);
-		fpsLabel.getOnClick().add(() -> System.exit(0));
-		fpsLabel.listenOnMouse();
+		Label posLabel = new Label("",5,15);
 		Main.getWindow().gui().addComponent(fpsLabel);
+		Main.getWindow().gui().addComponent(posLabel);
 		tick = new Task(() -> tick()).name("GameTick").repeat(Task.perSecond(60)).inTopic(gameTopic);
 		new Task(() -> fpsLabel.setText("FPS: " + Main.getWindow().getFPS() + " - TPS: " + tick.getTps())).name("FPS updater").repeat(Task.perSecond(1)).inTopic(gameTopic);
+		new Task(() -> posLabel.setText("X: " + player.getX() + ", Y: " + player.getY())).name("Player Pos updater").repeat(Task.perSecond(10)).inTopic(gameTopic);
+
 		LOG.info("added FPS label..");
 
 		Button exit = new Button("X", Window.PIXEL_WIDTH-20, 0);
@@ -142,20 +153,25 @@ public class Game {
 		};
 		mainStage.setLoadingAnchor(playerPosMorph);
 		LOG.info("added entity..");
+		cameraMorph = new PointMorph(player.getPosition()) {
 
+			@Override
+			public double morphX(double x) {
+				return x*Tile.TILE_PIXELS/Main.getWindow().getPixelSize() - Window.PIXEL_WIDTH/2;
+			}
+
+			@Override
+			public double morphY(double y) {
+				return y*Tile.TILE_PIXELS/Main.getWindow().getPixelSize() - Window.PIXEL_HEIGHT/2;
+			}
+			
+		};
+		mainStage.setCamera(cameraMorph);		
 		
-		player.getOntick().add(() -> {
-			camera.x = player.getX()*Tile.TILE_PIXELS/Main.getWindow().getPixelSize() - Window.PIXEL_WIDTH/2;
-			camera.y = player.getY()*Tile.TILE_PIXELS/Main.getWindow().getPixelSize() - Window.PIXEL_HEIGHT/2;
-		});
 		KeyBoard.listenOnToggle(KeyEvent.VK_P);
 		gameTopic.start();
 		Mouse.addBinding(Mouse.ONCLICK, (i) -> mainStage.handleClick());
 		isIntitialized = true;
-	}
-	
-	public Point getCamera() {
-		return camera;
 	}
 	
 	public void tick() {	

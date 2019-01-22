@@ -19,7 +19,7 @@ public class Rectangle {
 	}
 
 	public boolean contains(Point point) {
-		return point.x > x && point.x < x+width && point.y > y && point.y < y + height;	
+		return point.getXd() > x && point.getXd() < x+width && point.getYd() > y && point.getYd() < y + height;	
 	}
 	
 	public int compare(Rectangle r) {

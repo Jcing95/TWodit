@@ -40,10 +40,9 @@ public abstract class PointMorph extends Point {
 		return p.hashCode();
 	}
 
-	@Deprecated
 	@Override
 	public Point clone() {
-		return p.clone();
+		return new Point(getXd(), getYd());
 	}
 
 	@Override

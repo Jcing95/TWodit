@@ -8,12 +8,12 @@ import java.util.Set;
 
 import de.jcing.Main;
 import de.jcing.engine.graphics.Drawable;
-import de.jcing.engine.world.Stage;
-import de.jcing.engine.world.Tile;
 import de.jcing.geometry.Rectangle;
 import de.jcing.image.Image;
 import de.jcing.util.Point;
 import de.jcing.utillities.log.Log;
+import de.jcing.world.Stage;
+import de.jcing.world.Tile;
 
 public class Entity implements Drawable {
 	
@@ -89,7 +89,7 @@ public class Entity implements Drawable {
 	protected Set<Tile> checkTileOccupation(double x, double y) {
 		HashSet<Tile> occupiedTiles = new HashSet<>();
 		for (Point pt : tileOccupationMask) {
-			occupiedTiles.add(stage.getTileAtWorldPos(pt.x + x, pt.y + y));
+			occupiedTiles.add(stage.getTileAtWorldPos(pt.getXd() + x, pt.getYd() + y));
 		}
 		return occupiedTiles;
 	}
@@ -97,8 +97,8 @@ public class Entity implements Drawable {
 	
 	
 	public void tick() {
-		nextX = position.x + speedX;
-		nextY = position.y + speedY;
+		nextX = position.getXd() + speedX;
+		nextY = position.getYd() + speedY;
 		
 //		Set<Tile> nextOccupiedTiles = checkTileOccupation(nextX, nextY);
 //		
@@ -137,8 +137,8 @@ public class Entity implements Drawable {
 		
 //		occupiedTiles = nextOccupiedTiles;
 		
-		position.x = nextX;
-		position.y = nextY;
+		position.setX(nextX);
+		position.setY(nextY);
 		
 		speedX *= DRAG;
 		speedY *= DRAG;
@@ -213,8 +213,8 @@ public class Entity implements Drawable {
 	@Override
 	public void draw(Graphics2D g) {
 //		g.setColor(Color.CYAN);
-		int xPos = (int)(position.x*Tile.TILE_PIXELS/Main.getWindow().getPixelSize()-(Main.getGame().getCamera().x)); // (int) (stage.getCamera().x * Main.getWindow().getPixelSize() - x*Tile.TILE_PIXELS);
-		int yPos = (int)(position.y*Tile.TILE_PIXELS/Main.getWindow().getPixelSize()-(Main.getGame().getCamera().y)); // (int) (stage.getCamera().y * Main.getWindow().getPixelSize() - y*Tile.TILE_PIXELS);
+		int xPos = (int)(position.getXd()*Tile.TILE_PIXELS/Main.getWindow().getPixelSize()-(stage.getFixedCamera().getXd())); // (int) (stage.getCamera().x * Main.getWindow().getPixelSize() - x*Tile.TILE_PIXELS);
+		int yPos = (int)(position.getYd()*Tile.TILE_PIXELS/Main.getWindow().getPixelSize()-(stage.getFixedCamera().getYd())); // (int) (stage.getCamera().y * Main.getWindow().getPixelSize() - y*Tile.TILE_PIXELS);
 //		
 //		// System.out.println(" cam: " + xPos + " | " + yPos);
 //
@@ -231,11 +231,11 @@ public class Entity implements Drawable {
 	}
 
 	public double getX() {
-		return position.x;
+		return position.getXd();
 	}
 	
 	public double getY() {
-		return position.y;
+		return position.getYd();
 	}
 	
 	public Point getPosition() {
