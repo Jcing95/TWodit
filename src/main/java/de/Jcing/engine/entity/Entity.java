@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import java.util.Set;
 
 import de.jcing.Main;
-import de.jcing.engine.graphics.Drawable;
 import de.jcing.geometry.Rectangle;
 import de.jcing.image.Image;
 import de.jcing.util.Point;
@@ -15,7 +14,7 @@ import de.jcing.utillities.log.Log;
 import de.jcing.world.Stage;
 import de.jcing.world.Tile;
 
-public class Entity implements Drawable {
+public class Entity {
 	
 	private static final Log LOG = new Log(Entity.class);
 
@@ -178,43 +177,21 @@ public class Entity implements Drawable {
 		accelerationY += y;
 	}
 	
-	private boolean checkCollision(Set<Tile> nextOccupiedTiles) {
-		// TODO implement collision check and movement correction
-//		HashSet<Tile> collisionTiles = new HashSet<>();
-//		HashSet<Entity> collidedEntities = new HashSet<>();
-//		for(Tile t: nextOccupiedTiles) {
-//			if(t == null)
-//				continue;
-//			if(t.hasCollision())
-//				collisionTiles.add(t);
-//			for(Entity e : t.getEntities()) {
-//				if(e.getFootPrint().collides(getFootPrint()))
-//					collidedEntities.add(e);
-//			}
-//		}
-//		
-//		return collisionTiles.isEmpty() && collidedEntities.isEmpty();
-		return false;
-	}
 	
 	public Rectangle getFootPrint() {
 		return collisionBox;
 	}
 
-	private void correctMovement(Set<Tile> nextOccupiedTiles) {
-
-	}
 
 	// TODO: implement Entity logics
 	// register at all tiles via Stage.getTileAtWorldPos()
 	// if Entity size > Tile Size go with EntitySize/TileSize steps
 	// for collision go in BiggerRect/smallerRect steps;
 
-	@Override
-	public void draw(Graphics2D g) {
+	public void draw(Graphics2D g, Point camera) {
 //		g.setColor(Color.CYAN);
-		int xPos = (int)(position.getXd()*Tile.TILE_PIXELS/Main.getWindow().getPixelSize()-(stage.getFixedCamera().getXd())); // (int) (stage.getCamera().x * Main.getWindow().getPixelSize() - x*Tile.TILE_PIXELS);
-		int yPos = (int)(position.getYd()*Tile.TILE_PIXELS/Main.getWindow().getPixelSize()-(stage.getFixedCamera().getYd())); // (int) (stage.getCamera().y * Main.getWindow().getPixelSize() - y*Tile.TILE_PIXELS);
+		int xPos = (int)(position.getXd()*Tile.TILE_PIXELS/Main.getWindow().getPixelWidth()-(camera.getXd())); // (int) (stage.getCamera().x * Main.getWindow().getPixelSize() - x*Tile.TILE_PIXELS);
+		int yPos = (int)(position.getYd()*Tile.TILE_PIXELS/Main.getWindow().getPixelHeight()-(camera.getYd())); // (int) (stage.getCamera().y * Main.getWindow().getPixelSize() - y*Tile.TILE_PIXELS);
 //		
 //		// System.out.println(" cam: " + xPos + " | " + yPos);
 //

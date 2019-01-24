@@ -145,12 +145,12 @@ public class Game {
 
 			@Override
 			public double morphX(double x) {
-				return x*Tile.TILE_PIXELS/Main.getWindow().getPixelSize() - Window.PIXEL_WIDTH/2;
+				return x*Tile.TILE_PIXELS/Main.getWindow().getPixelWidth() - Window.PIXEL_WIDTH/2;
 			}
 
 			@Override
 			public double morphY(double y) {
-				return y*Tile.TILE_PIXELS/Main.getWindow().getPixelSize() - Window.PIXEL_HEIGHT/2;
+				return y*Tile.TILE_PIXELS/Main.getWindow().getPixelHeight() - Window.PIXEL_HEIGHT/2;
 			}
 			
 		};

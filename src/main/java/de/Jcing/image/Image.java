@@ -9,6 +9,8 @@ import de.jcing.utillities.task.Task;
 
 public class Image {
 	
+	
+	//TODO: split overcomplicated Image into Image and subclasses fpr animation etc. Use Factory for creation!
 	private static final String INSTRUCTIONFILE = "image.j";
 	private static final float DEFAULTFPS = 10;
 	

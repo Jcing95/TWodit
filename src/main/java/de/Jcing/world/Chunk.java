@@ -4,12 +4,11 @@ package de.jcing.world;
 import java.awt.Graphics2D;
 
 import de.jcing.Main;
-import de.jcing.engine.graphics.Drawable;
 import de.jcing.engine.io.Mouse;
 import de.jcing.util.Point;
 import de.jcing.window.Window;
 
-public class Chunk implements Drawable{
+public class Chunk {
 	
 	public static final int TILE_COUNT = 8;
 	
@@ -19,7 +18,6 @@ public class Chunk implements Drawable{
 	private boolean loaded;
 	
 	private Stage stage;
-	
 	
 	public Chunk(int x, int y, Stage stage) {
 		this.x = x;
@@ -56,8 +54,8 @@ public class Chunk implements Drawable{
 	public boolean isHovered() {
 		int mx = Mouse.getX();
 		int my = Mouse.getY();
-		return getXOffset() * Main.getWindow().getPixelSize() <= mx && (getXOffset() + TILE_COUNT*Tile.TILE_PIXELS)* Main.getWindow().getPixelSize() >= mx &&
-				getYOffset() * Main.getWindow().getPixelSize() <= my && (getYOffset() + TILE_COUNT*Tile.TILE_PIXELS)* Main.getWindow().getPixelSize() >= my;
+		return getXOffset() * Main.getWindow().getPixelWidth() <= mx && (getXOffset() + TILE_COUNT*Tile.TILE_PIXELS)* Main.getWindow().getPixelWidth() >= mx &&
+				getYOffset() * Main.getWindow().getPixelHeight() <= my && (getYOffset() + TILE_COUNT*Tile.TILE_PIXELS)* Main.getWindow().getPixelHeight() >= my;
 	}
 	
 	public void incAll() {
@@ -69,11 +67,16 @@ public class Chunk implements Drawable{
 	}
 	
 	public int getXOffset() {
-		return (int) (x * TILE_COUNT * Tile.TILE_PIXELS - stage.getFixedCamera().getXd()*Main.getWindow().getPixelSize());
+		return (int) (x * TILE_COUNT * Tile.TILE_PIXELS - stage.getFixedCamera().getXd()*Main.getWindow().getPixelWidth());
 	}
 	
 	public int getYOffset() {
-		return (int) (y * TILE_COUNT * Tile.TILE_PIXELS - stage.getFixedCamera().getYd()*Main.getWindow().getPixelSize());
+		return (int) (y * TILE_COUNT * Tile.TILE_PIXELS - stage.getFixedCamera().getYd()*Main.getWindow().getPixelHeight());
+	}
+	
+	public Point computeOffset(Point camera) {
+		return new Point((x * TILE_COUNT * Tile.TILE_PIXELS - camera.getXd()*Main.getWindow().getPixelWidth()),
+				(y * TILE_COUNT * Tile.TILE_PIXELS - camera.getYd()*Main.getWindow().getPixelHeight()));
 	}
 	
 	public int getX() {
@@ -84,12 +87,12 @@ public class Chunk implements Drawable{
 		return y;
 	}
 
-	@Override
-	public void draw(Graphics2D g) {
+	public void draw(Graphics2D g, Point camera) {
+		Point offset = computeOffset(camera);
 		if(isOnScreen()) {
 			for (int xt = 0; xt < tiles.length; xt++) {
 				for (int yt = 0; yt < tiles.length; yt++) {
-					tiles[xt][yt].draw(g);
+					tiles[xt][yt].draw(g, offset);
 				}
 			}
 		}

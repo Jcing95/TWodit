@@ -31,8 +31,8 @@ public class Window {
 	public static final int DEFAULT_WIDTH = 1280;
 	public static final int DEFAULT_HEIGHT = 720;
 	
-	public static final int PIXEL_WIDTH = Tile.TILE_PIXELS * 16;
-	public static final int PIXEL_HEIGHT = Tile.TILE_PIXELS * 9;
+	public static final int PIXEL_WIDTH = Tile.TILE_PIXELS * 24;
+	public static final int PIXEL_HEIGHT = Tile.TILE_PIXELS * 16;
 	
 	public static final Color DEFAULT_BACKGROUND = new Color(5,20,2);
 	public static final Color DEFAULT_FOREGROUND = new Color(220,220,220);
@@ -178,8 +178,16 @@ public class Window {
 		
 	};
 
-	public double getPixelSize() {
+//	public double getPixelSize() {
+//		return (1.0*canvas.getWidth()-2*xOffset)/PIXEL_WIDTH;
+//	}
+	
+	public double getPixelWidth() {
 		return (1.0*canvas.getWidth()-2*xOffset)/PIXEL_WIDTH;
+	}
+	
+	public double getPixelHeight() {
+		return (1.0*canvas.getHeight()-2*yOffset)/PIXEL_HEIGHT;
 	}
 
 	public FontMetrics getFontMetrics() {
@@ -191,7 +199,7 @@ public class Window {
 	}
 
 	public Point getMouseOnCanvas() {
-		return new Point((Mouse.getX()-xOffset)/getPixelSize(), (Mouse.getY()-yOffset)/getPixelSize());
+		return new Point((Mouse.getX()-xOffset)/getPixelWidth(), (Mouse.getY()-yOffset)/getPixelHeight());
 	}
 	
 }

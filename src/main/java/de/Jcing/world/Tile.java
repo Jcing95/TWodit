@@ -11,12 +11,12 @@ import java.util.NoSuchElementException;
 import de.jcing.Main;
 import de.jcing.engine.Trigger;
 import de.jcing.engine.entity.Entity;
-import de.jcing.engine.graphics.Drawable;
 import de.jcing.geometry.Rectangle;
 import de.jcing.image.Image;
+import de.jcing.util.Point;
 import de.jcing.util.Util;
 
-public class Tile implements Drawable {
+public class Tile {
 	
 	public static final int TILE_PIXELS = 32;
 	
@@ -68,12 +68,8 @@ public class Tile implements Drawable {
 		}
 	}
 	
-	
-
-	@Override
-	public void draw(Graphics2D g) {
-		int xOff = getXOnScreen();
-		int yOff = getYOnScreen();
+	public void draw(Graphics2D g, Point offset) {
+		offset = computePositionOnScreen(offset);
 		Iterator<Integer> indexIter = textureIndices.iterator();
 		Iterator<Image> texIter = textures.iterator();
 		while(texIter.hasNext()) {
@@ -83,11 +79,11 @@ public class Tile implements Drawable {
 			} catch (NoSuchElementException e) {
 				index = Util.seededRandom(hashCode());
 			}
-			g.drawImage(texIter.next().get(index).get(), xOff, yOff, null);
+			g.drawImage(texIter.next().get(index).get(), offset.getXi(), offset.getYi(), null);
 		}
 		if(hovered()) {
 			g.setColor(new Color(255,255,255,55));
-			g.fillRect(xOff, yOff, TILE_PIXELS, TILE_PIXELS);
+			g.fillRect(offset.getXi(), offset.getYi(), TILE_PIXELS, TILE_PIXELS);
 		}
 	}
 	
@@ -95,6 +91,10 @@ public class Tile implements Drawable {
 		return new Rectangle(getXOnScreen(), getYOnScreen(),
 				TILE_PIXELS, TILE_PIXELS)
 				.contains(Main.getWindow().getMouseOnCanvas());
+	}
+	
+	public Point computePositionOnScreen(Point offset) {
+		return new Point(x * TILE_PIXELS + offset.getXd(),y * TILE_PIXELS + offset.getYd());
 	}
 	
 	public int getXOnScreen() {

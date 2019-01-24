@@ -30,8 +30,6 @@ public class Stage implements Drawable {
 
 	private Point lastAnchor;
 
-	private boolean block;
-
 	// TODO: implement and manage tilesets!
 
 	public Stage() {
@@ -52,6 +50,7 @@ public class Stage implements Drawable {
 	}
 
 	public void tick() {
+	
 		if (lastAnchor.xDist(loadingAnchor) > 4 || lastAnchor.yDist(loadingAnchor) > 2) {
 			lastAnchor = loadingAnchor.clone();
 			new Task(() -> updateChunks()).name("chunkloader").start();
@@ -93,29 +92,24 @@ public class Stage implements Drawable {
 		chunks.get(p).load(true);
 	}
 
-	private Point getChunkPosFromPixel(Point point) {
-		return getChunkPosFromPixel(point.getXd(), point.getYd());
-	}
-
 	@Override
 	public void draw(Graphics2D g) {
 		// update stage camera here for consistent offset during rendering.
 		fixedCamera = camera.clone();
-
 		if (Main.getGame() != null && Main.getGame().isInitialized()) {
 
 			try {
 				for (Point p : loadedChunks) {
 					Chunk c = chunks.get(p);
 					if (c != null)
-						c.draw(g);
+						c.draw(g, fixedCamera);
 				}
 			} catch (ConcurrentModificationException e) {
 				System.err.println("mod!");
 			}
 
 			for (Integer e : entities.keySet())
-				entities.get(e).draw(g);
+				entities.get(e).draw(g, fixedCamera);
 		}
 	}
 
@@ -145,9 +139,9 @@ public class Stage implements Drawable {
 
 	public Point getChunkPosFromPixel(double x, double y) {
 
-		int xChunk = (int) ((x + getFixedCamera().getXd() - Window.PIXEL_WIDTH / 2) / Main.getWindow().getPixelSize()
+		int xChunk = (int) ((x + getFixedCamera().getXd() - Window.PIXEL_WIDTH / 2) / Main.getWindow().getPixelWidth()
 				/ Chunk.TILE_COUNT * Tile.TILE_PIXELS);
-		int yChunk = (int) ((y + getFixedCamera().getYd() - Window.PIXEL_HEIGHT / 2) / Main.getWindow().getPixelSize()
+		int yChunk = (int) ((y + getFixedCamera().getYd() - Window.PIXEL_HEIGHT / 2) / Main.getWindow().getPixelHeight()
 				/ Chunk.TILE_COUNT * Tile.TILE_PIXELS);
 
 		// System.out.println("x: " + x + " y: " + y + " c: " + xChunk + "|" + yChunk +

@@ -83,7 +83,7 @@ public class KeyBoard {
 	public static void unlistenToggle(int keyCode) {
 		toggleable.add(keyCode);
 		if (keyToggled.containsKey(keyCode))
-			keyToggled.remove(keyToggled);
+			keyToggled.remove(keyCode);
 	}
 
 	public static void addBinding(int KEY, Binding binding) {
