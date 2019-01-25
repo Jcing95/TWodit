@@ -8,7 +8,7 @@ import de.jcing.engine.entity.Entity;
 import de.jcing.engine.io.KeyBoard;
 import de.jcing.engine.io.Mouse;
 import de.jcing.game.menu.PauseMenu;
-import de.jcing.image.Image;
+import de.jcing.image.old.Image;
 import de.jcing.util.PointMorph;
 import de.jcing.util.Strings;
 import de.jcing.utillities.log.Log;

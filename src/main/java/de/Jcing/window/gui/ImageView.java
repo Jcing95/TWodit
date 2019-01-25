@@ -3,7 +3,7 @@ package de.jcing.window.gui;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
-import de.jcing.image.Frame;
+import de.jcing.image.old.Frame;
 
 public class ImageView extends Canvas {
 	

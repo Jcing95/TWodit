@@ -1,4 +1,4 @@
-package de.jcing.image;
+package de.jcing.image.old;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
