@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWKeyCallbackI;
+
 public class KeyBoard {
 
 	public static final int ONTYPE = 10;
@@ -22,7 +25,9 @@ public class KeyBoard {
 
 	private static final HashSet<Integer> toggleable = new HashSet<>();
 	private static final HashMap<Integer, Boolean> keyToggled = new HashMap<>();
-
+	
+	private KeyBoard() {};
+	
 	private static final Binding pressKey = (key) -> {
 		pressedKeys.put(key, true);
 		if (toggleable.contains(key)) {
@@ -52,7 +57,8 @@ public class KeyBoard {
 	}
 
 	public static final KeyListener keyListener = new KeyListener() {
-
+		
+		
 		@Override
 		public void keyTyped(KeyEvent e) {
 			for (Binding b : onType)
@@ -69,6 +75,25 @@ public class KeyBoard {
 		public void keyReleased(KeyEvent e) {
 			for (Binding b : onRelease)
 				b.onAction(e.getKeyCode());
+		}
+	};
+	
+	public static final GLFWKeyCallbackI keyCallBack = new GLFWKeyCallbackI() {
+		
+		//TODO: implement key typed functionality for GLFW. somehow abstract callback and create IO submodule!
+		
+		@Override
+		public void invoke(long window, int key, int scancode, int action, int mods) {
+			switch(action) {
+			case GLFW.GLFW_RELEASE:
+				for (Binding b : onRelease)
+					b.onAction(key);
+				break;
+			case GLFW.GLFW_PRESS:
+				for (Binding b : onPress)
+					b.onAction(key);
+				break;
+			}
 		}
 	};
 	
@@ -90,7 +115,7 @@ public class KeyBoard {
 		if (bindings.containsKey(KEY))
 			bindings.get(KEY).add(binding);
 		else
-			throw new IllegalArgumentException("invalid binding key! " + bindings.keySet());
+			throw new IllegalArgumentException("invalid binding key! " + bindings.keySet().toString());
 	}
 
 	public static boolean isPressed(int keyCode) {

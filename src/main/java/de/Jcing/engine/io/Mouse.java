@@ -8,6 +8,9 @@ import java.awt.event.MouseWheelListener;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
+
 public class Mouse {
 
 	public static int x, y;
@@ -39,7 +42,9 @@ public class Mouse {
 	private static final LinkedList<Binding> onWheel = new LinkedList<>();
 
 	public static final int LEFT = MouseEvent.BUTTON1;
-//	public static final int RIGHT = MouseEvent.BUTTON2;
+	public static final int RIGHT = MouseEvent.BUTTON2;
+	
+	
 
 	private static final HashMap<Integer, LinkedList<Binding>> bindings = new HashMap<>();
 
@@ -56,6 +61,8 @@ public class Mouse {
 		}
 	}
 
+	private Mouse() {};
+	
 	public static final MouseListener mouseListener = new MouseListener() {
 
 		// TODO: check bindings for illegal modifications.
@@ -141,6 +148,22 @@ public class Mouse {
 		}
 		
 	};
+	
+	public static final GLFWMouseButtonCallbackI mouseButtonCallback = new GLFWMouseButtonCallbackI() {
+		@Override
+		public void invoke(long window, int button, int action, int mods) {
+			switch(action) {
+			case GLFW.GLFW_PRESS:
+				for (Binding b : onPress)
+					b.onAction(button);
+				break;
+			case GLFW.GLFW_RELEASE:
+				for (Binding b : onRelease)
+					b.onAction(button);
+				break;
+			}
+		}
+	};
 
 	public static Binding addBinding(int KEY, Binding binding) {
 		synchronized (BLOCKER) {
@@ -152,6 +175,8 @@ public class Mouse {
 		return binding;
 	}
 
+	
+	
 	public static int getX() {
 		return x;
 	}

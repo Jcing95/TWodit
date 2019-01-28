@@ -7,6 +7,7 @@ import de.jcing.game.Game;
 import de.jcing.game.menu.MainMenu;
 import de.jcing.utillities.log.Log;
 import de.jcing.utillities.task.Topic;
+import de.jcing.window.OpenGLWindow;
 import de.jcing.window.Window;
 
 public class Main {
@@ -23,15 +24,18 @@ public class Main {
 	
 	
 	public static void main(String[] args) {
-		//initialize Window and main menu
-		window = new Window();
-		mainMenu = new MainMenu();
 		
-		//Add Keyboard binding to exit game
-		KeyBoard.addBinding(KeyBoard.ONPRESS, (key) -> {
-			if(key == KeyEvent.VK_ESCAPE)
-				finish();
-		});
+		new OpenGLWindow().run();
+		
+		//initialize Window and main menu
+//		window = new Window();
+//		mainMenu = new MainMenu();
+//		
+//		//Add Keyboard binding to exit game
+//		KeyBoard.addBinding(KeyBoard.ONPRESS, (key) -> {
+//			if(key == KeyEvent.VK_ESCAPE)
+//				finish();
+//		});
 		
 		//Start the main scene.		
 	}
