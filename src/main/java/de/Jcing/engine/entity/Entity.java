@@ -8,6 +8,7 @@ import java.util.Set;
 
 import de.jcing.Main;
 import de.jcing.geometry.Rectangle;
+import de.jcing.image.Animation;
 import de.jcing.image.Image;
 import de.jcing.util.Point;
 import de.jcing.utillities.log.Log;
@@ -28,7 +29,7 @@ public class Entity {
 	
 	protected int animationIndex;
 	
-	protected HashMap<Integer, Image> sprite;
+	protected HashMap<Integer, Animation> sprite;
 
 	protected Stage stage;
 
@@ -199,9 +200,9 @@ public class Entity {
 		g.translate(xPos,yPos);
 		if(sprite.containsKey(animationIndex)) {
 			if(speedX != 0 || speedY != 0) {
-				g.drawImage(sprite.get(animationIndex).get().get(), 0, 0, null);
+				g.drawImage(sprite.get(animationIndex).get(), 0, 0, null);
 			} else {
-				g.drawImage(sprite.get(animationIndex).get(0).get(), 0, 0, null);
+				g.drawImage(sprite.get(animationIndex).get(0), 0, 0, null);
 			}
 		}
 		g.translate(-xPos, -yPos);
@@ -219,7 +220,7 @@ public class Entity {
 		return position;
 	}
 
-	public void setAnim(int on, Image img) {
+	public void setAnim(int on, Animation img) {
 		sprite.put(on, img);
 	}
 	

@@ -3,7 +3,6 @@ package de.jcing.world;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.io.File;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
@@ -13,6 +12,7 @@ import de.jcing.engine.Trigger;
 import de.jcing.engine.entity.Entity;
 import de.jcing.geometry.Rectangle;
 import de.jcing.image.Image;
+import de.jcing.image.MultiImage;
 import de.jcing.util.Point;
 import de.jcing.util.Util;
 
@@ -20,12 +20,12 @@ public class Tile {
 	
 	public static final int TILE_PIXELS = 32;
 	
-	private LinkedList<Image> textures;
+	private LinkedList<MultiImage> textures;
 	private LinkedList<Integer> textureIndices;
 	private LinkedList<Entity> entities;
 	private LinkedList<Trigger> triggers;
 	
-	private Image testBack = new Image(new File(Main.RESSOURCES+"gfx/terrain/grass"));
+	private MultiImage testBack = new MultiImage("gfx/terrain/grass");
 	
 	private boolean collision;
 	
@@ -40,19 +40,20 @@ public class Tile {
 		textureIndices = new LinkedList<>();
 		entities = new LinkedList<>();
 		triggers = new LinkedList<>();
+		testBack.seed();
 		textures.add(testBack);
 //		System.out.println(texIndex);
 	}
 	
-	public void addTexture(Image img) {
+	public void addTexture(MultiImage img) {
 		//TODO: catch invalid images for Tiles
 		textures.add(img);
 		textureIndices.add(null);
 	}
 	
-	public void addTexture(Image img, int index) {
+	public void addTexture(MultiImage img, int index) {
 		textures.add(img);
-		textureIndices.add(index);
+		((MultiImage)img).seed(index);
 	}
 	
 	public void popTexture() {
@@ -63,6 +64,7 @@ public class Tile {
 	public void incrementIndex() {
 		try {
 		textureIndices.add(textureIndices.removeLast() + 1);
+		textures.getLast().seed(textureIndices.getLast());
 		} catch (NoSuchElementException e) {
 			textureIndices.add(Util.seededRandom(hashCode())+1);
 		}
@@ -70,16 +72,9 @@ public class Tile {
 	
 	public void draw(Graphics2D g, Point offset) {
 		offset = computePositionOnScreen(offset);
-		Iterator<Integer> indexIter = textureIndices.iterator();
-		Iterator<Image> texIter = textures.iterator();
+		Iterator<MultiImage> texIter = textures.iterator();
 		while(texIter.hasNext()) {
-			int index;
-			try {
-				index = indexIter.next();
-			} catch (NoSuchElementException e) {
-				index = Util.seededRandom(hashCode());
-			}
-			g.drawImage(texIter.next().get(index).get(), offset.getXi(), offset.getYi(), null);
+			g.drawImage(texIter.next().get(), offset.getXi(), offset.getYi(), null);
 		}
 		if(hovered()) {
 			g.setColor(new Color(255,255,255,55));

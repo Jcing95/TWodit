@@ -90,7 +90,7 @@ public class Window {
 		fontMetrics = initGraphics.getFontMetrics();
 		
 		//primary render task. max 144 times/second
-		task = new Task(() -> render()).name("draw window").repeat(Task.perSecond(60)).start();
+		task = new Task(() -> render()).name("draw window").repeat(Task.perSecond(144)).start();
 		new Task(() -> gui.listenOnMouse()).delay(100).start();
 	}
 	

@@ -8,7 +8,8 @@ import de.jcing.engine.entity.Entity;
 import de.jcing.engine.io.KeyBoard;
 import de.jcing.engine.io.Mouse;
 import de.jcing.game.menu.PauseMenu;
-import de.jcing.image.Image;
+import de.jcing.image.Animation;
+import de.jcing.image.SingleImage;
 import de.jcing.util.PointMorph;
 import de.jcing.util.Strings;
 import de.jcing.utillities.log.Log;
@@ -93,7 +94,7 @@ public class Game {
 		pane.addComponent(test);
 		pane.listenOnMouse();
 		test.listenOnMouse();
-		ImageView portrait = new ImageView(new Image("gfx/player/down").get(0),Window.PIXEL_WIDTH-55,Window.PIXEL_HEIGHT-100,60,60);
+		ImageView portrait = new ImageView(new SingleImage("gfx/player/down/1.png"),Window.PIXEL_WIDTH-55,Window.PIXEL_HEIGHT-100,60,60);
 		
 //		Fader fader = new Fader(new Group(pane), Fader.ALPHA, 0.01f, 1f);
 //		pane.getOnClick().add(() -> fader.reverse().start(300));
@@ -121,10 +122,10 @@ public class Game {
 
 		
 		player = new Entity(mainStage,0,0,20,20);
-		player.setAnim(Entity.ON_LEFT, new Image("gfx/player/left"));
-		player.setAnim(Entity.ON_RIGHT, new Image("gfx/player/right"));
-		player.setAnim(Entity.ON_UP, new Image("gfx/player/up"));
-		player.setAnim(Entity.ON_DOWN, new Image("gfx/player/down"));
+		player.setAnim(Entity.ON_LEFT, new Animation("gfx/player/left/"));
+		player.setAnim(Entity.ON_RIGHT, new Animation("gfx/player/right/"));
+		player.setAnim(Entity.ON_UP, new Animation("gfx/player/up/"));
+		player.setAnim(Entity.ON_DOWN, new Animation("gfx/player/down/"));
 		mainStage.addEntity(player);
 		playerPosMorph = new PointMorph(player.getPosition()) {
 

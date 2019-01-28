@@ -2,7 +2,7 @@ package de.jcing.engine.graphics;
 
 import java.util.ArrayList;
 
-import de.jcing.image.Image;
+import de.jcing.image.old.Image;
 
 public class TileSet {
 	
