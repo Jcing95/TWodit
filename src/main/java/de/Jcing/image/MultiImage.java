@@ -10,8 +10,8 @@ import de.jcing.utillities.log.Log;
 
 public class MultiImage extends Image{
 	
-	
-	private static Log log = new Log(MultiImage.class);
+	private static Log log = new Log(MultiImage.class).setLogLevel(Log.LOG_LEVEL.error);
+	//TODO: keep static track of loaded multiimages and clone if possible!
 	
 	protected static final Random random = new Random(1337);
 	protected ArrayList<ImageData> data;
@@ -27,22 +27,31 @@ public class MultiImage extends Image{
 	public static void loadImagesRecursively(String path, ArrayList<ImageData> to) {
 		File dir = new File(path);
 		File[] expanded = dir.listFiles();
+		log.debug("loading images recursively from: " + dir.getPath());
+		int counter = 0;
 		for(File f : expanded) {
 			if(f.isDirectory()) {
 				loadImagesRecursively(f.getPath(), to);
-			} else {
-				if(Image.isValidImage(f.getName()))
-					to.add(new ImageData(f.getPath()));
+			} else if(Image.isValidImage(f.getName())) {
+				to.add(new ImageData(f.getPath()));
+				counter++;
 			}
 		}
+		log.debug("added " + counter + " images for a total of " + to.size());
 	}
 	
 	public int seed() {
-		seed = Math.abs(random.nextInt());
+		seed = (int)(random.nextDouble()*data.size());
+		log.debug("seeded with: " +  seed);
+		return seed;
+	}
+	
+	public int getSeed() {
 		return seed;
 	}
 	
 	public void seed(int seed) {
+		log.debug("new seed: " + seed);
 		this.seed = seed;
 	}
 	

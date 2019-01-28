@@ -1,11 +1,10 @@
 package de.jcing.image;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 
 public abstract class Image {
 	
-	public static final String[] IMAGE_EXTENSIONS = {".png", ".jpg" };
+	public static final String[] IMAGE_EXTENSIONS = { ".png", ".jpg" };
 	
 	static enum TYPE {
 		single,

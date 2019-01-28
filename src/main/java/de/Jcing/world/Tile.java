@@ -21,7 +21,6 @@ public class Tile {
 	public static final int TILE_PIXELS = 32;
 	
 	private LinkedList<MultiImage> textures;
-	private LinkedList<Integer> textureIndices;
 	private LinkedList<Entity> entities;
 	private LinkedList<Trigger> triggers;
 	
@@ -37,18 +36,14 @@ public class Tile {
 		this.x = x;
 		this.y = y;
 		textures = new LinkedList<>();
-		textureIndices = new LinkedList<>();
 		entities = new LinkedList<>();
 		triggers = new LinkedList<>();
-		testBack.seed();
-		textures.add(testBack);
-//		System.out.println(texIndex);
+		addTexture(testBack,testBack.seed());
 	}
 	
 	public void addTexture(MultiImage img) {
 		//TODO: catch invalid images for Tiles
 		textures.add(img);
-		textureIndices.add(null);
 	}
 	
 	public void addTexture(MultiImage img, int index) {
@@ -58,16 +53,12 @@ public class Tile {
 	
 	public void popTexture() {
 		textures.removeLast();
-		textureIndices.removeLast();
 	}
 	
+	@Deprecated
 	public void incrementIndex() {
-		try {
-		textureIndices.add(textureIndices.removeLast() + 1);
-		textures.getLast().seed(textureIndices.getLast());
-		} catch (NoSuchElementException e) {
-			textureIndices.add(Util.seededRandom(hashCode())+1);
-		}
+		MultiImage img = textures.getLast();
+		img.seed(img.getSeed()+1);
 	}
 	
 	public void draw(Graphics2D g, Point offset) {

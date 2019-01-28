@@ -9,7 +9,6 @@ import java.util.Set;
 import de.jcing.Main;
 import de.jcing.geometry.Rectangle;
 import de.jcing.image.Animation;
-import de.jcing.image.Image;
 import de.jcing.util.Point;
 import de.jcing.utillities.log.Log;
 import de.jcing.world.Stage;

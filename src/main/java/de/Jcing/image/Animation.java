@@ -5,14 +5,12 @@ import java.io.File;
 import java.util.ArrayList;
 
 import de.jcing.Main;
-import de.jcing.utillities.log.Log;
 import de.jcing.utillities.task.Task;
 
 public class Animation extends Image {
 	
-	private static final Log log = new Log(Animation.class);
-	
-	public static final int DEFAULT_FRAMES_PER_SECOND = 10;
+
+	public static final int DEFAULT_FRAMES_PER_SECOND = 5;
 	
 	protected ArrayList<ImageData> data;
 	protected int seed;
@@ -27,7 +25,6 @@ public class Animation extends Image {
 	
 	public BufferedImage get() {
 		int index = (int)(Task.millis()/(1000.0/fps));
-		log.debug("index: " + index);
 		return data.get(index % (data.size())).data;
 	}
 	
