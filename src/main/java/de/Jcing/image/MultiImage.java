@@ -5,7 +5,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 
+import de.jcing.Main;
+import de.jcing.utillities.log.Log;
+
 public class MultiImage extends Image{
+	
+	
+	private static Log log = new Log(MultiImage.class);
 	
 	protected static final Random random = new Random(1337);
 	protected ArrayList<ImageData> data;
@@ -15,7 +21,7 @@ public class MultiImage extends Image{
 		super(TYPE.multi);
 		data = new ArrayList<>();
 		for(String s : path)
-			loadImagesRecursively(s, data);
+			loadImagesRecursively(Main.RESSOURCES + s, data);
 	}
 	
 	public static void loadImagesRecursively(String path, ArrayList<ImageData> to) {
@@ -32,7 +38,7 @@ public class MultiImage extends Image{
 	}
 	
 	public int seed() {
-		seed = random.nextInt();
+		seed = Math.abs(random.nextInt());
 		return seed;
 	}
 	

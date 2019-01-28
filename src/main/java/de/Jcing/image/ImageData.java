@@ -7,7 +7,11 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
+import de.jcing.utillities.log.Log;
+
 public class ImageData {
+	
+	private static final Log log = new Log(ImageData.class);
 	
 	protected static final HashMap<String, BufferedImage> LOADED_IMAGES = new HashMap<>();
 	
@@ -23,6 +27,7 @@ public class ImageData {
 				data = ImageIO.read(new File(path));
 				LOADED_IMAGES.put(path, data);
 			} catch (IOException e) {
+				log.error("could not load: " + path);
 				e.printStackTrace();
 			}
 		}
