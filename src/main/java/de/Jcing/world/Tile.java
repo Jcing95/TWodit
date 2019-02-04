@@ -5,16 +5,13 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.NoSuchElementException;
 
 import de.jcing.Main;
 import de.jcing.engine.Trigger;
 import de.jcing.engine.entity.Entity;
 import de.jcing.geometry.Rectangle;
-import de.jcing.image.Image;
 import de.jcing.image.MultiImage;
 import de.jcing.util.Point;
-import de.jcing.util.Util;
 
 public class Tile {
 	

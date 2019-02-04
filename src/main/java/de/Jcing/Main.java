@@ -1,8 +1,5 @@
 package de.jcing;
 
-import java.awt.event.KeyEvent;
-
-import de.jcing.engine.io.KeyBoard;
 import de.jcing.game.Game;
 import de.jcing.game.menu.MainMenu;
 import de.jcing.utillities.log.Log;
