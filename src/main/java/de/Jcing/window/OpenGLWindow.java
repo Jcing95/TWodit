@@ -33,6 +33,7 @@ import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.nio.IntBuffer;
+import java.util.LinkedList;
 
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFW;
@@ -50,15 +51,50 @@ public class OpenGLWindow {
 	// The window handle
 	private long window;
 
-	private Task windowTask;
+	private final Task windowTask;
 
 	private static final Log log = new Log(OpenGLWindow.class);
+	
+	private final LinkedList<Runnable> runInContext;
+	private final LinkedList<Runnable> loopInContext;
+	private final LinkedList<Runnable> runInContextBuffer;
+	private final LinkedList<Runnable> loopInContextBuffer;
+	
+	public OpenGLWindow() {
+		log.debug("Hello LWJGL " + Version.getVersion() + "!");
+		runInContext = new LinkedList<Runnable>();
+		loopInContext = new LinkedList<Runnable>();
+		runInContextBuffer = new LinkedList<Runnable>();
+		loopInContextBuffer = new LinkedList<Runnable>();
+		windowTask = new Task(() -> loop())
+				.name("GL_WINDOW")
+				.preExecute(() -> init())
+				.postExecute(() -> end())
+				.repeat(Task.perSecond(60));
+	}
 
-	public void run() {
-		System.out.println("Hello LWJGL " + Version.getVersion() + "!");
-		windowTask = new Task(() -> loop()).name("GL_WINDOW").preExecute(() -> init()).postExecute(() -> end())
-				.repeat(Task.perSecond(200)).start();
-
+	public OpenGLWindow run() {
+		windowTask.start();
+		return this;
+	}
+	
+	public void runInContext(Runnable runnable) {
+		runInContextBuffer.add(runnable);
+	}
+	
+	public void loopInContext(Runnable runnable) {
+		loopInContextBuffer.add(runnable);
+	}
+	
+	private void updateContext() {
+		runInContext.addAll(runInContextBuffer);
+		runInContextBuffer.clear();
+		loopInContext.addAll(loopInContextBuffer);
+		loopInContextBuffer.clear();
+	}
+	
+	private void cleanContext() {
+		runInContext.clear();
 	}
 
 	private void init() {
@@ -137,19 +173,26 @@ public class OpenGLWindow {
 		}
 
 		if (Task.millis() - lastMillis > 1000) {
+			//log the fps once per second!
 			lastMillis = Task.millis();
 			log.info(windowTask.getTps() + " FPS!");
 		}
-		// Run the rendering loop until the user has attempted to close
-		// the window or has pressed the ESCAPE key.
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
-
-		glfwSwapBuffers(window); // swap the color buffers
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+		//manage the runnables to be executed in the OpenGL context
+		updateContext();
+		for(Runnable r : runInContext)
+			r.run();
+		cleanContext();
+		for(Runnable r : loopInContext)
+			r.run();
+		// clear the framebuffer
+		
+		// swap the color buffers
+		glfwSwapBuffers(window); 
 
 		// Poll for window events. The key callback above will only be
 		// invoked during this call.
 		glfwPollEvents();
-
 	}
 
 
