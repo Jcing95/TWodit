@@ -1,10 +1,8 @@
 package de.jcing;
 
-import java.nio.FloatBuffer;
-
 import org.lwjgl.opengl.GL30;
-import org.lwjgl.system.MemoryUtil;
 
+import de.jcing.engine.gl.Mesh;
 import de.jcing.engine.gl.TestShader;
 import de.jcing.game.Game;
 import de.jcing.game.menu.MainMenu;
@@ -28,6 +26,7 @@ public class Main {
 	public static final String RESSOURCES = "src/main/resources/";
 	
 	static TestShader shader;
+	static Mesh testMesh;
 	
 	static int vaoId;
 	static int vboId;
@@ -40,40 +39,42 @@ public class Main {
 			log.debug("init shader");
 			shader = new TestShader();
 			
-			float[] vertices = new float[]{
-					0.0f, 0.5f, 0.0f,
-					-0.5f, -0.5f, 0.0f,
-					0.5f, -0.5f, 0.0f
-					};
+			float[] positions = new float[]{
+			    -0.5f,  0.5f, 0.0f,
+			    -0.5f, -0.5f, 0.0f,
+			     0.5f, -0.5f, 0.0f,
+			     0.5f,  0.5f, 0.0f,
+			};
 			
-			FloatBuffer verticesBuffer = MemoryUtil.memAllocFloat(vertices.length);
-			verticesBuffer.put(vertices).flip();
+			float[] colours = new float[]{
+				0.5f, 0.0f, 0.0f,
+				0.0f, 0.5f, 0.0f,
+				0.0f, 0.0f, 0.5f,
+				0.0f, 0.5f, 0.5f,
+			};
 			
-			vaoId = GL30.glGenVertexArrays();
-			GL30.glBindVertexArray(vaoId);
+			int[] indices = new int[]{
+			    0, 1, 3, 3, 1, 2,
+			};
 			
-			vboId = GL30.glGenBuffers();
-			GL30.glBindBuffer(GL30.GL_ARRAY_BUFFER, vboId);
-			GL30.glBufferData(GL30.GL_ARRAY_BUFFER, verticesBuffer, GL30.GL_STATIC_DRAW);
-			GL30.glVertexAttribPointer(0, 3, GL30.GL_FLOAT, false, 0, 0);
-			// Unbind the VBO
-			GL30.glBindBuffer(GL30.GL_ARRAY_BUFFER, 0);
-			// Unbind the VAO
-			GL30.glBindVertexArray(0);
-			MemoryUtil.memFree(verticesBuffer);
+			testMesh = new Mesh(positions, colours, indices);
 			GL30.glViewport(0, 0, 300, 300);
 		});
 		
 		win.loopInContext(() -> {
 			shader.bind();
-			// Bind to the VAO
-			GL30.glBindVertexArray(vaoId);
+			
+			// Draw the mesh
+			GL30.glBindVertexArray(testMesh.getVaoId());
 			GL30.glEnableVertexAttribArray(0);
-			// Draw the vertices
-			GL30.glDrawArrays(GL30.GL_TRIANGLES, 0, 3);
+			GL30.glEnableVertexAttribArray(1);
+			GL30.glDrawElements(GL30.GL_TRIANGLES, testMesh.getVertexCount(), GL30.GL_UNSIGNED_INT, 0);
+
 			// Restore state
+			GL30.glDisableVertexAttribArray(1);
 			GL30.glDisableVertexAttribArray(0);
 			GL30.glBindVertexArray(0);
+			
 			shader.unbind();
 		});
 
