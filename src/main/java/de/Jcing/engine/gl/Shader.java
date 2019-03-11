@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.FloatBuffer;
+import java.util.HashMap;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -24,12 +25,15 @@ public abstract class Shader {
 	protected int fragmentShaderID;
 	
 	private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
-
+	
+	
+	private final HashMap<String, Integer> uniforms;
 	
 	public Shader(String vertexFile, String fragmentFile) {
 		programID = GL30.glCreateProgram();
 		vertexShaderID = loadShader(vertexFile, GL30.GL_VERTEX_SHADER);
 		fragmentShaderID = loadShader(fragmentFile, GL30.GL_FRAGMENT_SHADER);
+		uniforms = new HashMap<>();
 	}
 		
 	private int loadShader(String file, int type) {
@@ -91,35 +95,45 @@ public abstract class Shader {
 		if(programID != 0)
 			GL30.glDeleteProgram(programID);
 	}
-
-	protected void loadFloat(int location, float value) {
-		GL30.glUniform1f(location, value);
-	}
-
-	protected void loadInt(int location, int value) {
-		GL30.glUniform1i(location, value);
-	}
-
-	protected void loadVector(int location, Vector3f vector) {
-		GL30.glUniform3f(location, vector.x, vector.y, vector.z);
-	}
-
-	protected void load2DVector(int location, Vector2f vector) {
-		GL30.glUniform2f(location, vector.x, vector.y);
-	}
-
-	protected void loadFloatArray(int location, float[] value) {
-		GL30.glUniform1fv(location, value);
+	
+	public void createUniform(String uniformName){
+	    int uniformLocation = GL30.glGetUniformLocation(programID, uniformName);
+	    if (uniformLocation < 0) {
+	        log.error("Could not find uniform:" +
+	            uniformName);
+	    }
+	    uniforms.put(uniformName, uniformLocation);
 	}
 	
-	protected void loadBoolean(int location, boolean value) {
-		GL30.glUniform1f(location, value ? 1f : 0f);
+
+	protected void setUniform(String location, float value) {
+		GL30.glUniform1f(uniforms.get(location), value);
+	}
+
+	protected void setUniform(String location, int value) {
+		GL30.glUniform1i(uniforms.get(location), value);
+	}
+
+	protected void setUniform(String location, Vector3f vector) {
+		GL30.glUniform3f(uniforms.get(location), vector.x, vector.y, vector.z);
+	}
+
+	protected void setUniform(String location, Vector2f vector) {
+		GL30.glUniform2f(uniforms.get(location), vector.x, vector.y);
+	}
+
+	protected void setUniform(String location, float[] value) {
+		GL30.glUniform1fv(uniforms.get(location), value);
 	}
 	
-	protected void loadMatrix(int location, Matrix4f matrix) {
+	protected void setUniform(String location, boolean value) {
+		GL30.glUniform1f(uniforms.get(location), value ? 1f : 0f);
+	}
+	
+	protected void setUniform(String location, Matrix4f matrix) {
 		matrix.get(matrixBuffer);
 		matrixBuffer.flip();
-		GL30.glUniformMatrix4fv(location, false, matrixBuffer);
+		GL30.glUniformMatrix4fv(uniforms.get(location), false, matrixBuffer);
 	}
 
 	protected void bindAttribute(int attribute, String variableName) {

@@ -15,6 +15,7 @@ import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetFramebufferSizeCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetMouseButtonCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowPos;
@@ -59,6 +60,12 @@ public class OpenGLWindow {
 	private final LinkedList<Runnable> loopInContext;
 	private final LinkedList<Runnable> runInContextBuffer;
 	private final LinkedList<Runnable> loopInContextBuffer;
+	
+	private int width;
+	private int height;
+	private boolean isResized;
+	
+	int lastMillis = 0;
 	
 	public OpenGLWindow() {
 		log.debug("Hello LWJGL " + Version.getVersion() + "!");
@@ -130,6 +137,13 @@ public class OpenGLWindow {
 		glfwSetMouseButtonCallback(window, Mouse.mouseButtonCallback);
 		Mouse.addBinding(Mouse.ONPRESS, (key) -> log.debug("click!"));
 		
+		glfwSetFramebufferSizeCallback(window, (window, width, height) -> {
+		    this.width = width;
+		    this.height = height;
+		    this.setResized(true);
+		});
+		
+		
 		// Get the thread stack and push a new frame
 		try (MemoryStack stack = stackPush()) {
 			IntBuffer pWidth = stack.mallocInt(1); // int*
@@ -164,7 +178,6 @@ public class OpenGLWindow {
 		glClearColor(0.1f, 0.1f, 0.2f, 0.0f);
 	}
 
-	int lastMillis = 0;
 
 	private void loop() {
 		if (glfwWindowShouldClose(window)) {
@@ -204,5 +217,21 @@ public class OpenGLWindow {
 		// Terminate GLFW and free the error callback
 		glfwTerminate();
 		glfwSetErrorCallback(null).free();
+	}
+	
+	public void setResized(boolean resized) {
+		isResized = resized;
+	}
+	
+	public boolean isResized() {
+		return isResized;
+	}
+	
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
 	}
 }

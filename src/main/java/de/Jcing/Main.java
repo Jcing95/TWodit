@@ -1,9 +1,6 @@
 package de.jcing;
 
-import org.lwjgl.opengl.GL30;
-
-import de.jcing.engine.gl.Mesh;
-import de.jcing.engine.gl.TestShader;
+import de.jcing.engine.gl.Renderer;
 import de.jcing.game.Game;
 import de.jcing.game.menu.MainMenu;
 import de.jcing.utillities.log.Log;
@@ -25,58 +22,13 @@ public class Main {
 	
 	public static final String RESSOURCES = "src/main/resources/";
 	
-	static TestShader shader;
-	static Mesh testMesh;
-	
-	static int vaoId;
-	static int vboId;
+	public static Renderer renderer;	
 	
 	public static void main(String[] args) {
 		
 		win = new OpenGLWindow();
 		
-		win.runInContext(() -> {
-			log.debug("init shader");
-			shader = new TestShader();
-			
-			float[] positions = new float[]{
-			    -0.5f,  0.5f, 0.0f,
-			    -0.5f, -0.5f, 0.0f,
-			     0.5f, -0.5f, 0.0f,
-			     0.5f,  0.5f, 0.0f,
-			};
-			
-			float[] colours = new float[]{
-				0.5f, 0.0f, 0.0f,
-				0.0f, 0.5f, 0.0f,
-				0.0f, 0.0f, 0.5f,
-				0.0f, 0.5f, 0.5f,
-			};
-			
-			int[] indices = new int[]{
-			    0, 1, 3, 3, 1, 2,
-			};
-			
-			testMesh = new Mesh(positions, colours, indices);
-			GL30.glViewport(0, 0, 300, 300);
-		});
-		
-		win.loopInContext(() -> {
-			shader.bind();
-			
-			// Draw the mesh
-			GL30.glBindVertexArray(testMesh.getVaoId());
-			GL30.glEnableVertexAttribArray(0);
-			GL30.glEnableVertexAttribArray(1);
-			GL30.glDrawElements(GL30.GL_TRIANGLES, testMesh.getVertexCount(), GL30.GL_UNSIGNED_INT, 0);
-
-			// Restore state
-			GL30.glDisableVertexAttribArray(1);
-			GL30.glDisableVertexAttribArray(0);
-			GL30.glBindVertexArray(0);
-			
-			shader.unbind();
-		});
+		renderer = new Renderer(win);
 
 		win.run();
 		
@@ -98,15 +50,7 @@ public class Main {
 	}
 	
 	public static void finish() {
-		win.runInContext(() -> {			
-			GL30.glDisableVertexAttribArray(0);
-			// Delete the VBO
-			GL30.glBindBuffer(GL30.GL_ARRAY_BUFFER, 0);
-			GL30.glDeleteBuffers(vboId);
-			// Delete the VAO
-			GL30.glBindVertexArray(0);
-			GL30.glDeleteVertexArrays(vaoId);
-		});
+		renderer.finish();
 		log.info("exit now");
 		//stop all scenes
 		Topic.stopAll();
