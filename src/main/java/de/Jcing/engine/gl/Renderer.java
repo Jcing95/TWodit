@@ -29,6 +29,8 @@ public class Renderer {
 	private GameItem testItem;
 	
 	private float rot;
+	
+	private Task rotator;
 
 	public Renderer(OpenGLWindow win) {
 		this.window = win;
@@ -38,18 +40,16 @@ public class Renderer {
 
 	private void init() {
 		window.runInContext(() -> {
-			float aspectRatio = (float) window.getWidth() / window.getHeight();
-
-//			projectionMatrix = new Matrix4f().perspective(FOV, aspectRatio,
-//			    Z_NEAR, Z_FAR);
 
 			log.debug("init shader");
 			shader = new TestShader();
 			shader.createUniform("projectionMatrix");
 			shader.createUniform("worldMatrix");
 
-			float[] positions = new float[] { -0.5f, 0.5f, -1.05f, -0.5f, -0.5f, -1.05f, 0.5f, -0.5f, -1.05f, 0.5f,
-					0.5f, -1.05f, };
+			float[] positions = new float[] { -0.5f, 0.5f, -1.05f, 
+					-0.5f, -0.5f, -1.05f,
+					0.5f, -0.5f, -1.05f,
+					0.5f, 0.5f, -1.05f, };
 
 			float[] colours = new float[] { 0.5f, 0.0f, 0.0f, 0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 0.5f, 0.0f, 0.5f, 0.5f, };
 
@@ -60,7 +60,7 @@ public class Renderer {
 			GL30.glViewport(0, 0, window.getWidth(), window.getHeight());
 			
 			
-			new Task(() -> {
+			rotator = new Task(() -> {
 				rot+= 0.2;
 				testItem.setRotation(0, 0, rot);
 			}).repeat(10).start();
@@ -89,6 +89,7 @@ public class Renderer {
 	}
 
 	public void finish() {
+		rotator.stop();
 		window.runInContext(() -> {
 			testItem.getMesh().cleanUp();
 		});

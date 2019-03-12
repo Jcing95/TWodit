@@ -43,6 +43,7 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
+import de.jcing.Main;
 import de.jcing.engine.io.KeyBoard;
 import de.jcing.engine.io.Mouse;
 import de.jcing.utillities.log.Log;
@@ -181,8 +182,7 @@ public class OpenGLWindow {
 
 	private void loop() {
 		if (glfwWindowShouldClose(window)) {
-			windowTask.stop();
-			return;
+			Main.finish();
 		}
 
 		if (Task.millis() - lastMillis > 1000) {
@@ -209,7 +209,8 @@ public class OpenGLWindow {
 	}
 
 
-	private void end() {
+	public void end() {
+		windowTask.stop();
 		// Free the window callbacks and destroy the window
 		glfwFreeCallbacks(window);
 		glfwDestroyWindow(window);

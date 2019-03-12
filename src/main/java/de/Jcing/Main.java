@@ -32,7 +32,7 @@ public class Main {
 
 		win.run();
 		
-		//initialize Window and main menu
+//		//initialize Window and main menu
 //		window = new Window();
 //		mainMenu = new MainMenu();
 //		
@@ -41,8 +41,8 @@ public class Main {
 //			if(key == KeyEvent.VK_ESCAPE)
 //				finish();
 //		});
-		
-		//Start the main scene.		
+//		
+//		//Start the main scene.		
 	}
 	
 	public static void initGame() {
@@ -55,7 +55,7 @@ public class Main {
 		//stop all scenes
 		Topic.stopAll();
 		//finish window to dispose swing frame
-		window.finish();
+		win.end();
 	}
 	
 	public static MainMenu getMainMenu() {
