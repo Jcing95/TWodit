@@ -61,8 +61,6 @@ public class Renderer {
 			};
 			testMesh = new Mesh(positions, colours, indices);
 			
-			shader.createUniform("projectionMatrix");
-			shader.setUniform("projectionMatrix", projectionMatrix);
 			
 			GL30.glViewport(0, 0, window.getWidth(), window.getHeight());
 
@@ -75,6 +73,8 @@ public class Renderer {
 			}
 			shader.bind();
 			// Draw the mesh
+			shader.createUniform("projectionMatrix");
+			shader.setUniform("projectionMatrix", projectionMatrix);
 			GL30.glBindVertexArray(testMesh.getVaoId());
 			GL30.glEnableVertexAttribArray(0);
 			GL30.glEnableVertexAttribArray(1);

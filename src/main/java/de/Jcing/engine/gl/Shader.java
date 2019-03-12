@@ -12,6 +12,7 @@ import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.system.MemoryStack;
 
 import de.jcing.utillities.log.Log;
 
@@ -24,7 +25,7 @@ public abstract class Shader {
 	protected int vertexShaderID;
 	protected int fragmentShaderID;
 	
-	private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
+//	private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 	
 	
 	private final HashMap<String, Integer> uniforms;
@@ -130,10 +131,13 @@ public abstract class Shader {
 		GL30.glUniform1f(uniforms.get(location), value ? 1f : 0f);
 	}
 	
-	protected void setUniform(String location, Matrix4f matrix) {
-		matrix.get(matrixBuffer);
-		matrixBuffer.flip();
-		GL30.glUniformMatrix4fv(uniforms.get(location), false, matrixBuffer);
+	protected void setUniform(String location, Matrix4f value) {
+		// Dump the matrix into a float buffer
+		try (MemoryStack stack = MemoryStack.stackPush()) {
+			FloatBuffer fb = stack.mallocFloat(16);
+			value.get(fb);
+			GL30.glUniformMatrix4fv(uniforms.get(location), false, fb);
+		}
 	}
 
 	protected void bindAttribute(int attribute, String variableName) {

@@ -61,8 +61,8 @@ public class OpenGLWindow {
 	private final LinkedList<Runnable> runInContextBuffer;
 	private final LinkedList<Runnable> loopInContextBuffer;
 	
-	private int width;
-	private int height;
+	private int width = 1280;
+	private int height = 720;
 	private boolean isResized;
 	
 	int lastMillis = 0;
@@ -119,7 +119,7 @@ public class OpenGLWindow {
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
 
 		// Create the window
-		window = glfwCreateWindow(300, 300, "Hello World!", NULL, NULL);
+		window = glfwCreateWindow(width, height, "Hello World!", NULL, NULL);
 		if (window == NULL)
 			throw new RuntimeException("Failed to create the GLFW window");
 
