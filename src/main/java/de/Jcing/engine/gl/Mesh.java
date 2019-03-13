@@ -22,13 +22,15 @@ public class Mesh {
     private final Texture texture;
 
     public Mesh(float[] positions, float[] textCoords, int[] indices, Texture texture) {
+    	
         FloatBuffer posBuffer = null;
         FloatBuffer textCoordsBuffer = null;
         IntBuffer indicesBuffer = null;
+        
         try {
             this.texture = texture;
             vertexCount = indices.length;
-            vboIdList = new ArrayList();
+            vboIdList = new ArrayList<>();
 
             vaoId = glGenVertexArrays();
             glBindVertexArray(vaoId);
@@ -61,6 +63,7 @@ public class Mesh {
 
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             glBindVertexArray(0);
+            
         } finally {
             if (posBuffer != null) {
                 MemoryUtil.memFree(posBuffer);

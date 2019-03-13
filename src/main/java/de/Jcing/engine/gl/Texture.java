@@ -43,8 +43,6 @@ public class Texture {
             IntBuffer channels = stack.mallocInt(1);
 
             URL url = Texture.class.getResource(fileName);
-            System.out.println(fileName);
-            System.out.println(url);
             File file = Paths.get(url.toURI()).toFile();
             String filePath = file.getAbsolutePath();
             buf = stbi_load(filePath, w, h, channels, 4);
