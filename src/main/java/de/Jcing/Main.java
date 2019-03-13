@@ -55,7 +55,7 @@ public class Main {
 		//stop all scenes
 		Topic.stopAll();
 		//finish window to dispose swing frame
-		win.end();
+//		win.end();
 	}
 	
 	public static MainMenu getMainMenu() {

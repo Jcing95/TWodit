@@ -45,16 +45,23 @@ public class Renderer {
 			shader = new TestShader();
 			shader.createUniform("projectionMatrix");
 			shader.createUniform("worldMatrix");
-
-			float[] positions = new float[] { -0.5f, 0.5f, -1.05f, 
+			shader.createUniform("texture_sampler");
+			Texture tex = new Texture("/gfx/terrain/cobble0.png");
+			float[] positions = new float[] 
+					{ -0.5f, 0.5f, -1.05f, 
 					-0.5f, -0.5f, -1.05f,
 					0.5f, -0.5f, -1.05f,
 					0.5f, 0.5f, -1.05f, };
 
-			float[] colours = new float[] { 0.5f, 0.0f, 0.0f, 0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 0.5f, 0.0f, 0.5f, 0.5f, };
+			float[] texCoords = new float[] {
+					0.0f, 1.0f,
+					0.0f, 0.0f,
+					1.0f, 0.0f,
+					1.0f, 1.0f,
+					};
 
 			int[] indices = new int[] { 0, 1, 3, 3, 1, 2, };
-			testItem = new GameItem(new Mesh(positions, colours, indices));
+			testItem = new GameItem(new Mesh(positions, texCoords, indices, tex));
 			testItem.setPosition(0, 0, -1);
 
 			GL30.glViewport(0, 0, window.getWidth(), window.getHeight());
@@ -79,7 +86,7 @@ public class Renderer {
 			Matrix4f worldMatrix = transformation.getWorldMatrix(testItem.getPosition(), testItem.getRotation(),
 					testItem.getScale());
 			shader.setUniform("worldMatrix", worldMatrix);
-
+			shader.setUniform("texture_sampler", 0);
 			// Draw the mesh
 			testItem.getMesh().render();
 

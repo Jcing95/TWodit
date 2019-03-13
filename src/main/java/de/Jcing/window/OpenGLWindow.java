@@ -41,6 +41,7 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryStack;
 
 import de.jcing.Main;
@@ -174,7 +175,7 @@ public class OpenGLWindow {
 		// creates the GLCapabilities instance and makes the OpenGL
 		// bindings available for use.
 		GL.createCapabilities();
-
+		GL30.glEnable(GL30.GL_DEPTH_TEST);
 		// Set the clear color
 		glClearColor(0.1f, 0.1f, 0.2f, 0.0f);
 	}
