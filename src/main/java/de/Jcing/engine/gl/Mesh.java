@@ -11,6 +11,8 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 import org.lwjgl.system.MemoryUtil;
 
+import de.jcing.engine.texture.Texture;
+
 public class Mesh {
 
     private final int vaoId;
