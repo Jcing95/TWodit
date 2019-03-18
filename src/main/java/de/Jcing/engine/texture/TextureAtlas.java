@@ -10,8 +10,9 @@ public class TextureAtlas extends Texture{
 	
 	private static final Log log = new Log(TextureAtlas.class);
 	
-	private int subTextureCount;
-	private int subTextureSize;
+	private int subTextureTotalCount;
+	private int subTexturesPerSide;
+	private int subTextureSideLength;
 	
 
 	public TextureAtlas(String path) throws Exception {
@@ -24,6 +25,9 @@ public class TextureAtlas extends Texture{
 	
 	public TextureAtlas(BufferedImage...subImages) {
 		super(combineSubImages(subImages));
+		subTextureTotalCount = subImages.length;
+		subTexturesPerSide = Maths.roundUp(Math.sqrt(subTextureTotalCount));
+		subTextureSideLength = subImages[0].getWidth() * subTexturesPerSide;	
 	}
 	
 	
@@ -60,14 +64,18 @@ public class TextureAtlas extends Texture{
 		return true;
 	}
 	
-	public int getSubTextureCount() {
-		return subTextureCount;
+	
+	public int getSubTextureTotalCount() {
+		return subTextureTotalCount;
 	}
 	
-	public int getSubTextureSize() {
-		return subTextureSize;
+	public int getSubTextureSideLength() {
+		return subTextureSideLength;
 	}
 	
+	public int getSubTexturesPerSide() {
+		return subTexturesPerSide;
+	}
 	
 	
 }

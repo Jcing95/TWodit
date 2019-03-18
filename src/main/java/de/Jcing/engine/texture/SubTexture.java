@@ -7,17 +7,21 @@ public class SubTexture extends Texture {
 	private int index;
 	
 	public SubTexture(TextureAtlas atlas, int index) {
-		super(atlas.getId());
+		super(atlas);
 		this.index = index;
 		this.atlas = atlas;
 	}
 	
 	public float getX() {
-		return index*atlas.getSubTextureSize() % atlas.getWidth();
-		
+		return (float)(index % atlas.getSubTexturesPerSide()) / atlas.getSubTexturesPerSide();
 	}
 	
+	public float getY() {
+		return (float)(index / atlas.getSubTexturesPerSide()) / atlas.getSubTexturesPerSide();
+	}
 	
-	
-	
+	public float getWidth() {
+		return 1.0f/atlas.getSubTexturesPerSide();
+	}
+		
 }

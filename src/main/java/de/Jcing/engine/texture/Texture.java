@@ -28,8 +28,8 @@ import org.lwjgl.system.MemoryStack;
 
 public class Texture {
 
-    private final int id;
-    private final int width, height;
+    protected final int id;
+    protected final int width, height;
     
     public static final int BYTES_PER_PIXEL = 4;
 
@@ -41,7 +41,7 @@ public class Texture {
     	this(loadTexture(image));
     }
     
-    private Texture(Texture texture) {
+    protected Texture(Texture texture) {
     	this(texture.id, texture.width, texture.height);
     }
     
