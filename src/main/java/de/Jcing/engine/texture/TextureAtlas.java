@@ -3,6 +3,8 @@ package de.jcing.engine.texture;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import org.joml.Vector2f;
+
 import de.jcing.util.Maths;
 import de.jcing.utillities.log.Log;
 
@@ -15,12 +17,18 @@ public class TextureAtlas extends Texture{
 	private int subTextureSideLength;
 	
 
-	public TextureAtlas(String path) throws Exception {
+	public TextureAtlas(String path, int subTextureSideLength, int subTexturesPerSide) throws Exception {
 		super(path);
+		subTextureTotalCount = subTexturesPerSide*subTexturesPerSide;
+		this.subTexturesPerSide = subTexturesPerSide;
+		this.subTextureSideLength = subTextureSideLength;
 	}
 	
-	public TextureAtlas(BufferedImage image) {
-		super(image);
+	protected TextureAtlas(TextureAtlas tex) {
+		super(tex);
+		this.subTextureSideLength = tex.subTextureSideLength;
+		this.subTexturesPerSide = tex.subTexturesPerSide;
+		this.subTextureTotalCount = tex.subTextureTotalCount;
 	}
 	
 	public TextureAtlas(BufferedImage...subImages) {
@@ -30,6 +38,10 @@ public class TextureAtlas extends Texture{
 		subTextureSideLength = subImages[0].getWidth() * subTexturesPerSide;	
 	}
 	
+	@Override
+	public Vector2f getOffset() {
+		return new Vector2f(0.2f, 1f);
+	}
 	
 	private static BufferedImage combineSubImages(BufferedImage...subImages) {
 		int count = subImages.length;

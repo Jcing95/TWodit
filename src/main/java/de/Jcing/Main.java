@@ -1,6 +1,9 @@
 package de.jcing;
 
+import java.awt.event.KeyEvent;
+
 import de.jcing.engine.gl.Renderer;
+import de.jcing.engine.io.KeyBoard;
 import de.jcing.game.Game;
 import de.jcing.game.menu.MainMenu;
 import de.jcing.utillities.log.Log;
@@ -31,8 +34,8 @@ public class Main {
 		renderer = new Renderer(win);
 
 		win.run();
-		
-//		//initialize Window and main menu
+//		
+		//initialize Window and main menu
 //		window = new Window();
 //		mainMenu = new MainMenu();
 //		
@@ -41,7 +44,7 @@ public class Main {
 //			if(key == KeyEvent.VK_ESCAPE)
 //				finish();
 //		});
-//		
+		
 //		//Start the main scene.		
 	}
 	

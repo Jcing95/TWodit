@@ -2,6 +2,8 @@ package de.jcing.engine.gl;
 
 import org.joml.Vector3f;
 
+import de.jcing.engine.gl.mesh.Mesh;
+
 public class GameItem {
 	
 	private final Mesh mesh;

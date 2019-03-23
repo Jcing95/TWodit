@@ -22,6 +22,7 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.nio.file.Paths;
 
+import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryStack;
@@ -57,6 +58,10 @@ public class Texture {
 
     public int getId() {
         return id;
+    }
+    
+    public Vector2f getOffset() {
+    	return new Vector2f(0f,0f);
     }
     
     public void cleanup() {

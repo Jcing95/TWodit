@@ -4,9 +4,11 @@ import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL30;
 
+import de.jcing.engine.gl.mesh.Mesh;
 import de.jcing.engine.io.KeyBoard;
 import de.jcing.engine.texture.Texture;
 import de.jcing.engine.texture.TextureAtlas;
@@ -70,8 +72,9 @@ public class Renderer {
 				shader.createUniform("projectionMatrix");
 				shader.createUniform("worldMatrix");
 				shader.createUniform("texture_sampler");
+				shader.createUniform("texOffset");
 				MultiImage grass = new MultiImage("gfx/terrain/grass");
-				BufferedImage[] imgs = new BufferedImage[15];
+				BufferedImage[] imgs = new BufferedImage[5];
 				for(int i = 0; i < imgs.length; i++) {
 					grass.seed(i);
 					imgs[i] = grass.get();
@@ -142,9 +145,9 @@ public class Renderer {
 			Matrix4f viewMatrix = transformation.getViewMatrix(camera);
 			shader.setUniform("projectionMatrix", projectionMatrix);
 			shader.setUniform("texture_sampler", 0);
-			
 			for(GameItem item : items) {
 				Matrix4f modelViewMatrix = transformation.getModelViewMatrix(item, viewMatrix);
+				shader.setUniform("texOffset", item.getMesh().getTexture().getOffset());
 				shader.setUniform("worldMatrix", modelViewMatrix);
 				// Draw the mesh
 				item.getMesh().render();

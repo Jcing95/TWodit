@@ -1,4 +1,4 @@
-package de.jcing.engine.gl;
+package de.jcing.engine.gl.mesh;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -23,6 +23,26 @@ public class Mesh {
 
     private final Texture texture;
 
+    public Mesh(Texture texture, VertexData...data) {
+    	FloatBuffer posBuffer = null;
+        FloatBuffer textCoordsBuffer = null;
+        IntBuffer indicesBuffer = null;
+        
+        try {
+        	
+        } finally {
+            if (posBuffer != null) {
+                MemoryUtil.memFree(posBuffer);
+            }
+            if (textCoordsBuffer != null) {
+                MemoryUtil.memFree(textCoordsBuffer);
+            }
+            if (indicesBuffer != null) {
+                MemoryUtil.memFree(indicesBuffer);
+            }
+        }
+    }
+    
     public Mesh(float[] positions, float[] textCoords, int[] indices, Texture texture) {
     	
         FloatBuffer posBuffer = null;
@@ -85,6 +105,10 @@ public class Mesh {
 
     public int getVertexCount() {
         return vertexCount;
+    }
+    
+    public Texture getTexture() {
+    	return texture;
     }
 
     public void render() {
