@@ -27,7 +27,11 @@ public class Mesh {
     	FloatBuffer posBuffer = null;
         FloatBuffer textCoordsBuffer = null;
         IntBuffer indicesBuffer = null;
-        
+        vertexCount = 0;
+        this.texture = texture;
+        vboIdList = new ArrayList<>();
+        vaoId = glGenVertexArrays();
+        glBindVertexArray(vaoId);
         try {
         	
         } finally {
@@ -41,6 +45,10 @@ public class Mesh {
                 MemoryUtil.memFree(indicesBuffer);
             }
         }
+    }
+    
+    public Mesh(Texture texture, VertexData data) {
+    	this(data.positions,data.texCoords,data.indices,texture);
     }
     
     public Mesh(float[] positions, float[] textCoords, int[] indices, Texture texture) {

@@ -4,14 +4,16 @@ import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
 import org.joml.Matrix4f;
-import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL30;
 
 import de.jcing.engine.gl.mesh.Mesh;
 import de.jcing.engine.io.KeyBoard;
+import de.jcing.engine.texture.Image;
 import de.jcing.engine.texture.Texture;
 import de.jcing.engine.texture.TextureAtlas;
+import de.jcing.engine.world.Chunk;
+import de.jcing.engine.world.Tile;
 import de.jcing.image.MultiImage;
 import de.jcing.utillities.log.Log;
 import de.jcing.utillities.task.Task;
@@ -44,12 +46,15 @@ public class Renderer {
 	
 	private Camera camera;
 	
-	private LinkedList<GameItem> items;
+	private LinkedList<Tile> items;
+	
+	private Chunk testChunk;
 
 	public Renderer(OpenGLWindow win) {
 		this.window = win;
 		transformation = new Transformation();
 		camera = new Camera();
+		camera.setPosition(0, 0, 5);
 		new Task(() -> {
 			if(KeyBoard.isPressed(GLFW.GLFW_KEY_W))
 				camera.movePosition(0, 0.1f, 0);
@@ -72,54 +77,26 @@ public class Renderer {
 				shader.createUniform("projectionMatrix");
 				shader.createUniform("worldMatrix");
 				shader.createUniform("texture_sampler");
-				shader.createUniform("texOffset");
 				MultiImage grass = new MultiImage("gfx/terrain/grass");
-				BufferedImage[] imgs = new BufferedImage[5];
+				BufferedImage[] imgs = new BufferedImage[28];
 				for(int i = 0; i < imgs.length; i++) {
 					grass.seed(i);
 					imgs[i] = grass.get();
 				}
-				Texture tex = new TextureAtlas(imgs);
-				float[] positions = new float[] 
-						{ -size, size, -1.05f, 
-						-size, -size, -1.05f,
-						size, -size, -1.05f,
-						size, size, -1.05f, };
-	
-				float[] texCoords = new float[] {
-						0.0f, 1.0f,
-						0.0f, 0.0f,
-						1.0f, 0.0f,
-						1.0f, 1.0f,
-						};
-	
-				int[] indices = new int[] { 0, 1, 3, 3, 1, 2, };
-				Mesh mesh = new Mesh(positions, texCoords, indices, tex);
-				GameItem item1 = new GameItem(mesh);
-				item1.setPosition(-1, -1, -1);
-				GameItem item2 = new GameItem(mesh);
-				item2.setPosition(-1, 0, -1);
-				GameItem item3 = new GameItem(mesh);
-				item3.setPosition(0, -1, -1);
-				GameItem item4 = new GameItem(mesh);
-				item4.setPosition(0, 0, -1);
-				GameItem item5 = new GameItem(mesh);
-				item5.setPosition(1, 0, -1);
-				GameItem item6 = new GameItem(mesh);
-				item6.setPosition(0, 1, -1);
-				GameItem item7 = new GameItem(mesh);
-				item7.setPosition(1, 1, -1);
-				GameItem item8 = new GameItem(mesh);
-	//			item8.setPosition(1, 1, -1);
+				TextureAtlas tex = new TextureAtlas(imgs);
+				log.debug("tex: " + tex.getSubTexturesPerSide() + " w:" + tex.getSubTextureSideLength() + " total:" + tex.getSubTextureTotalCount());
 				items = new LinkedList<>();
-				items.add(item1);
-				items.add(item2);
-				items.add(item3);
-				items.add(item4);
-				items.add(item5);
-				items.add(item6);
-				items.add(item7);
-				items.add(item8);
+				testChunk = new Chunk(0,0);
+				int index = 0;
+				for(int x = -5; x < 5; x++) {
+					for(int y = -5; y < 5; y++) {
+						Image img = new Image(tex, (index)%imgs.length);
+						log.debug("img " + x +"|" + y+ " - x: " + img.getX() + ", y: " + img.getY() + ", w: " + img.getWidth());
+						Tile t = new Tile(testChunk,x,y,img);
+						items.add(t);
+						index++;
+					}
+				}
 				
 				GL30.glViewport(0, 0, window.getWidth(), window.getHeight());
 				
@@ -127,10 +104,10 @@ public class Renderer {
 				e.printStackTrace();
 			}
 			
-			rotator = new Task(() -> {
-				rot += 0.2;
-				camera.setRotation(0, 0, rot);
-			}).repeat(10).start();
+//			rotator = new Task(() -> {
+//				rot += 0.2;
+//				camera.setRotation(0, 0, rot);
+//			}).repeat(10).start();
 		});
 
 		window.loopInContext(() -> {
@@ -145,9 +122,8 @@ public class Renderer {
 			Matrix4f viewMatrix = transformation.getViewMatrix(camera);
 			shader.setUniform("projectionMatrix", projectionMatrix);
 			shader.setUniform("texture_sampler", 0);
-			for(GameItem item : items) {
+			for(Tile item : items) {
 				Matrix4f modelViewMatrix = transformation.getModelViewMatrix(item, viewMatrix);
-				shader.setUniform("texOffset", item.getMesh().getTexture().getOffset());
 				shader.setUniform("worldMatrix", modelViewMatrix);
 				// Draw the mesh
 				item.getMesh().render();
@@ -158,9 +134,9 @@ public class Renderer {
 	}
 
 	public void finish() {
-		rotator.stop();
+//		rotator.stop();
 		window.runInContext(() -> {
-			for(GameItem item : items)
+			for(Tile item : items)
 				item.getMesh().cleanUp();
 		});
 	}

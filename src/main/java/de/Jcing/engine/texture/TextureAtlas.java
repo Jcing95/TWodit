@@ -8,7 +8,7 @@ import org.joml.Vector2f;
 import de.jcing.util.Maths;
 import de.jcing.utillities.log.Log;
 
-public class TextureAtlas extends Texture{
+public class TextureAtlas extends Texture {
 	
 	private static final Log log = new Log(TextureAtlas.class);
 	
@@ -35,7 +35,7 @@ public class TextureAtlas extends Texture{
 		super(combineSubImages(subImages));
 		subTextureTotalCount = subImages.length;
 		subTexturesPerSide = Maths.roundUp(Math.sqrt(subTextureTotalCount));
-		subTextureSideLength = subImages[0].getWidth() * subTexturesPerSide;	
+		subTextureSideLength = subImages[0].getWidth();	
 	}
 	
 	@Override

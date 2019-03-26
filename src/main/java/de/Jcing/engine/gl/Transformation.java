@@ -4,6 +4,8 @@ package de.jcing.engine.gl;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
+import de.jcing.engine.gl.mesh.Renderable;
+
 public class Transformation {
 
     private final Matrix4f projectionMatrix;
@@ -39,7 +41,7 @@ public class Transformation {
         return viewMatrix;
     }
 
-    public Matrix4f getModelViewMatrix(GameItem gameItem, Matrix4f viewMatrix) {
+    public Matrix4f getModelViewMatrix(Renderable gameItem, Matrix4f viewMatrix) {
         Vector3f rotation = gameItem.getRotation();
         modelViewMatrix.identity().translate(gameItem.getPosition()).
                 rotateX((float)Math.toRadians(-rotation.x)).

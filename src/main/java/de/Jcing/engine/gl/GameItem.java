@@ -3,8 +3,9 @@ package de.jcing.engine.gl;
 import org.joml.Vector3f;
 
 import de.jcing.engine.gl.mesh.Mesh;
+import de.jcing.engine.gl.mesh.Renderable;
 
-public class GameItem {
+public class GameItem implements Renderable {
 	
 	private final Mesh mesh;
 	private final Vector3f position;
