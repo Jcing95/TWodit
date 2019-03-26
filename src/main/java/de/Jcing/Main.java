@@ -45,7 +45,9 @@ public class Main {
 //		//Start the main scene.		
 	}
 	
-	public static void initGame() {
+	
+	public static void initGame() 
+	{
 		game = new Game();
 	}
 	

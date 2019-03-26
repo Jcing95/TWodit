@@ -6,7 +6,7 @@ public class Image extends TextureAtlas {
 	
 	public Image(TextureAtlas atlas, int index) {
 		super(atlas);
-		this.index = index;
+		this.index = index % atlas.getSubTextureTotalCount();
 	}
 	
 	public float getX() {

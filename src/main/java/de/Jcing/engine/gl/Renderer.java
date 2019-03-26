@@ -7,13 +7,10 @@ import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL30;
 
-import de.jcing.engine.gl.mesh.Mesh;
+import de.jcing.engine.gl.mesh.Renderable;
 import de.jcing.engine.io.KeyBoard;
-import de.jcing.engine.texture.Image;
-import de.jcing.engine.texture.Texture;
 import de.jcing.engine.texture.TextureAtlas;
 import de.jcing.engine.world.Chunk;
-import de.jcing.engine.world.Tile;
 import de.jcing.image.MultiImage;
 import de.jcing.utillities.log.Log;
 import de.jcing.utillities.task.Task;
@@ -46,7 +43,7 @@ public class Renderer {
 	
 	private Camera camera;
 	
-	private LinkedList<Tile> items;
+	private LinkedList<Renderable> items;
 	
 	private Chunk testChunk;
 
@@ -55,6 +52,7 @@ public class Renderer {
 		transformation = new Transformation();
 		camera = new Camera();
 		camera.setPosition(0, 0, 5);
+		camera.setRotation(-45f, 0, 0);
 		new Task(() -> {
 			if(KeyBoard.isPressed(GLFW.GLFW_KEY_W))
 				camera.movePosition(0, 0.1f, 0);
@@ -86,17 +84,9 @@ public class Renderer {
 				TextureAtlas tex = new TextureAtlas(imgs);
 				log.debug("tex: " + tex.getSubTexturesPerSide() + " w:" + tex.getSubTextureSideLength() + " total:" + tex.getSubTextureTotalCount());
 				items = new LinkedList<>();
-				testChunk = new Chunk(0,0);
+				testChunk = new Chunk(0,0,tex);
 				int index = 0;
-				for(int x = -5; x < 5; x++) {
-					for(int y = -5; y < 5; y++) {
-						Image img = new Image(tex, (index)%imgs.length);
-						log.debug("img " + x +"|" + y+ " - x: " + img.getX() + ", y: " + img.getY() + ", w: " + img.getWidth());
-						Tile t = new Tile(testChunk,x,y,img);
-						items.add(t);
-						index++;
-					}
-				}
+				items.add(testChunk);
 				
 				GL30.glViewport(0, 0, window.getWidth(), window.getHeight());
 				
@@ -122,7 +112,7 @@ public class Renderer {
 			Matrix4f viewMatrix = transformation.getViewMatrix(camera);
 			shader.setUniform("projectionMatrix", projectionMatrix);
 			shader.setUniform("texture_sampler", 0);
-			for(Tile item : items) {
+			for(Renderable item : items) {
 				Matrix4f modelViewMatrix = transformation.getModelViewMatrix(item, viewMatrix);
 				shader.setUniform("worldMatrix", modelViewMatrix);
 				// Draw the mesh
@@ -136,7 +126,7 @@ public class Renderer {
 	public void finish() {
 //		rotator.stop();
 		window.runInContext(() -> {
-			for(Tile item : items)
+			for(Renderable item : items)
 				item.getMesh().cleanUp();
 		});
 	}

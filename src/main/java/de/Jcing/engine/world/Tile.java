@@ -26,21 +26,22 @@ public class Tile implements Renderable {
 		this.texture = tex;
 		data = new VertexData();
 		float[] vertices = new float[12];
+		
 		//links oben
-		vertices[0] = 0;
-		vertices[1] = 0;
+		vertices[0] = xPos;
+		vertices[1] = yPos;
 		vertices[2] = 0;
 		//rechts oben
-		vertices[3] = 1;
-		vertices[4] = 0;
+		vertices[3] = xPos+1;
+		vertices[4] = yPos;
 		vertices[5] = 0;
 		//links unten
-		vertices[6] = 0;
-		vertices[7] = 1;
+		vertices[6] = xPos;
+		vertices[7] = yPos+1;
 		vertices[8] = 0;
 		//rechts unten
-		vertices[9] = 1;
-		vertices[10] = 1;
+		vertices[9] = xPos+1;
+		vertices[10] = yPos+1;
 		vertices[11] = 0;
 		
 		int[] indices = new int[6];
@@ -73,7 +74,7 @@ public class Tile implements Renderable {
 	
 	@Override
 	public Vector3f getPosition() {
-		return new Vector3f(chunk.getOffset().x + xPos, chunk.getOffset().y + yPos, chunk.getOffset().z);
+		return new Vector3f(chunk.getOffset().x, chunk.getOffset().y, chunk.getOffset().z);
 	}
 	
 	public VertexData getVertexData() {
