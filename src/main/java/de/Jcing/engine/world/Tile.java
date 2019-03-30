@@ -1,13 +1,9 @@
 package de.jcing.engine.world;
 
-import org.joml.Vector3f;
-
-import de.jcing.engine.gl.mesh.Mesh;
-import de.jcing.engine.gl.mesh.Renderable;
 import de.jcing.engine.gl.mesh.VertexData;
 import de.jcing.engine.texture.Image;
 
-public class Tile implements Renderable {
+public class Tile {
 	
 	private Image texture;
 	
@@ -17,7 +13,6 @@ public class Tile implements Renderable {
 	
 	private VertexData data;
 	
-	private Mesh mesh;
 	
 	public Tile(Chunk chunk, int xPos, int yPos, Image tex) {
 		this.chunk = chunk;
@@ -69,20 +64,9 @@ public class Tile implements Renderable {
 		data.setPositions(vertices);
 		data.setIndices(indices);
 		data.setTexCoords(textureCoordinates);
-		mesh = new Mesh(texture, data);
-	}
-	
-	@Override
-	public Vector3f getPosition() {
-		return new Vector3f(chunk.getOffset().x, chunk.getOffset().y, chunk.getOffset().z);
 	}
 	
 	public VertexData getVertexData() {
 		return data;
 	}
-	
-	public Mesh getMesh() {
-		return mesh;
-	}
-	
 }

@@ -28,7 +28,7 @@ public class Chunk implements Renderable {
 		LinkedList<VertexData> datas = new LinkedList<>();
 		for(int xi = 0; xi < tiles.length; xi++) {
 			for(int yi =0; yi < tiles.length; yi++) {
-				tiles[xi][yi] = new Tile(this, xi, yi, new Image(atlas, random.nextInt()));
+				tiles[xi][yi] = new Tile(this, xi, yi, new Image(atlas, random.nextInt()%atlas.getSubTextureTotalCount()));
 				datas.add(tiles[xi][yi].getVertexData());
 			}
 		}
@@ -36,10 +36,6 @@ public class Chunk implements Renderable {
 		
 	}
 	
-	public Vector3f getOffset() {
-		return offset;
-	}
-
 	@Override
 	public Mesh getMesh() {
 		return mesh;

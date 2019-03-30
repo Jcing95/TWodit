@@ -2,7 +2,7 @@ package de.jcing.engine.texture;
 
 public class Image extends TextureAtlas {
 		
-	private int index;
+	protected int index;
 	
 	public Image(TextureAtlas atlas, int index) {
 		super(atlas);

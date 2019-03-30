@@ -4,13 +4,13 @@ import java.awt.image.BufferedImage;
 
 import de.jcing.Main;
 
-public class SingleImage extends Image {
+public class SingleImage extends JImage {
 
-	protected ImageData data;
+	protected JImageData data;
 	
 	public SingleImage(String path) {
 		super(TYPE.single);
-		data = new ImageData(Main.RESSOURCES + path);
+		data = new JImageData(Main.RESSOURCES + path);
 		w = data.getWidth();
 		h = data.getHeight();
 		

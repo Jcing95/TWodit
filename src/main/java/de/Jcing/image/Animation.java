@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import de.jcing.Main;
 import de.jcing.utillities.task.Task;
 
-public class Animation extends Image {
+public class Animation extends JImage {
 	
 
 	public static final int DEFAULT_FRAMES_PER_SECOND = 5;
 	
-	protected ArrayList<ImageData> data;
+	protected ArrayList<JImageData> data;
 	protected int seed;
 	protected int fps;
 	
@@ -36,12 +36,12 @@ public class Animation extends Image {
 		this.fps = fps;
 	}
 
-	public static void loadAnimation(String path, ArrayList<ImageData> to) {
+	public static void loadAnimation(String path, ArrayList<JImageData> to) {
 		File dir = new File(path).getAbsoluteFile();
 		File[] expanded = dir.listFiles();
 		for(File f : expanded) {
-			if(Image.isValidImage(f.getName()))
-				to.add(new ImageData(f.getAbsolutePath()));
+			if(JImage.isValidImage(f.getName()))
+				to.add(new JImageData(f.getAbsolutePath()));
 		}
 	}
 

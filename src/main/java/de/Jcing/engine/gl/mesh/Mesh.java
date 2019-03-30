@@ -48,11 +48,11 @@ public class Mesh {
     	FloatBuffer posBuffer = null;
         FloatBuffer textCoordsBuffer = null;
         IntBuffer indicesBuffer = null;
-        vertexCount = 0;
         this.texture = texture;
         vboIdList = new ArrayList<>();
         vaoId = glGenVertexArrays();
         glBindVertexArray(vaoId);
+        
         int posSize=0;
         int texSize=0;
         int indiceSize=0;
@@ -61,7 +61,8 @@ public class Mesh {
         	texSize += d.texCoords.length;
         	indiceSize += d.indices.length;
         }
-        	
+        vertexCount = posSize;
+        log.debug("datacount: " + data.length);
         log.debug("posSize: " + posSize);
         log.debug("texSize: " + texSize);
         log.debug("indiceSize: " + indiceSize);
@@ -70,20 +71,25 @@ public class Mesh {
         	posBuffer = MemoryUtil.memAllocFloat(posSize);
         	textCoordsBuffer = MemoryUtil.memAllocFloat(texSize);
         	indicesBuffer = MemoryUtil.memAllocInt(indiceSize);
-        	int posPos=0;
-        	int posTex=0;
-        	int posInd=0;
+        	int vertexOffset=0;
+
         	for(VertexData d : data) {
         		posBuffer.put(d.positions, 0, d.positions.length);
         		textCoordsBuffer.put(d.texCoords, 0, d.texCoords.length);
+        		
+        		for (int i = 0; i < d.indices.length; i++) {
+					d.indices[i] += vertexOffset/3;
+				}
+        		
         		indicesBuffer.put(d.indices, 0, d.indices.length);
-        		posPos += d.positions.length;
-        		posTex += d.texCoords.length;
-        		posInd += d.indices.length;
+        		vertexOffset += d.positions.length;
+
         	}
+        	
         	posBuffer.flip();
         	textCoordsBuffer.flip();
         	indicesBuffer.flip();
+        	
             // Position VBO
         	int vboId = glGenBuffers();
             vboIdList.add(vboId);

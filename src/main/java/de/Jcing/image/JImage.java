@@ -2,7 +2,7 @@ package de.jcing.image;
 
 import java.awt.image.BufferedImage;
 
-public abstract class Image {
+public abstract class JImage {
 	
 	public static final String[] IMAGE_EXTENSIONS = { ".png", ".jpg" };
 	
@@ -16,8 +16,8 @@ public abstract class Image {
 	protected int w, h;
 	
 	
-	public Image(TYPE type) {
-
+	public JImage(TYPE type) {
+		this.type = type;
 	}
 	
 	public abstract BufferedImage get();

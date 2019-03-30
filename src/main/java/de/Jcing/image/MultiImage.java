@@ -8,13 +8,13 @@ import java.util.Random;
 import de.jcing.Main;
 import de.jcing.utillities.log.Log;
 
-public class MultiImage extends Image{
+public class MultiImage extends JImage{
 	
 	private static Log log = new Log(MultiImage.class).setLogLevel(Log.LOG_LEVEL.error);
 	//TODO: keep static track of loaded multiimages and clone if possible!
 	
 	protected static final Random random = new Random(1337);
-	protected ArrayList<ImageData> data;
+	protected ArrayList<JImageData> data;
 	protected int seed;
 	
 	public MultiImage(String...path) {
@@ -24,7 +24,7 @@ public class MultiImage extends Image{
 			loadImagesRecursively(Main.RESSOURCES + s, data);
 	}
 	
-	public static void loadImagesRecursively(String path, ArrayList<ImageData> to) {
+	public static void loadImagesRecursively(String path, ArrayList<JImageData> to) {
 		File dir = new File(path);
 		File[] expanded = dir.listFiles();
 		log.debug("loading images recursively from: " + dir.getPath());
@@ -32,8 +32,8 @@ public class MultiImage extends Image{
 		for(File f : expanded) {
 			if(f.isDirectory()) {
 				loadImagesRecursively(f.getPath(), to);
-			} else if(Image.isValidImage(f.getName())) {
-				to.add(new ImageData(f.getPath()));
+			} else if(JImage.isValidImage(f.getName())) {
+				to.add(new JImageData(f.getPath()));
 				counter++;
 			}
 		}

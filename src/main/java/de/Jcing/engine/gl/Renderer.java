@@ -29,23 +29,23 @@ public class Renderer {
 
 	private static final float Z_FAR = 1000.f;
 	
-	private static final float size = 0.5f;
-
+	private static final float DEFAULT_SPEED = 0.2f;
+	
+	private static final float SHIFT_MULT = 2.5f;
+	
 	private OpenGLWindow window;
 
 	private TestShader shader;
 
 	private Transformation transformation;
 	
-	private float rot;
-	
-	private Task rotator;
-	
 	private Camera camera;
 	
 	private LinkedList<Renderable> items;
 	
-	private Chunk testChunk;
+	private Chunk[][] testChunk;
+	
+	private Animation playerAnim;
 
 	public Renderer(OpenGLWindow win) {
 		this.window = win;
@@ -54,14 +54,17 @@ public class Renderer {
 		camera.setPosition(0, 0, 5);
 		camera.setRotation(-45f, 0, 0);
 		new Task(() -> {
+			float speed = DEFAULT_SPEED;
+			if(KeyBoard.isPressed(GLFW.GLFW_KEY_LEFT_SHIFT))
+				speed *= SHIFT_MULT;
 			if(KeyBoard.isPressed(GLFW.GLFW_KEY_W))
-				camera.movePosition(0, 0.1f, 0);
+				camera.movePosition(0, speed, 0);
 			if(KeyBoard.isPressed(GLFW.GLFW_KEY_A))
-				camera.movePosition(-0.1f, 0, 0);
+				camera.movePosition(-speed, 0, 0);
 			if(KeyBoard.isPressed(GLFW.GLFW_KEY_S))
-				camera.movePosition(0, -0.1f, 0);
+				camera.movePosition(0, -speed, 0);
 			if(KeyBoard.isPressed(GLFW.GLFW_KEY_D))
-				camera.movePosition(0.1f, 0, 0);
+				camera.movePosition(speed, 0, 0);
 		}).repeat(Task.perSecond(20)).start();
 		init();
 	}
@@ -76,7 +79,7 @@ public class Renderer {
 				shader.createUniform("worldMatrix");
 				shader.createUniform("texture_sampler");
 				MultiImage grass = new MultiImage("gfx/terrain/grass");
-				BufferedImage[] imgs = new BufferedImage[28];
+				BufferedImage[] imgs = new BufferedImage[16];
 				for(int i = 0; i < imgs.length; i++) {
 					grass.seed(i);
 					imgs[i] = grass.get();
@@ -84,9 +87,11 @@ public class Renderer {
 				TextureAtlas tex = new TextureAtlas(imgs);
 				log.debug("tex: " + tex.getSubTexturesPerSide() + " w:" + tex.getSubTextureSideLength() + " total:" + tex.getSubTextureTotalCount());
 				items = new LinkedList<>();
-				testChunk = new Chunk(0,0,tex);
-				int index = 0;
-				items.add(testChunk);
+				testChunk = new Chunk[20][20];
+				for(int x = -10; x < 10; x++)
+					for(int y = -10; y < 10; y++)
+						items.add(new Chunk(x,y,tex));
+//						testChunk[x][y] = 
 				
 				GL30.glViewport(0, 0, window.getWidth(), window.getHeight());
 				
@@ -94,10 +99,6 @@ public class Renderer {
 				e.printStackTrace();
 			}
 			
-//			rotator = new Task(() -> {
-//				rot += 0.2;
-//				camera.setRotation(0, 0, rot);
-//			}).repeat(10).start();
 		});
 
 		window.loopInContext(() -> {
@@ -112,6 +113,7 @@ public class Renderer {
 			Matrix4f viewMatrix = transformation.getViewMatrix(camera);
 			shader.setUniform("projectionMatrix", projectionMatrix);
 			shader.setUniform("texture_sampler", 0);
+			
 			for(Renderable item : items) {
 				Matrix4f modelViewMatrix = transformation.getModelViewMatrix(item, viewMatrix);
 				shader.setUniform("worldMatrix", modelViewMatrix);
@@ -124,7 +126,6 @@ public class Renderer {
 	}
 
 	public void finish() {
-//		rotator.stop();
 		window.runInContext(() -> {
 			for(Renderable item : items)
 				item.getMesh().cleanUp();

@@ -9,9 +9,9 @@ import javax.imageio.ImageIO;
 
 import de.jcing.utillities.log.Log;
 
-public class ImageData {
+public class JImageData {
 	
-	private static final Log log = new Log(ImageData.class);
+	private static final Log log = new Log(JImageData.class);
 	
 	protected static final HashMap<String, BufferedImage> LOADED_IMAGES = new HashMap<>();
 	
@@ -19,7 +19,7 @@ public class ImageData {
 	
 	protected BufferedImage data;
 	
-	public ImageData(String path) {
+	public JImageData(String path) {
 		if(LOADED_IMAGES.containsKey(path)) {
 			data = LOADED_IMAGES.get(path);
 		} else {
