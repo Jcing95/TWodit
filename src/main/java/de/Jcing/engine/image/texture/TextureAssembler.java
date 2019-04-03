@@ -12,6 +12,7 @@ public class TextureAssembler {
 	
 	private ArrayList<JImageData> mapping;
 	private HashMap<Integer, Integer> animationLengths;
+	private HashMap<Integer, AtlasCallback> callbacks;
 	
 	private TextureAtlas atlas;
 	private boolean initialized;
@@ -19,23 +20,30 @@ public class TextureAssembler {
 	public TextureAssembler() {
 		mapping = new ArrayList<>();
 		animationLengths = new HashMap<>();
+		callbacks = new HashMap<>();
 		initialized = false;
 	}
-	
-	public int addFrame(JImage img) {
+
+	public int addFrame(JImage img, AtlasCallback callback) {
 		int index = mapping.size();
 		Iterator<JImageData> i = img.iterator();
 		mapping.add(i.next());
+		if(callback != null) {
+			callbacks.put(index, callback);
+		}
 		return index;
 	}
 	
-	public int addFrames(JImage img) {
+	public int addFrames(JImage img, AtlasCallback callback) {
 		int index = mapping.size();
 		Iterator<JImageData> i = img.iterator();
 		while(i.hasNext()) {
 			mapping.add(i.next());
 		}
 		animationLengths.put(index,mapping.size()-index);
+		if(callback != null) {
+			callbacks.put(index, callback);
+		}
 		return index;
 	}
 
@@ -45,6 +53,9 @@ public class TextureAssembler {
 			imgs[i] = mapping.get(i).getBufferedImage();
 		}
 		atlas = new TextureAtlas(imgs);
+		for(int i: callbacks.keySet()) {
+			callbacks.get(i).atlasBuilt(i, atlas);;
+		}
 		initialized = true;
 	}
 	
