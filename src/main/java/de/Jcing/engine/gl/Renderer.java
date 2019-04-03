@@ -29,24 +29,16 @@ public class Renderer {
 	private static final float Z_NEAR = 0.01f;
 
 	private static final float Z_FAR = 1000.f;
-	
-	private static final float DEFAULT_SPEED = 0.2f;
-	
-	private static final float SHIFT_MULT = 2.5f;
-	
+
 	private OpenGLWindow window;
 
 	private TestShader shader;
 
 	private Transformation transformation;
-	
+
 	private Camera camera;
-	
+
 	private LinkedList<Renderable> items;
-	
-	private Chunk[][] testChunk;
-	
-	private Player player;
 
 	public Renderer(OpenGLWindow win) {
 		this.window = win;
@@ -55,83 +47,72 @@ public class Renderer {
 		camera.setPosition(0, 0, 5);
 		camera.setRotation(-45f, 0, 0);
 		new Task(() -> {
-			float speed = DEFAULT_SPEED;
-			if(KeyBoard.isPressed(GLFW.GLFW_KEY_LEFT_SHIFT))
-				speed *= SHIFT_MULT;
-			if(KeyBoard.isPressed(GLFW.GLFW_KEY_W))
-				camera.movePosition(0, speed, 0);
-			if(KeyBoard.isPressed(GLFW.GLFW_KEY_A))
-				camera.movePosition(-speed, 0, 0);
-			if(KeyBoard.isPressed(GLFW.GLFW_KEY_S))
-				camera.movePosition(0, -speed, 0);
-			if(KeyBoard.isPressed(GLFW.GLFW_KEY_D))
-				camera.movePosition(speed, 0, 0);
+			
 		}).repeat(Task.perSecond(20)).start();
-		init();
+		window.runInContext(() -> init());
 	}
 
 	private void init() {
-		window.runInContext(() -> {
-
-			try {
-				log.debug("init shader");
-				shader = new TestShader();
-				shader.createUniform("projectionMatrix");
-				shader.createUniform("worldMatrix");
-				shader.createUniform("texture_sampler");
-				JMultiImage grass = new JMultiImage("gfx/terrain/grass");
-				TextureAssembler ts = new TextureAssembler();
-				ts.addFrames(grass);
-				ts.buildAtlas();
-				Image[] images = new Image[ts.size()];
-				for (int i = 0; i < images.length; i++) {
-					images[i] = ts.getImage(i);
-				}
-//				log.debug("tex: " + tex.getSubTexturesPerSide() + " w:" + tex.getSubTextureSideLength() + " total:" + tex.getSubTextureTotalCount());
-				items = new LinkedList<>();
-				testChunk = new Chunk[20][20];
-				for(int x = -10; x < 10; x++)
-					for(int y = -10; y < 10; y++)
-						items.add(new Chunk(x,y,ts));
-//						testChunk[x][y] = 
-				
-				GL30.glViewport(0, 0, window.getWidth(), window.getHeight());
-				
-			} catch(Exception e) {
-				e.printStackTrace();
-			}
+		try {
+			log.debug("init shader");
+			shader = new TestShader();
+			shader.createUniform("projectionMatrix");
+			shader.createUniform("worldMatrix");
+			shader.createUniform("texture_sampler");
+			TextureAssembler ts = new TextureAssembler();
 			
-		});
-
-		window.loopInContext(() -> {
-			if (window.isResized()) {
-				GL30.glViewport(0, 0, window.getWidth(), window.getHeight());
-				window.setResized(false);
+			Image[] images = new Image[ts.size()];
+			for (int i = 0; i < images.length; i++) {
+				images[i] = ts.getImage(i);
 			}
-			shader.bind();
-			// update transformation
-			Matrix4f projectionMatrix = transformation.getProjectionMatrix(FOV, window.getWidth(), window.getHeight(),
-					Z_NEAR, Z_FAR);
-			Matrix4f viewMatrix = transformation.getViewMatrix(camera);
-			shader.setUniform("projectionMatrix", projectionMatrix);
-			shader.setUniform("texture_sampler", 0);
+			items = new LinkedList<>();
 			
-			for(Renderable item : items) {
-				Matrix4f modelViewMatrix = transformation.getModelViewMatrix(item, viewMatrix);
-				shader.setUniform("worldMatrix", modelViewMatrix);
-				// Draw the mesh
-				item.getMesh().render();
-			}
-			shader.unbind();
-		});
-		
+
+			GL30.glViewport(0, 0, window.getWidth(), window.getHeight());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		window.loopInContext(() -> render());
+
+	}
+
+	public void render() {
+		if (window.isResized()) {
+			GL30.glViewport(0, 0, window.getWidth(), window.getHeight());
+			window.setResized(false);
+		}
+		shader.bind();
+		// update transformation
+		Matrix4f projectionMatrix = transformation.getProjectionMatrix(FOV, window.getWidth(), window.getHeight(),
+				Z_NEAR, Z_FAR);
+		Matrix4f viewMatrix = transformation.getViewMatrix(camera);
+		shader.setUniform("projectionMatrix", projectionMatrix);
+		shader.setUniform("texture_sampler", 0);
+
+		for (Renderable item : items) {
+			Matrix4f modelViewMatrix = transformation.getModelViewMatrix(item, viewMatrix);
+			shader.setUniform("worldMatrix", modelViewMatrix);
+			// Draw the mesh
+			item.getMesh().render();
+		}
+		shader.unbind();
+	}
+	
+	public void addRenderable(Renderable r) {
+		items.add(r);
 	}
 
 	public void finish() {
 		window.runInContext(() -> {
-			for(Renderable item : items)
+			for (Renderable item : items)
 				item.getMesh().cleanUp();
 		});
+	}
+	
+	public Camera getCamera() {
+		return camera;
 	}
 
 }

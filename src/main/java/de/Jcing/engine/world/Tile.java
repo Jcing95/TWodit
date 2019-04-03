@@ -1,5 +1,8 @@
 package de.jcing.engine.world;
 
+import org.joml.Vector2i;
+
+import de.jcing.engine.gl.mesh.MeshFactory;
 import de.jcing.engine.gl.mesh.VertexData;
 import de.jcing.engine.image.texture.Image;
 
@@ -7,66 +10,22 @@ public class Tile {
 	
 	private Image texture;
 	
-	private final int xPos, yPos;
+	private final Vector2i pos;
 	
 	private Chunk chunk;
 	
 	private final VertexData data;
 	
-	
 	public Tile(Chunk chunk, int xPos, int yPos, Image tex) {
 		this.chunk = chunk;
-		this.xPos = xPos;
-		this.yPos = yPos;
+		this.pos = new Vector2i(xPos,yPos);
 		this.texture = tex;
-		data = new VertexData();
-		float[] vertices = new float[12];
-		
-		//links oben
-		vertices[0] = xPos;
-		vertices[1] = yPos;
-		vertices[2] = 0;
-		//rechts oben
-		vertices[3] = xPos+1;
-		vertices[4] = yPos;
-		vertices[5] = 0;
-		//links unten
-		vertices[6] = xPos;
-		vertices[7] = yPos+1;
-		vertices[8] = 0;
-		//rechts unten
-		vertices[9] = xPos+1;
-		vertices[10] = yPos+1;
-		vertices[11] = 0;
-		
-		int[] indices = new int[6];
-		indices[0] = 0;
-		indices[1] = 1;
-		indices[2] = 3;
-		
-		indices[3] = 0;
-		indices[4] = 2;
-		indices[5] = 3;
-		
-		float[] textureCoordinates = new float[8];
-		textureCoordinates[0] = texture.getX();
-		textureCoordinates[1] = texture.getY();
-		
-		textureCoordinates[2] = texture.getX()+texture.getWidth();
-		textureCoordinates[3] = texture.getY();
-		
-		textureCoordinates[4] = texture.getX();
-		textureCoordinates[5] = texture.getY()+texture.getWidth();
-		
-		textureCoordinates[6] = texture.getX()+texture.getWidth();
-		textureCoordinates[7] = texture.getY()+texture.getWidth();
-		
-		data.setPositions(vertices);
-		data.setIndices(indices);
-		data.setTexCoords(textureCoordinates);
+		data = MeshFactory.createRectData(xPos, yPos, 0, 1, 1, tex);
 	}
 	
 	public VertexData getVertexData() {
 		return data;
 	}
+	
+	
 }

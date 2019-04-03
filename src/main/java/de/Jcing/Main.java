@@ -29,6 +29,7 @@ public class Main {
 		win = new OpenGLWindow();
 		
 		renderer = new Renderer(win);
+		initGame();
 
 		win.run();
 //		
@@ -41,14 +42,13 @@ public class Main {
 //			if(key == KeyEvent.VK_ESCAPE)
 //				finish();
 //		});
-////		
+////	
 //		//Start the main scene.		
 	}
 	
 	
-	public static void initGame() 
-	{
-		game = new Game();
+	public static void initGame() {
+		game = new Game(win, renderer);
 	}
 	
 	public static void finish() {
