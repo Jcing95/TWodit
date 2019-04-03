@@ -1,6 +1,5 @@
 package de.jcing.engine.gl;
 
-import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
 import org.joml.Matrix4f;
@@ -8,10 +7,12 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL30;
 
 import de.jcing.engine.gl.mesh.Renderable;
+import de.jcing.engine.image.JMultiImage;
+import de.jcing.engine.image.texture.Image;
+import de.jcing.engine.image.texture.TextureAssembler;
 import de.jcing.engine.io.KeyBoard;
-import de.jcing.engine.texture.TextureAtlas;
 import de.jcing.engine.world.Chunk;
-import de.jcing.image.MultiImage;
+import de.jcing.game.Player;
 import de.jcing.utillities.log.Log;
 import de.jcing.utillities.task.Task;
 import de.jcing.window.OpenGLWindow;
@@ -45,7 +46,7 @@ public class Renderer {
 	
 	private Chunk[][] testChunk;
 	
-	private Animation playerAnim;
+	private Player player;
 
 	public Renderer(OpenGLWindow win) {
 		this.window = win;
@@ -78,19 +79,20 @@ public class Renderer {
 				shader.createUniform("projectionMatrix");
 				shader.createUniform("worldMatrix");
 				shader.createUniform("texture_sampler");
-				MultiImage grass = new MultiImage("gfx/terrain/grass");
-				BufferedImage[] imgs = new BufferedImage[16];
-				for(int i = 0; i < imgs.length; i++) {
-					grass.seed(i);
-					imgs[i] = grass.get();
+				JMultiImage grass = new JMultiImage("gfx/terrain/grass");
+				TextureAssembler ts = new TextureAssembler();
+				ts.addFrames(grass);
+				ts.buildAtlas();
+				Image[] images = new Image[ts.size()];
+				for (int i = 0; i < images.length; i++) {
+					images[i] = ts.getImage(i);
 				}
-				TextureAtlas tex = new TextureAtlas(imgs);
-				log.debug("tex: " + tex.getSubTexturesPerSide() + " w:" + tex.getSubTextureSideLength() + " total:" + tex.getSubTextureTotalCount());
+//				log.debug("tex: " + tex.getSubTexturesPerSide() + " w:" + tex.getSubTextureSideLength() + " total:" + tex.getSubTextureTotalCount());
 				items = new LinkedList<>();
 				testChunk = new Chunk[20][20];
 				for(int x = -10; x < 10; x++)
 					for(int y = -10; y < 10; y++)
-						items.add(new Chunk(x,y,tex));
+						items.add(new Chunk(x,y,ts));
 //						testChunk[x][y] = 
 				
 				GL30.glViewport(0, 0, window.getWidth(), window.getHeight());

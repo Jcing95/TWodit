@@ -3,14 +3,14 @@ package de.jcing.window.gui;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
-import de.jcing.image.SingleImage;
+import de.jcing.engine.image.JSingleImage;
 
 
 public class ImageView extends Canvas {
 	
-	SingleImage img;
+	JSingleImage img;
 	
-	public ImageView(SingleImage img, int x, int y, int w, int h) {
+	public ImageView(JSingleImage img, int x, int y, int w, int h) {
 		super(x, y, w, h);
 		this.img = img;
 		Graphics2D g = getGraphics();

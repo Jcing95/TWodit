@@ -1,11 +1,11 @@
 package de.jcing.engine.entity;
-W
+
 import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.joml.Vector2f;
 
-import de.jcing.engine.texture.Animation;
+import de.jcing.engine.image.texture.Animation;
 import de.jcing.geometry.Rectangle;
 import de.jcing.utillities.log.Log;
 import de.jcing.world.Stage;
@@ -43,7 +43,7 @@ public class Entity {
 	protected LinkedList<Runnable> onTick;
 
 
-	public Entity(Stage stage, float x, float y, float w, float h) {
+	public Entity(float x, float y, float w, float h) {
 		this.stage = stage;
 		position = new Vector2f(x,y);
 		this.w = w;

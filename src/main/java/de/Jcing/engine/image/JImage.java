@@ -1,27 +1,21 @@
-package de.jcing.image;
+package de.jcing.engine.image;
 
-import java.awt.image.BufferedImage;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 public abstract class JImage {
 	
 	public static final String[] IMAGE_EXTENSIONS = { ".png", ".jpg" };
 	
-	static enum TYPE {
-		single,
-		multi,
-		animation
-	}
+	protected LinkedList<JImageData> content;
 	
-	protected TYPE type;
 	protected int w, h;
 	
 	
-	public JImage(TYPE type) {
-		this.type = type;
+	public JImage() {
+		content = new LinkedList<>();
 	}
-	
-	public abstract BufferedImage get();
-	
+		
 	public int getWidth() {
 		return w;
 	}
@@ -30,16 +24,16 @@ public abstract class JImage {
 		return h;
 	}
 	
-	public TYPE getType(){
-		return type;
-	}
-	
 	public static boolean isValidImage(String path) {
 		for(String s : IMAGE_EXTENSIONS) {
 			if(path.endsWith(s))
 				return true;
 		}
 		return false;
+	}
+	
+	public Iterator<JImageData> iterator(){
+		return content.iterator();
 	}
 	
 }

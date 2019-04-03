@@ -1,4 +1,4 @@
-package de.jcing.engine.texture;
+package de.jcing.engine.image.texture;
 
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_RGBA;
@@ -31,7 +31,6 @@ public class Texture {
 
     protected final int id;
     protected final int width, height;
-    
     public static final int BYTES_PER_PIXEL = 4;
 
     public Texture(String fileName) throws Exception{
@@ -72,6 +71,11 @@ public class Texture {
     // PROTECTED FACTORY FUNCTIONS
     
     protected static Texture loadTexture(String fileName) throws Exception {
+    	int id = glGenTextures();
+    	return loadTexture(id, fileName);
+    }
+    
+    protected static Texture loadTexture(int textureId, String fileName) throws Exception {
         ByteBuffer buf;
         int width, height;
         // Load Texture file
@@ -91,8 +95,6 @@ public class Texture {
             width = w.get();
             height = h.get();
         
-	        // Create a new OpenGL texture
-	        int textureId = glGenTextures();
 	        // Bind the texture
 	        glBindTexture(GL_TEXTURE_2D, textureId);
 	
@@ -114,6 +116,12 @@ public class Texture {
     }
     
     protected static Texture loadTexture(BufferedImage image) {
+    	// Create a new OpenGL texture
+        int textureId = glGenTextures();
+        return loadTexture(textureId, image);
+    }
+    
+    protected static Texture loadTexture(int textureId, BufferedImage image) {
         int[] pixels = new int[image.getWidth() * image.getHeight()];
         image.getRGB(0, 0, image.getWidth(), image.getHeight(), pixels, 0, image.getWidth());
 
@@ -131,8 +139,6 @@ public class Texture {
 
         buffer.flip(); //FOR THE LOVE OF GOD DO NOT FORGET THIS
         
-        // Create a new OpenGL texture
-        int textureId = glGenTextures();
         // Bind the texture
         glBindTexture(GL_TEXTURE_2D, textureId);
 

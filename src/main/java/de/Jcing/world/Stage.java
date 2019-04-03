@@ -95,22 +95,22 @@ public class Stage implements Drawable {
 	@Override
 	public void draw(Graphics2D g) {
 		// update stage camera here for consistent offset during rendering.
-		fixedCamera = camera.clone();
-		if (Main.getGame() != null && Main.getGame().isInitialized()) {
-
-			try {
-				for (Point p : loadedChunks) {
-					Chunk c = chunks.get(p);
-					if (c != null)
-						c.draw(g, fixedCamera);
-				}
-			} catch (ConcurrentModificationException e) {
-				System.err.println("mod!");
-			}
-
-			for (Integer e : entities.keySet())
-				entities.get(e).draw(g, fixedCamera);
-		}
+//		fixedCamera = camera.clone();
+//		if (Main.getGame() != null && Main.getGame().isInitialized()) {
+//
+//			try {
+//				for (Point p : loadedChunks) {
+//					Chunk c = chunks.get(p);
+//					if (c != null)
+//						c.draw(g, fixedCamera);
+//				}
+//			} catch (ConcurrentModificationException e) {
+//				System.err.println("mod!");
+//			}
+//
+//			for (Integer e : entities.keySet())
+//				entities.get(e).draw(g, fixedCamera);
+//		}
 	}
 
 	public void addChunk(int x, int y) {

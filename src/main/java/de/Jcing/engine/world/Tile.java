@@ -1,17 +1,17 @@
 package de.jcing.engine.world;
 
 import de.jcing.engine.gl.mesh.VertexData;
-import de.jcing.engine.texture.Image;
+import de.jcing.engine.image.texture.Image;
 
 public class Tile {
 	
 	private Image texture;
 	
-	private int xPos, yPos;
+	private final int xPos, yPos;
 	
 	private Chunk chunk;
 	
-	private VertexData data;
+	private final VertexData data;
 	
 	
 	public Tile(Chunk chunk, int xPos, int yPos, Image tex) {

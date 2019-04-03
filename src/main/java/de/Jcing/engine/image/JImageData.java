@@ -1,4 +1,4 @@
-package de.jcing.image;
+package de.jcing.engine.image;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -33,11 +33,19 @@ public class JImageData {
 		}
 	}
 	
+	public int getID() {
+		return path.hashCode();
+	}
+	
 	public int getWidth() {
 		return data.getWidth();
 	}
 	
 	public int getHeight() {
 		return data.getHeight();
+	}
+
+	public BufferedImage getBufferedImage() {
+		return data;
 	}
 }

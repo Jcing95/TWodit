@@ -9,8 +9,8 @@ import java.util.LinkedList;
 import de.jcing.Main;
 import de.jcing.engine.Trigger;
 import de.jcing.engine.entity.Entity;
+import de.jcing.engine.image.MultiImage;
 import de.jcing.geometry.Rectangle;
-import de.jcing.image.MultiImage;
 import de.jcing.util.Point;
 
 public class Tile {

@@ -5,11 +5,11 @@ import java.awt.event.KeyEvent;
 
 import de.jcing.Main;
 import de.jcing.engine.entity.Entity;
+import de.jcing.engine.image.JAnimation;
+import de.jcing.engine.image.SingleImage;
 import de.jcing.engine.io.KeyBoard;
 import de.jcing.engine.io.Mouse;
 import de.jcing.game.menu.PauseMenu;
-import de.jcing.image.Animation;
-import de.jcing.image.SingleImage;
 import de.jcing.util.PointMorph;
 import de.jcing.util.Strings;
 import de.jcing.utillities.log.Log;
@@ -74,7 +74,7 @@ public class Game {
 		Main.getWindow().gui().addComponent(posLabel);
 		tick = new Task(() -> tick()).name("GameTick").repeat(Task.perSecond(60)).inTopic(gameTopic);
 		new Task(() -> fpsLabel.setText("FPS: " + Main.getWindow().getFPS() + " - TPS: " + tick.getTps())).name("FPS updater").repeat(Task.perSecond(1)).inTopic(gameTopic);
-		new Task(() -> posLabel.setText("X: " + player.getX() + ", Y: " + player.getY())).name("Player Pos updater").repeat(Task.perSecond(10)).inTopic(gameTopic);
+//		new Task(() -> posLabel.setText("X: " + player.getX() + ", Y: " + player.getY())).name("Player Pos updater").repeat(Task.perSecond(10)).inTopic(gameTopic);
 
 		LOG.info("added FPS label..");
 
@@ -121,46 +121,46 @@ public class Game {
 		LOG.info("added progress bar..");
 
 		
-		player = new Entity(mainStage,0,0,20,20);
-		player.setAnim(Entity.ON_LEFT, new Animation("gfx/player/left/"));
-		player.setAnim(Entity.ON_RIGHT, new Animation("gfx/player/right/"));
-		player.setAnim(Entity.ON_UP, new Animation("gfx/player/up/"));
-		player.setAnim(Entity.ON_DOWN, new Animation("gfx/player/down/"));
-		mainStage.addEntity(player);
-		playerPosMorph = new PointMorph(player.getPosition()) {
-
-			@Override
-			public double morphX(double x) {
-				return x/Chunk.TILE_COUNT;
-			}
-
-			@Override
-			public double morphY(double y) {
-				return y/Chunk.TILE_COUNT;
-			}
-			
-		};
-		mainStage.setLoadingAnchor(playerPosMorph);
-		LOG.info("added entity..");
-		cameraMorph = new PointMorph(player.getPosition()) {
-
-			@Override
-			public double morphX(double x) {
-				return x*Tile.TILE_PIXELS/Main.getWindow().getPixelWidth() - Window.PIXEL_WIDTH/2;
-			}
-
-			@Override
-			public double morphY(double y) {
-				return y*Tile.TILE_PIXELS/Main.getWindow().getPixelHeight() - Window.PIXEL_HEIGHT/2;
-			}
-			
-		};
-		mainStage.setCamera(cameraMorph);		
-		
-		KeyBoard.listenOnToggle(KeyEvent.VK_P);
-		gameTopic.start();
-		Mouse.addBinding(Mouse.ONCLICK, (i) -> mainStage.handleClick());
-		isIntitialized = true;
+//		player = new Entity(mainStage,0,0,20,20);
+//		player.setAnim(Entity.ON_LEFT, new Animation("gfx/player/left/"));
+//		player.setAnim(Entity.ON_RIGHT, new Animation("gfx/player/right/"));
+//		player.setAnim(Entity.ON_UP, new Animation("gfx/player/up/"));
+//		player.setAnim(Entity.ON_DOWN, new Animation("gfx/player/down/"));
+//		mainStage.addEntity(player);
+//		playerPosMorph = new PointMorph(player.getPosition()) {
+//
+//			@Override
+//			public double morphX(double x) {
+//				return x/Chunk.TILE_COUNT;
+//			}
+//
+//			@Override
+//			public double morphY(double y) {
+//				return y/Chunk.TILE_COUNT;
+//			}
+//			
+//		};
+//		mainStage.setLoadingAnchor(playerPosMorph);
+//		LOG.info("added entity..");
+//		cameraMorph = new PointMorph(player.getPosition()) {
+//
+//			@Override
+//			public double morphX(double x) {
+//				return x*Tile.TILE_PIXELS/Main.getWindow().getPixelWidth() - Window.PIXEL_WIDTH/2;
+//			}
+//
+//			@Override
+//			public double morphY(double y) {
+//				return y*Tile.TILE_PIXELS/Main.getWindow().getPixelHeight() - Window.PIXEL_HEIGHT/2;
+//			}
+//			
+//		};
+//		mainStage.setCamera(cameraMorph);		
+//		
+//		KeyBoard.listenOnToggle(KeyEvent.VK_P);
+//		gameTopic.start();
+//		Mouse.addBinding(Mouse.ONCLICK, (i) -> mainStage.handleClick());
+//		isIntitialized = true;
 	}
 	
 	public void tick() {	
