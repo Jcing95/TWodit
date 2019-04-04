@@ -8,7 +8,7 @@ import java.util.LinkedList;
 
 import de.jcing.Main;
 import de.jcing.engine.Trigger;
-import de.jcing.engine.entity.Entity;
+import de.jcing.engine.entity.Creature;
 import de.jcing.engine.image.MultiImage;
 import de.jcing.geometry.Rectangle;
 import de.jcing.util.Point;
@@ -18,7 +18,7 @@ public class Tile {
 	public static final int TILE_PIXELS = 32;
 	
 	private LinkedList<MultiImage> textures;
-	private LinkedList<Entity> entities;
+	private LinkedList<Creature> entities;
 	private LinkedList<Trigger> triggers;
 	
 	private MultiImage testBack = new MultiImage("gfx/terrain/grass");
@@ -103,16 +103,16 @@ public class Tile {
 			textures.removeFirst();
 	}
 	
-	public LinkedList<Entity> getEntities(){
+	public LinkedList<Creature> getEntities(){
 		return entities;
 	}
 	
-	public Tile enter(Entity e) {
+	public Tile enter(Creature e) {
 		entities.add(e);
 		return this;
 	}
 	
-	public void leave(Entity e) {
+	public void leave(Creature e) {
 		entities.remove(e);
 	}
 	

@@ -54,7 +54,7 @@ public class TextureAssembler {
 		}
 		atlas = new TextureAtlas(imgs);
 		for(int i: callbacks.keySet()) {
-			callbacks.get(i).atlasBuilt(i, atlas);;
+			callbacks.get(i).built(i, this);
 		}
 		initialized = true;
 	}

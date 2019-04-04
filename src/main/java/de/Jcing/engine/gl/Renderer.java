@@ -3,18 +3,10 @@ package de.jcing.engine.gl;
 import java.util.LinkedList;
 
 import org.joml.Matrix4f;
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL30;
 
 import de.jcing.engine.gl.mesh.Renderable;
-import de.jcing.engine.image.JMultiImage;
-import de.jcing.engine.image.texture.Image;
-import de.jcing.engine.image.texture.TextureAssembler;
-import de.jcing.engine.io.KeyBoard;
-import de.jcing.engine.world.Chunk;
-import de.jcing.game.Player;
 import de.jcing.utillities.log.Log;
-import de.jcing.utillities.task.Task;
 import de.jcing.window.OpenGLWindow;
 
 public class Renderer {
@@ -44,11 +36,11 @@ public class Renderer {
 		this.window = win;
 		transformation = new Transformation();
 		camera = new Camera();
+		items = new LinkedList<>();
+
 		camera.setPosition(0, 0, 5);
 		camera.setRotation(-45f, 0, 0);
-		new Task(() -> {
-			
-		}).repeat(Task.perSecond(20)).start();
+
 		window.runInContext(() -> init());
 	}
 
@@ -59,13 +51,6 @@ public class Renderer {
 			shader.createUniform("projectionMatrix");
 			shader.createUniform("worldMatrix");
 			shader.createUniform("texture_sampler");
-			TextureAssembler ts = new TextureAssembler();
-			
-			Image[] images = new Image[ts.size()];
-			for (int i = 0; i < images.length; i++) {
-				images[i] = ts.getImage(i);
-			}
-			items = new LinkedList<>();
 			
 
 			GL30.glViewport(0, 0, window.getWidth(), window.getHeight());
@@ -101,7 +86,11 @@ public class Renderer {
 	}
 	
 	public void addRenderable(Renderable r) {
-		items.add(r);
+		window.runInContext(() -> items.add(r));
+	}
+
+	public void removeRenderable(Renderable r) {
+		window.runInContext(() -> items.remove(r));
 	}
 
 	public void finish() {

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import de.jcing.Main;
-import de.jcing.engine.entity.Entity;
+import de.jcing.engine.entity.Creature;
 import de.jcing.engine.graphics.Drawable;
 import de.jcing.util.Point;
 import de.jcing.utillities.log.Log;
@@ -21,7 +21,7 @@ public class Stage implements Drawable {
 	public static int loadingHeight = 5;
 
 	private HashMap<Point, Chunk> chunks;
-	private HashMap<Integer, Entity> entities;
+	private HashMap<Integer, Creature> entities;
 	private HashSet<Point> loadedChunks;
 
 	private Point camera;
@@ -55,7 +55,7 @@ public class Stage implements Drawable {
 			lastAnchor = loadingAnchor.clone();
 			new Task(() -> updateChunks()).name("chunkloader").start();
 		}
-		for (Entity e : entities.values())
+		for (Creature e : entities.values())
 			e.tick();
 
 	}
@@ -180,7 +180,7 @@ public class Stage implements Drawable {
 		}
 	}
 
-	public int addEntity(Entity entity) {
+	public int addEntity(Creature entity) {
 		entities.put(entity.hashCode(), entity);
 		return entity.hashCode();
 	}
