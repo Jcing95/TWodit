@@ -29,12 +29,13 @@ import java.util.List;
 
 import org.lwjgl.system.MemoryUtil;
 
+import de.jcing.engine.gl.Shader;
 import de.jcing.engine.image.texture.Texture;
 import de.jcing.utillities.log.Log;
 
 public class Mesh {
 	
-	private static final Log log = new Log(Mesh.class);
+	private static final Log log = new Log(Mesh.class).mute(true);
 
     private final int vaoId;
 
@@ -230,5 +231,6 @@ public class Mesh {
         glBindVertexArray(0);
         glDeleteVertexArrays(vaoId);
     }
+
 
 }

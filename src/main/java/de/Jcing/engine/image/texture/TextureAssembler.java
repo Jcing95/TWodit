@@ -4,59 +4,59 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import de.jcing.engine.image.JImage;
 import de.jcing.engine.image.JImageData;
 
 public class TextureAssembler {
 	
-	private ArrayList<JImageData> mapping;
+	private ArrayList<JImageData> images;
 	private HashMap<Integer, Integer> animationLengths;
-	private HashMap<Integer, AtlasCallback> callbacks;
+	private LinkedList<AtlasCallback> callbacks;
 	
 	private TextureAtlas atlas;
 	private boolean initialized;
 	
 	public TextureAssembler() {
-		mapping = new ArrayList<>();
+		images = new ArrayList<>();
 		animationLengths = new HashMap<>();
-		callbacks = new HashMap<>();
+		callbacks = new LinkedList<>();
 		initialized = false;
 	}
 
-	public int addFrame(JImage img, AtlasCallback callback) {
-		int index = mapping.size();
+	public int addFrame(JImage img) {
+		int index = images.size();
 		Iterator<JImageData> i = img.iterator();
-		mapping.add(i.next());
-		if(callback != null) {
-			callbacks.put(index, callback);
-		}
+		images.add(i.next());
 		return index;
 	}
 	
-	public int addFrames(JImage img, AtlasCallback callback) {
-		int index = mapping.size();
+	public int addFrames(JImage img) {
+		int index = images.size();
 		Iterator<JImageData> i = img.iterator();
 		while(i.hasNext()) {
-			mapping.add(i.next());
+			images.add(i.next());
 		}
-		animationLengths.put(index,mapping.size()-index);
-		if(callback != null) {
-			callbacks.put(index, callback);
-		}
+		animationLengths.put(index,images.size()-index);
 		return index;
+	}
+	
+	public void addCallback(AtlasCallback callback) {
+		callbacks.add(callback);
 	}
 
 	public void buildAtlas() {
-		BufferedImage[] imgs = new BufferedImage[mapping.size()];
-		for (int i = 0; i < mapping.size(); i++) {
-			imgs[i] = mapping.get(i).getBufferedImage();
+		BufferedImage[] imgs = new BufferedImage[images.size()];
+		for (int i = 0; i < images.size(); i++) {
+			imgs[i] = images.get(i).getBufferedImage();
 		}
 		atlas = new TextureAtlas(imgs);
-		for(int i: callbacks.keySet()) {
-			callbacks.get(i).built(i, this);
-		}
 		initialized = true;
+		
+		for(AtlasCallback c: callbacks) {
+			c.built(this);
+		}
 	}
 	
 	public Image getImage(int id) throws RuntimeException {
@@ -78,7 +78,7 @@ public class TextureAssembler {
 	}
 	
 	public int size() {
-		return mapping.size();
+		return images.size();
 	}
 	
 }

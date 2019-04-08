@@ -25,12 +25,9 @@ public abstract class Stage {
 		this.camera = cam;
 		chunks = new HashMap<Vector2i, Chunk>();
 		assembler = new TextureAssembler();
-		
-		
-		init();
 	}
 	
-	private void init() {
+	protected void init() {
 		feedAssembler(assembler);
 		assembler.buildAtlas();
 		createChunks(chunks, assembler);

@@ -3,14 +3,12 @@ package de.jcing.engine.entity;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import org.joml.Vector2f;
-
 import de.jcing.engine.image.texture.Animation;
 import de.jcing.geometry.Rectangle;
 import de.jcing.utillities.log.Log;
 import de.jcing.world.Stage;
 
-public class Creature {
+public class Creature extends Entity {
 	
 	private static final Log LOG = new Log(Creature.class);
 
@@ -32,8 +30,6 @@ public class Creature {
 
 	protected Rectangle collisionBox;
 
-	protected Vector2f position;
-
 	protected float w, h;
 
 	protected float speedX, speedY;
@@ -43,16 +39,10 @@ public class Creature {
 	protected LinkedList<Runnable> onTick;
 
 
-	public Creature(float x, float y, float w, float h) {
-		this.stage = stage;
-		position = new Vector2f(x,y);
-		this.w = w;
-		this.h = h;
+	public Creature() {
+		super();
 		onTick = new LinkedList<>();
-//		tileOccupationMask = createOccupationMask(Tile.TILE_PIXELS);
-		sprite = new HashMap<>();
-		LOG.debug("creating entity at: " +  x + "|" + y + " w/ " + w + "*" + h + "px");
-		
+		sprite = new HashMap<>();		
 	}
 	
 	public void tick() {
@@ -101,11 +91,6 @@ public class Creature {
 	
 	public Rectangle getFootPrint() {
 		return collisionBox;
-	}
-
-	
-	public Vector2f getPosition() {
-		return position;
 	}
 
 	public void setAnim(ANIM on, Animation img) {

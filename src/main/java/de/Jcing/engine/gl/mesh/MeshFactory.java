@@ -34,18 +34,22 @@ public class MeshFactory {
 		indices[4] = 2;
 		indices[5] = 3;
 		
+		float ts = texture.getWidth();
+		float tx = texture.getX();
+		float ty = texture.getY();
+		
 		float[] textureCoordinates = new float[8];
-		textureCoordinates[0] = texture.getX();
-		textureCoordinates[1] = texture.getY();
+		textureCoordinates[0] = tx;
+		textureCoordinates[1] = ty;
 		
-		textureCoordinates[2] = texture.getX()+texture.getWidth();
-		textureCoordinates[3] = texture.getY();
+		textureCoordinates[2] = tx+ts;
+		textureCoordinates[3] = ty;
 		
-		textureCoordinates[4] = texture.getX();
-		textureCoordinates[5] = texture.getY()+texture.getWidth();
+		textureCoordinates[4] = tx;
+		textureCoordinates[5] = ty+ts;
 		
-		textureCoordinates[6] = texture.getX()+texture.getWidth();
-		textureCoordinates[7] = texture.getY()+texture.getWidth();
+		textureCoordinates[6] = tx+ts;
+		textureCoordinates[7] = ty+ts;
 		
 		data.setPositions(vertices);
 		data.setIndices(indices);

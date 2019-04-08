@@ -27,6 +27,8 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryStack;
 
+import de.jcing.engine.gl.Shader;
+
 public class Texture {
 
     protected final int id;

@@ -106,31 +106,31 @@ public abstract class Shader {
 	}
 	
 
-	protected void setUniform(String location, float value) {
+	public void setUniform(String location, float value) {
 		GL30.glUniform1f(uniforms.get(location), value);
 	}
 
-	protected void setUniform(String location, int value) {
+	public void setUniform(String location, int value) {
 		GL30.glUniform1i(uniforms.get(location), value);
 	}
 
-	protected void setUniform(String location, Vector3f vector) {
+	public void setUniform(String location, Vector3f vector) {
 		GL30.glUniform3f(uniforms.get(location), vector.x, vector.y, vector.z);
 	}
 
-	protected void setUniform(String location, Vector2f vector) {
+	public void setUniform(String location, Vector2f vector) {
 		GL30.glUniform2f(uniforms.get(location), vector.x, vector.y);
 	}
 
-	protected void setUniform(String location, float[] value) {
+	public void setUniform(String location, float[] value) {
 		GL30.glUniform1fv(uniforms.get(location), value);
 	}
 	
-	protected void setUniform(String location, boolean value) {
+	public void setUniform(String location, boolean value) {
 		GL30.glUniform1f(uniforms.get(location), value ? 1f : 0f);
 	}
 	
-	protected void setUniform(String location, Matrix4f value) {
+	public void setUniform(String location, Matrix4f value) {
 		// Dump the matrix into a float buffer
 		try (MemoryStack stack = MemoryStack.stackPush()) {
 			FloatBuffer fb = stack.mallocFloat(16);
@@ -139,7 +139,7 @@ public abstract class Shader {
 		}
 	}
 
-	protected void bindAttribute(int attribute, String variableName) {
+	public void bindAttribute(int attribute, String variableName) {
 		GL30.glBindAttribLocation(programID, attribute, variableName);
 	}
 }

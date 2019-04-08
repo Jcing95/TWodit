@@ -3,6 +3,7 @@ package de.jcing.engine.gl;
 import java.util.LinkedList;
 
 import org.joml.Matrix4f;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
 import de.jcing.engine.gl.mesh.Renderable;
@@ -51,8 +52,10 @@ public class Renderer {
 			shader.createUniform("projectionMatrix");
 			shader.createUniform("worldMatrix");
 			shader.createUniform("texture_sampler");
-			
-
+			shader.createUniform("texOffset");
+			shader.createUniform("alpha");
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			GL30.glViewport(0, 0, window.getWidth(), window.getHeight());
 
 		} catch (Exception e) {
@@ -72,18 +75,23 @@ public class Renderer {
 		// update transformation
 		Matrix4f projectionMatrix = transformation.getProjectionMatrix(FOV, window.getWidth(), window.getHeight(),
 				Z_NEAR, Z_FAR);
-		Matrix4f viewMatrix = transformation.getViewMatrix(camera);
 		shader.setUniform("projectionMatrix", projectionMatrix);
 		shader.setUniform("texture_sampler", 0);
 
 		for (Renderable item : items) {
-			Matrix4f modelViewMatrix = transformation.getModelViewMatrix(item, viewMatrix);
-			shader.setUniform("worldMatrix", modelViewMatrix);
-			// Draw the mesh
-			item.getMesh().render();
+			if(item.isInitialized()) {
+				Matrix4f viewMatrix = transformation.getViewMatrix(camera);
+				Matrix4f modelViewMatrix = transformation.getModelViewMatrix(item, viewMatrix);
+				shader.setUniform("worldMatrix", modelViewMatrix);
+				shader.setUniform("texOffset", item.getTextureOffset());
+				shader.setUniform("alpha", item.getAlpha());
+				// Draw the mesh
+				item.getMesh().render();
+			}
 		}
 		shader.unbind();
 	}
+	
 	
 	public void addRenderable(Renderable r) {
 		window.runInContext(() -> items.add(r));

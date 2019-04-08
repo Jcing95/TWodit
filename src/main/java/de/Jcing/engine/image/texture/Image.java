@@ -1,5 +1,7 @@
 package de.jcing.engine.image.texture;
 
+import org.joml.Vector2f;
+
 public class Image extends TextureAtlas {
 		
 	protected int index;
@@ -19,6 +21,15 @@ public class Image extends TextureAtlas {
 	
 	public float getWidth() {
 		return 1.0f/getSubTexturesPerSide();
+	}
+
+	@Override
+	public Vector2f getOffset() {
+		return new Vector2f(0,0);
+	}
+	
+	public int getIndex() {
+		return index;
 	}
 		
 }
