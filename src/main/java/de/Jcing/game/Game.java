@@ -1,10 +1,10 @@
 package de.jcing.game;
 
 import de.jcing.engine.gl.Renderer;
+import de.jcing.engine.window.Window;
 import de.jcing.game.stages.MainStage;
 import de.jcing.utillities.log.Log;
 import de.jcing.utillities.task.Task;
-import de.jcing.window.OpenGLWindow;
 
 public class Game {
 	
@@ -18,9 +18,9 @@ public class Game {
 	
 	Renderer renderer;
 	
-	OpenGLWindow win;
+	Window win;
 		
-	public Game (OpenGLWindow win, Renderer renderer) {
+	public Game (Window win, Renderer renderer) {
 		this.renderer = renderer;
 		this.win = win;
 		isInitialized = false;

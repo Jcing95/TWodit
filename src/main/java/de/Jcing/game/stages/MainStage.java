@@ -46,8 +46,8 @@ public class MainStage extends Stage {
 
 	public void prepareRenderer(Renderer r) {
 		for(Chunk c : chunks.values())
-			r.addRenderable(c);
-		r.addRenderable(player);
+			r.addRenderable(r.getTerrainShader(),c);
+		r.addRenderable(r.getEntityShader(),player);
 	}
 	
 	@Override

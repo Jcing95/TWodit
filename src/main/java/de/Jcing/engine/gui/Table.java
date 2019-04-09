@@ -1,4 +1,4 @@
-package de.jcing.window.gui;
+package de.jcing.engine.gui;
 
 public class Table extends ScrollPane {
 

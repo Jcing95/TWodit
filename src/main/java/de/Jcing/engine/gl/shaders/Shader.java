@@ -1,4 +1,4 @@
-package de.jcing.engine.gl;
+package de.jcing.engine.gl.shaders;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

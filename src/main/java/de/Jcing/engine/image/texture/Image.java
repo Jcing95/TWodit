@@ -31,5 +31,11 @@ public class Image extends TextureAtlas {
 	public int getIndex() {
 		return index;
 	}
+	
+	public void set(Image image) {
+		//TODO: throw exception...
+		if(id == image.id)
+			index = image.getIndex();
+	}
 		
 }

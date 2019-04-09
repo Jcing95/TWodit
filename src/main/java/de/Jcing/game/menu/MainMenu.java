@@ -3,9 +3,9 @@ package de.jcing.game.menu;
 import java.awt.Color;
 
 import de.jcing.Main;
-import de.jcing.window.Window;
-import de.jcing.window.gui.Button;
-import de.jcing.window.gui.Container;
+import de.jcing.engine.gui.Button;
+import de.jcing.engine.gui.Container;
+import de.jcing.engine.window.SwingWindow;
 
 public class MainMenu extends Container {
 	
@@ -13,10 +13,10 @@ public class MainMenu extends Container {
 	
 	
 	public MainMenu() {
-		super(0,0,Window.PIXEL_WIDTH,Window.PIXEL_HEIGHT);
+		super(0,0,SwingWindow.PIXEL_WIDTH,SwingWindow.PIXEL_HEIGHT);
 		
-		play = new Button("   P L A Y   ",Window.PIXEL_WIDTH/2,Window.PIXEL_HEIGHT/3);
-		exit = new Button("   E X I T   ",Window.PIXEL_WIDTH/2,Window.PIXEL_HEIGHT/3*2);
+		play = new Button("   P L A Y   ",SwingWindow.PIXEL_WIDTH/2,SwingWindow.PIXEL_HEIGHT/3);
+		exit = new Button("   E X I T   ",SwingWindow.PIXEL_WIDTH/2,SwingWindow.PIXEL_HEIGHT/3*2);
 		play.centerHorizontal(true);
 		play.centerVertical(true);
 		exit.centerHorizontal(true);
@@ -24,7 +24,7 @@ public class MainMenu extends Container {
 		
 		play.getOnClick().add(() -> { 
 			unlisten();
-			Main.getWindow().removeDrawable(this);
+//			Main.getSwingWindow().removeDrawable(this);
 			new Thread(() -> Main.initGame()).start();
 		});
 		
@@ -36,7 +36,7 @@ public class MainMenu extends Container {
 		addComponent(exit);
 		listenOnMouse();
 		
-		Main.getWindow().addDrawable(this);
+//		Main.getSwingWindow().addDrawable(this);
 	}
 	
 	

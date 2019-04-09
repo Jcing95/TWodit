@@ -1,12 +1,12 @@
 package de.jcing;
 
 import de.jcing.engine.gl.Renderer;
+import de.jcing.engine.window.SwingWindow;
+import de.jcing.engine.window.Window;
 import de.jcing.game.Game;
 import de.jcing.game.menu.MainMenu;
 import de.jcing.utillities.log.Log;
 import de.jcing.utillities.task.Topic;
-import de.jcing.window.OpenGLWindow;
-import de.jcing.window.Window;
 
 public class Main {
 	
@@ -14,9 +14,9 @@ public class Main {
 	
 	private static Game game;
 	
-	private static Window window;
+	private static SwingWindow window;
 	
-	private static OpenGLWindow win;
+	private static Window win;
 	
 	private static MainMenu mainMenu;
 	
@@ -26,7 +26,7 @@ public class Main {
 	
 	public static void main(String[] args) {
 //		
-		win = new OpenGLWindow();
+		win = new Window();
 		
 		renderer = new Renderer(win);
 		initGame();
@@ -64,7 +64,7 @@ public class Main {
 		return mainMenu;
 	}
 	
-	public static Window getWindow() {
+	public static SwingWindow getWindow() {
 		return window;
 	}
 	

@@ -4,9 +4,9 @@ import java.awt.AlphaComposite;
 import java.awt.Composite;
 import java.awt.Graphics2D;
 
+import de.jcing.engine.gui.Component;
+import de.jcing.engine.gui.Component.DrawHook;
 import de.jcing.util.Util;
-import de.jcing.window.gui.Component;
-import de.jcing.window.gui.Component.DrawHook;
 import de.jcing.window.gui.utillities.Group;
 
 public class Fader extends Animator {

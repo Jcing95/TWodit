@@ -9,19 +9,20 @@ import java.util.LinkedList;
 import de.jcing.Main;
 import de.jcing.engine.Trigger;
 import de.jcing.engine.entity.Creature;
-import de.jcing.engine.image.MultiImage;
+import de.jcing.engine.image.JMultiImage;
 import de.jcing.geometry.Rectangle;
 import de.jcing.util.Point;
 
+@Deprecated
 public class Tile {
 	
 	public static final int TILE_PIXELS = 32;
 	
-	private LinkedList<MultiImage> textures;
+	private LinkedList<JMultiImage> textures;
 	private LinkedList<Creature> entities;
 	private LinkedList<Trigger> triggers;
 	
-	private MultiImage testBack = new MultiImage("gfx/terrain/grass");
+	private JMultiImage testBack = new JMultiImage("gfx/terrain/grass");
 	
 	private boolean collision;
 	
@@ -35,17 +36,17 @@ public class Tile {
 		textures = new LinkedList<>();
 		entities = new LinkedList<>();
 		triggers = new LinkedList<>();
-		addTexture(testBack,testBack.seed());
+//		addTexture(testBack,testBack.seed());
 	}
 	
-	public void addTexture(MultiImage img) {
+	public void addTexture(JMultiImage img) {
 		//TODO: catch invalid images for Tiles
 		textures.add(img);
 	}
 	
-	public void addTexture(MultiImage img, int index) {
+	public void addTexture(JMultiImage img, int index) {
 		textures.add(img);
-		((MultiImage)img).seed(index);
+//		((JMultiImage)img).seed(index);
 	}
 	
 	public void popTexture() {
@@ -54,16 +55,16 @@ public class Tile {
 	
 	@Deprecated
 	public void incrementIndex() {
-		MultiImage img = textures.getLast();
-		img.seed(img.getSeed()+1);
+		JMultiImage img = textures.getLast();
+//		img.seed(img.getSeed()+1);
 	}
 	
 	public void draw(Graphics2D g, Point offset) {
 		offset = computePositionOnScreen(offset);
-		Iterator<MultiImage> texIter = textures.iterator();
-		while(texIter.hasNext()) {
-			g.drawImage(texIter.next().get(), offset.getXi(), offset.getYi(), null);
-		}
+		Iterator<JMultiImage> texIter = textures.iterator();
+//		while(texIter.hasNext()) {
+//			g.drawImage(texIter.next().get(), offset.getXi(), offset.getYi(), null);
+//		}
 		if(hovered()) {
 			g.setColor(new Color(255,255,255,55));
 			g.fillRect(offset.getXi(), offset.getYi(), TILE_PIXELS, TILE_PIXELS);

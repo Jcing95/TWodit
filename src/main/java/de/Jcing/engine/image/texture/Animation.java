@@ -28,14 +28,17 @@ public class Animation extends Image {
 		index = startIndex + ((Task.millis() / millisWait) % length);
 	}
 
-	@Override
-	public Vector2f getOffset() {
+	public Vector2f getDeltaOffset() {
 		Image img = new Image(this,startIndex);
 		float deltaX = getX() - img.getX();
 		float deltaY = getY() - img.getY();
 //		if(index != img.getIndex())
 //		System.out.println("x" + deltaX + " y" + deltaY );
 		return new Vector2f(deltaX,deltaY);
+	}
+	
+	public Vector2f getOffset() {
+		return new Vector2f(getX(), getY());
 	}
 
 	public int getStartIndex() {
@@ -49,9 +52,22 @@ public class Animation extends Image {
 	public int getMillisWait() {
 		return millisWait;
 	}
+	
+	public void set(Animation anim) {
+		super.set(anim);
+		startIndex = anim.startIndex;
+	}
 
 	public Image getImage(int index) {
 		return new Image(this,startIndex+index);
+	}
+	
+	public Animation clone() {
+		return new Animation(this,this.startIndex,this.length,this.millisWait);
+	}
+
+	public void reset() {
+		index = startIndex;
 	}
 
 }

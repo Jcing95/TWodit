@@ -1,8 +1,8 @@
 package de.jcing.window.gui.animator;
 
+import de.jcing.engine.gui.Component;
 import de.jcing.utillities.task.Task;
 import de.jcing.utillities.task.Topic;
-import de.jcing.window.gui.Component;
 import de.jcing.window.gui.utillities.Group;
 
 public abstract class Animator {

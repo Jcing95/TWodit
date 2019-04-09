@@ -8,11 +8,12 @@ import java.util.HashSet;
 import de.jcing.Main;
 import de.jcing.engine.entity.Creature;
 import de.jcing.engine.graphics.Drawable;
+import de.jcing.engine.window.SwingWindow;
 import de.jcing.util.Point;
 import de.jcing.utillities.log.Log;
 import de.jcing.utillities.task.Task;
-import de.jcing.window.Window;
 
+@Deprecated
 public class Stage implements Drawable {
 
 	private static final Log log = new Log(Stage.class);
@@ -139,9 +140,9 @@ public class Stage implements Drawable {
 
 	public Point getChunkPosFromPixel(double x, double y) {
 
-		int xChunk = (int) ((x + getFixedCamera().getXd() - Window.PIXEL_WIDTH / 2) / Main.getWindow().getPixelWidth()
+		int xChunk = (int) ((x + getFixedCamera().getXd() - SwingWindow.PIXEL_WIDTH / 2) / Main.getWindow().getPixelWidth()
 				/ Chunk.TILE_COUNT * Tile.TILE_PIXELS);
-		int yChunk = (int) ((y + getFixedCamera().getYd() - Window.PIXEL_HEIGHT / 2) / Main.getWindow().getPixelHeight()
+		int yChunk = (int) ((y + getFixedCamera().getYd() - SwingWindow.PIXEL_HEIGHT / 2) / Main.getWindow().getPixelHeight()
 				/ Chunk.TILE_COUNT * Tile.TILE_PIXELS);
 
 		// System.out.println("x: " + x + " y: " + y + " c: " + xChunk + "|" + yChunk +

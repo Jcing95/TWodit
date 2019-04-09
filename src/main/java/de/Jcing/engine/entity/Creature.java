@@ -12,7 +12,7 @@ public class Creature extends Entity {
 	
 	private static final Log LOG = new Log(Creature.class);
 
-	public static final float DRAG = 0.75f;
+	public static final float DRAG = 0.6f;
 	public static final float MAXSPEED = 10;
 	
 	public enum ANIM {
@@ -25,6 +25,8 @@ public class Creature extends Entity {
 	protected ANIM animationIndex;
 	
 	protected HashMap<ANIM, Animation> sprite;
+	
+	protected Animation currAnim;
 
 	protected Stage stage;
 
@@ -47,15 +49,14 @@ public class Creature extends Entity {
 	
 	public void tick() {
 		
-		position.x += speedX;
-		position.y += speedY;
+		movePosition(speedX, speedY, 0);
 		
 		speedX *= DRAG;
 		speedY *= DRAG;
 		
-		if(Math.abs(speedX) < 0.01)
+		if(Math.abs(speedX) < 0.1)
 			speedX = 0;
-		if(Math.abs(speedY) < 0.01)
+		if(Math.abs(speedY) < 0.1)
 			speedY = 0;
 		
 		speedX = Float.min(speedX + accelerationX, MAXSPEED);
@@ -69,14 +70,29 @@ public class Creature extends Entity {
 			animationIndex = ANIM.WALK_RIGHT;
 		if(speedX < 0)
 			animationIndex = ANIM.WALK_LEFT;
-		if(speedY > 0)
-			animationIndex = ANIM.WALK_DOWN;
 		if(speedY < 0)
+			animationIndex = ANIM.WALK_DOWN;
+		if(speedY > 0)
 			animationIndex = ANIM.WALK_UP;
+		
+		
+		currAnim.set(sprite.get(animationIndex));
+		if(speedX == 0 && speedY == 0)
+			standing();
+		else 
+			walking();
 		
 		for(Runnable r : onTick) {
 			r.run();
 		}
+	}
+	
+	public void walking() {
+		currAnim.update();
+	}
+	
+	public void standing() {
+		currAnim.reset();
 	}
 	
 	public LinkedList<Runnable> getOntick() {
@@ -91,6 +107,11 @@ public class Creature extends Entity {
 	
 	public Rectangle getFootPrint() {
 		return collisionBox;
+	}
+	
+	public void setAnim(ANIM anim) {
+		animationIndex = anim;
+		currAnim = sprite.get(anim).clone();
 	}
 
 	public void setAnim(ANIM on, Animation img) {

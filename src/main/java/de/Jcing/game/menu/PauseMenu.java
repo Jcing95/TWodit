@@ -5,11 +5,11 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 
 import de.jcing.Main;
+import de.jcing.engine.gui.Button;
+import de.jcing.engine.gui.Canvas;
+import de.jcing.engine.gui.Container;
 import de.jcing.engine.io.KeyBoard;
-import de.jcing.window.Window;
-import de.jcing.window.gui.Button;
-import de.jcing.window.gui.Canvas;
-import de.jcing.window.gui.Container;
+import de.jcing.engine.window.SwingWindow;
 
 public class PauseMenu extends Container{
 	
@@ -18,13 +18,13 @@ public class PauseMenu extends Container{
 	Canvas background;
 	
 	public PauseMenu() {
-		super(0,0,Window.PIXEL_WIDTH,Window.PIXEL_HEIGHT);
-		resume = new Button("   R E S U M E   ",Window.PIXEL_WIDTH/2,Window.PIXEL_HEIGHT/3);
-		exit = new Button("   E X I T   ",Window.PIXEL_WIDTH/2,Window.PIXEL_HEIGHT/3*2);
-		background = new Canvas(0, 0, Window.PIXEL_WIDTH, Window.PIXEL_HEIGHT);
+		super(0,0,SwingWindow.PIXEL_WIDTH,SwingWindow.PIXEL_HEIGHT);
+		resume = new Button("   R E S U M E   ",SwingWindow.PIXEL_WIDTH/2,SwingWindow.PIXEL_HEIGHT/3);
+		exit = new Button("   E X I T   ",SwingWindow.PIXEL_WIDTH/2,SwingWindow.PIXEL_HEIGHT/3*2);
+		background = new Canvas(0, 0, SwingWindow.PIXEL_WIDTH, SwingWindow.PIXEL_HEIGHT);
 		Graphics2D bg = background.getGraphics();
 		bg.setColor(new Color(0,0,0,0.45f));
-		bg.fillRect(0, 0, Window.PIXEL_WIDTH, Window.PIXEL_HEIGHT);
+		bg.fillRect(0, 0, SwingWindow.PIXEL_WIDTH, SwingWindow.PIXEL_HEIGHT);
 		bg.dispose();
 		resume.centerHorizontal(true);
 		resume.centerVertical(true);
@@ -36,7 +36,7 @@ public class PauseMenu extends Container{
 		resume.getOnClick().add(() -> { 
 			unlisten();
 			Main.getWindow().removeDrawable(this);
-			Main.getGame().pause(false);
+//			Main.getGame().pause(false);
 		});
 		
 		exit.getOnClick().add(() -> Main.finish());

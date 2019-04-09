@@ -2,7 +2,7 @@ package de.jcing.window.gui.utillities;
 
 import java.util.HashSet;
 
-import de.jcing.window.gui.Component;
+import de.jcing.engine.gui.Component;
 
 public class Group {
 	

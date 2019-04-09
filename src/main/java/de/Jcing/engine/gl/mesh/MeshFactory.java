@@ -5,6 +5,11 @@ import de.jcing.engine.image.texture.Image;
 public class MeshFactory {
 	
 	public static VertexData createRectData(float x, float y, float z, float width, float height, Image texture) {
+		return createRectData(x, y, z, width, height, texture,true);
+	}
+	
+	
+	public static VertexData createRectData(float x, float y, float z, float width, float height, Image texture, boolean texture_offset) {
 		VertexData data = new VertexData();
 		float[] vertices = new float[12];
 		
@@ -35,8 +40,9 @@ public class MeshFactory {
 		indices[5] = 3;
 		
 		float ts = texture.getWidth();
-		float tx = texture.getX();
-		float ty = texture.getY();
+		float tx = texture_offset ? texture.getX() : 0;
+		float ty = texture_offset ? texture.getY() : 0;
+		
 		
 		float[] textureCoordinates = new float[8];
 		textureCoordinates[0] = tx;

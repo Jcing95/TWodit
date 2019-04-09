@@ -1,4 +1,4 @@
-package de.jcing.window.gui;
+package de.jcing.engine.gui;
 
 import java.awt.Color;
 import java.awt.FontMetrics;

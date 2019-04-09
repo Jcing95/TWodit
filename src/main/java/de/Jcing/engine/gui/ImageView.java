@@ -1,4 +1,4 @@
-package de.jcing.window.gui;
+package de.jcing.engine.gui;
 
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -15,7 +15,7 @@ public class ImageView extends Canvas {
 		this.img = img;
 		Graphics2D g = getGraphics();
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		g.drawImage(img.get(), 0, 0, w, h, null);
+//		g.drawImage(img.get(), 0, 0, w, h, null);
 		g.dispose();
 		//TODO: add more ImageView capabilities;
 	}

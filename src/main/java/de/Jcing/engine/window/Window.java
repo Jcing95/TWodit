@@ -1,4 +1,4 @@
-package de.jcing.window;
+package de.jcing.engine.window;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
@@ -50,13 +50,13 @@ import de.jcing.engine.io.Mouse;
 import de.jcing.utillities.log.Log;
 import de.jcing.utillities.task.Task;
 
-public class OpenGLWindow {
+public class Window {
 	// The window handle
 	private long window;
 
 	private final Task windowTask;
 
-	private static final Log log = new Log(OpenGLWindow.class);
+	private static final Log log = new Log(Window.class);
 	
 	private final LinkedList<Runnable> runInContext;
 	private final LinkedList<Runnable> loopInContext;
@@ -69,7 +69,7 @@ public class OpenGLWindow {
 	
 	int lastMillis = 0;
 	
-	public OpenGLWindow() {
+	public Window() {
 		log.debug("Hello LWJGL " + Version.getVersion() + "!");
 		runInContext = new LinkedList<Runnable>();
 		loopInContext = new LinkedList<Runnable>();
@@ -82,7 +82,7 @@ public class OpenGLWindow {
 				.repeat(Task.perSecond(60));
 	}
 
-	public OpenGLWindow run() {
+	public Window run() {
 		windowTask.start();
 		return this;
 	}

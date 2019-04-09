@@ -1,4 +1,4 @@
-package de.jcing.window;
+package de.jcing.engine.window;
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -16,15 +16,15 @@ import javax.swing.JFrame;
 
 import de.jcing.Main;
 import de.jcing.engine.graphics.Drawable;
+import de.jcing.engine.gui.Container;
 import de.jcing.engine.io.KeyBoard;
 import de.jcing.engine.io.Mouse;
 import de.jcing.util.Point;
 import de.jcing.util.Util;
 import de.jcing.utillities.task.Task;
-import de.jcing.window.gui.Container;
 import de.jcing.world.Tile;
 
-public class Window {
+public class SwingWindow {
 	
 	public static final String TITLE = "TwoDedit";
 	
@@ -53,7 +53,7 @@ public class Window {
 
 	private int yOffset;
 	
-	public Window() {
+	public SwingWindow() {
 		//initialize Swing frame and canvas
 		frame = new JFrame(TITLE);
 		canvas = new Canvas();

@@ -5,9 +5,10 @@ import java.awt.Graphics2D;
 
 import de.jcing.Main;
 import de.jcing.engine.io.Mouse;
+import de.jcing.engine.window.SwingWindow;
 import de.jcing.util.Point;
-import de.jcing.window.Window;
 
+@Deprecated
 public class Chunk {
 	
 	public static final int TILE_COUNT = 8;
@@ -45,10 +46,10 @@ public class Chunk {
 	}
 	
 	public boolean isOnScreen() {
-		return getXOffset() >= 0 && getXOffset() <= Window.PIXEL_WIDTH ||
-				getXOffset() + TILE_COUNT*Tile.TILE_PIXELS >= 0 && getXOffset() + TILE_COUNT*Tile.TILE_PIXELS <= Window.PIXEL_WIDTH ||
-				getYOffset() >= 0 && getYOffset() <= Window.PIXEL_HEIGHT ||
-				getYOffset() + TILE_COUNT*Tile.TILE_PIXELS >= 0 && getYOffset() + TILE_COUNT*Tile.TILE_PIXELS <= Window.PIXEL_HEIGHT;
+		return getXOffset() >= 0 && getXOffset() <= SwingWindow.PIXEL_WIDTH ||
+				getXOffset() + TILE_COUNT*Tile.TILE_PIXELS >= 0 && getXOffset() + TILE_COUNT*Tile.TILE_PIXELS <= SwingWindow.PIXEL_WIDTH ||
+				getYOffset() >= 0 && getYOffset() <= SwingWindow.PIXEL_HEIGHT ||
+				getYOffset() + TILE_COUNT*Tile.TILE_PIXELS >= 0 && getYOffset() + TILE_COUNT*Tile.TILE_PIXELS <= SwingWindow.PIXEL_HEIGHT;
 	}
 	
 	public boolean isHovered() {
