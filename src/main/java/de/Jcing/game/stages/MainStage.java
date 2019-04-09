@@ -53,6 +53,10 @@ public class MainStage extends Stage {
 	@Override
 	public void tick() {
 		player.tick(camera);
+		renderer.bufferWorldMatrix(player);
+		for(Chunk c : chunks.values())
+			renderer.bufferWorldMatrix(c);
+		renderer.swapUniformBuffer();
 	}
 
 }

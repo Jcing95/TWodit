@@ -37,6 +37,13 @@ public class Renderer {
 	private Camera camera;
 
 	private HashMap<Shader, LinkedList<Renderable>> items;
+	
+	@SuppressWarnings("rawtypes")
+	private HashMap[] modelViewMatrices = { new HashMap<>(), new HashMap<>() };
+	int nextBufferIndex;
+	private boolean swapBuffers;
+
+	private int currentBufferIndex;
 
 	public Renderer(Window win) {
 		this.window = win;
@@ -46,7 +53,6 @@ public class Renderer {
 
 		camera.setPosition(0, 0, 5);
 		camera.setRotation(-45f, 0, 0);
-
 		window.runInContext(() -> init());
 	}
 
@@ -78,9 +84,12 @@ public class Renderer {
 		// update transformation
 		Matrix4f projectionMatrix = transformation.getProjectionMatrix(FOV, window.getWidth(), window.getHeight(),
 				Z_NEAR, Z_FAR);
+		if(modelViewMatrices[currentBufferIndex].isEmpty())
+			return;
 		drawTerrain(projectionMatrix);
 		drawEntities(projectionMatrix);
-
+		
+		swapBuffers();
 		//TODO: DRAW GUI HERE
 	}
 	
@@ -91,9 +100,7 @@ public class Renderer {
 
 		for (Renderable item : items.get(terrainShader)) { // DRAW TERRAIN
 			if (item.isInitialized()) {
-				Matrix4f viewMatrix = transformation.getViewMatrix(camera);
-				Matrix4f modelViewMatrix = transformation.getModelViewMatrix(item, viewMatrix);
-				terrainShader.setUniform(TerrainShader.WORLD_MATRIX, modelViewMatrix);
+				terrainShader.setUniform(TerrainShader.WORLD_MATRIX, getModelViewMatrix(item));
 				item.getMesh().render();
 			}
 		}
@@ -106,9 +113,7 @@ public class Renderer {
 		entityShader.setUniform(TerrainShader.TEXTURE_SAMPLER, 0);
 		for (Renderable item : items.get(entityShader)) { // DRAW ENTITIES
 			if (item.isInitialized()) {
-				Matrix4f viewMatrix = transformation.getViewMatrix(camera);
-				Matrix4f modelViewMatrix = transformation.getModelViewMatrix(item, viewMatrix);
-				entityShader.setUniform(TerrainShader.WORLD_MATRIX, modelViewMatrix);
+				entityShader.setUniform(TerrainShader.WORLD_MATRIX, getModelViewMatrix(item));
 				entityShader.setUniform("texOffset", item.getTextureOffset());
 				entityShader.setUniform("alpha", item.getAlpha());
 				item.getMesh().render();
@@ -133,6 +138,30 @@ public class Renderer {
 				for (Renderable item : l)
 					item.getMesh().cleanUp();
 		});
+	}
+	
+	private void swapBuffers() {
+		if(swapBuffers) {
+			currentBufferIndex = nextBufferIndex;
+			nextBufferIndex = (nextBufferIndex+1) % modelViewMatrices.length;
+			modelViewMatrices[nextBufferIndex].clear();
+			swapBuffers = false;
+		}
+	}
+
+	public void swapUniformBuffer() {
+		swapBuffers = true;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void bufferWorldMatrix(Renderable item) {
+		Matrix4f viewMatrix = transformation.getViewMatrix(camera);
+		Matrix4f modelViewMatrix = transformation.getModelViewMatrix(item, viewMatrix);
+		modelViewMatrices[nextBufferIndex].put(item,modelViewMatrix);
+	}
+	
+	private Matrix4f getModelViewMatrix(Renderable item) {
+		return (Matrix4f) modelViewMatrices[currentBufferIndex].get(item);
 	}
 
 	public Camera getCamera() {

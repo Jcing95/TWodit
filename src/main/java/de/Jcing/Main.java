@@ -32,18 +32,7 @@ public class Main {
 		initGame();
 
 		win.run();
-//		
-		//initialize Window and main menu
-//		window = new Window();
-//		mainMenu = new MainMenu();
-//		
-//		//Add Keyboard binding to exit game
-//		KeyBoard.addBinding(KeyBoard.ONPRESS, (key) -> {
-//			if(key == KeyEvent.VK_ESCAPE)
-//				finish();
-//		});
-////	
-//		//Start the main scene.		
+		
 	}
 	
 	
@@ -53,11 +42,8 @@ public class Main {
 	
 	public static void finish() {
 		renderer.finish();
-		log.info("exit now");
 		//stop all scenes
 		Topic.stopAll();
-		//finish window to dispose swing frame
-//		win.end();
 	}
 	
 	public static MainMenu getMainMenu() {
