@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+@Deprecated
 public class Pointmask {
 	
 	public static <F> Set<F> getFromArray(F[][] array, int xOffset, int yOffset, double radius){

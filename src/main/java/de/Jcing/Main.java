@@ -24,6 +24,8 @@ public class Main {
 	
 	public static Renderer renderer;	
 	
+	
+	
 	public static void main(String[] args) {
 //		
 		win = new Window();

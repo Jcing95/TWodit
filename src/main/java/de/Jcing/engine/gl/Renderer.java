@@ -45,6 +45,8 @@ public class Renderer {
 
 	private int currentBufferIndex;
 
+	private boolean buffersInitialized;
+
 	public Renderer(Window win) {
 		this.window = win;
 		transformation = new Transformation();
@@ -84,12 +86,12 @@ public class Renderer {
 		// update transformation
 		Matrix4f projectionMatrix = transformation.getProjectionMatrix(FOV, window.getWidth(), window.getHeight(),
 				Z_NEAR, Z_FAR);
-		if(modelViewMatrices[currentBufferIndex].isEmpty())
+		swapBuffers();
+		if(!buffersInitialized)
 			return;
 		drawTerrain(projectionMatrix);
 		drawEntities(projectionMatrix);
 		
-		swapBuffers();
 		//TODO: DRAW GUI HERE
 	}
 	
@@ -151,6 +153,8 @@ public class Renderer {
 
 	public void swapUniformBuffer() {
 		swapBuffers = true;
+		if(!buffersInitialized)
+			buffersInitialized = true;
 	}
 	
 	@SuppressWarnings("unchecked")

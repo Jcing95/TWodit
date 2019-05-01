@@ -4,19 +4,20 @@ import java.awt.Graphics2D;
 import java.util.HashSet;
 import java.util.LinkedList;
 
+import org.joml.Vector2f;
+
 import de.jcing.Main;
-import de.jcing.engine.graphics.Drawable;
+import de.jcing.engine.gl.mesh.Mesh;
+import de.jcing.engine.gl.mesh.MeshFactory;
+import de.jcing.engine.gl.mesh.Renderable;
+import de.jcing.engine.gl.mesh.VertexData;
+import de.jcing.engine.image.texture.Image;
 import de.jcing.engine.io.Binding;
 import de.jcing.engine.io.Mouse;
 import de.jcing.geometry.Rectangle;
-import de.jcing.util.Point;
 
-public abstract class Component implements Drawable {
-	
-	
-	public static final DrawHook DEFAULT_HOOK = new DrawHook() {};
-	
-	protected DrawHook customHook;
+public abstract class Component extends Renderable {
+
 	
 	protected Container parent;
 
@@ -36,22 +37,23 @@ public abstract class Component implements Drawable {
 	protected boolean handleMouse;
 	protected boolean isVisible;
 
-	public Component(int x, int y) {
-		this(x,y,0,0);
-	}
-
-	public Component(int x, int y, int w, int h) {
+	public Component(float x, float y, float w, float h) {
 		bounds = new Rectangle(x, y, w, h);
+		
 		bindings = new HashSet<>();
 		parent = null;
 		onClick = new LinkedList<>();
 		isVisible = true;
 	}
 
+	protected void setTexture(Image texture) {
+		VertexData data = MeshFactory.createRectData(bounds.getX(), bounds.getY(), 1, bounds.getWidth(), bounds.getHeight(), texture);
+		mesh = new Mesh(texture, data);
+	}
 
-	protected void mouseMove(Point translatedMouse) {
+	protected void mouseMove() {
 		if (handleMouse) {
-			hovered = bounds.contains(translatedMouse);
+			hovered = bounds.contains(Mouse.getPos());
 		}
 	}
 
@@ -72,15 +74,6 @@ public abstract class Component implements Drawable {
 
 	protected abstract void paint(Graphics2D g);
 
-	@Override
-	public void draw(Graphics2D g) {
-		if(customHook == null)
-			DEFAULT_HOOK.draw(g,this);
-		else
-			customHook.draw(g,this);
-	}
-
-
 	protected void click() {
 		for (Runnable r : onClick)
 			r.run();
@@ -89,7 +82,7 @@ public abstract class Component implements Drawable {
 	public void listenOnMouse() {
 		handleMouse = true;
 		if (parent == null) {
-			bindings.add(Mouse.addBinding(Mouse.ONMOVE, (i) -> mouseMove(Main.getWindow().getMouseOnCanvas())));
+			bindings.add(Mouse.addBinding(Mouse.ONMOVE, (i) -> mouseMove()));
 			bindings.add(Mouse.addBinding(Mouse.ONPRESS, (i) -> mouseClick()));
 			bindings.add(Mouse.addBinding(Mouse.ONRELEASE, (i) -> mouseClick()));
 		}

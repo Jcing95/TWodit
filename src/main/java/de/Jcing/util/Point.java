@@ -1,5 +1,6 @@
 package de.jcing.util;
 
+@Deprecated
 public class Point implements Cloneable {
 
 	protected double x, y;

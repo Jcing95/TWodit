@@ -33,9 +33,11 @@ import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
+import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
 import java.util.LinkedList;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -139,6 +141,7 @@ public class Window {
 		glfwSetMouseButtonCallback(window, Mouse.mouseButtonCallback);
 		Mouse.addBinding(Mouse.ONPRESS, (key) -> log.debug("click!"));
 		
+		
 		glfwSetFramebufferSizeCallback(window, (window, width, height) -> {
 		    this.width = width;
 		    this.height = height;
@@ -201,6 +204,10 @@ public class Window {
 			r.run();
 		// clear the framebuffer
 		
+		//update the Mouse
+		Mouse.update(width, height);
+		
+		GLFW.glfwGetCursorPos(window, Mouse.getXBuffer(), Mouse.getYBuffer());
 		// swap the color buffers
 		glfwSwapBuffers(window); 
 

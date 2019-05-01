@@ -5,16 +5,19 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.nio.DoubleBuffer;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import org.joml.Vector2f;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWMouseButtonCallbackI;
 
 public class Mouse {
 
-	public static int x, y;
-	public static int lx, ly;
+	public static float x, y;
+	public static float lx, ly;
 
 	public static final Object BLOCKER = Mouse.class;
 
@@ -43,6 +46,9 @@ public class Mouse {
 
 	public static final int LEFT = MouseEvent.BUTTON1;
 	public static final int RIGHT = MouseEvent.BUTTON2;
+	
+	private static final DoubleBuffer mouseX = BufferUtils.createDoubleBuffer(1);
+	private static final DoubleBuffer mouseY = BufferUtils.createDoubleBuffer(1);
 	
 	
 
@@ -164,7 +170,7 @@ public class Mouse {
 			}
 		}
 	};
-
+	
 	public static Binding addBinding(int KEY, Binding binding) {
 		synchronized (BLOCKER) {
 			if (bindings.containsKey(KEY))
@@ -174,22 +180,35 @@ public class Mouse {
 		}
 		return binding;
 	}
+	
+	public static void update(int windowWidth, int windowHeight) {
+		lx = x;
+		ly = y;
+		x = (float) (mouseX.get()/windowWidth);
+		y = (float) (mouseY.get()/windowHeight);
+	}
 
+	public static DoubleBuffer getXBuffer() {
+		return mouseX;
+	}
 	
+	public static DoubleBuffer getYBuffer() {
+		return mouseY;
+	}
 	
-	public static int getX() {
+	public static float getX() {
 		return x;
 	}
 
-	public static int getY() {
+	public static float getY() {
 		return y;
 	}
 
-	public static int getLastX() {
+	public static float getLastX() {
 		return lx;
 	}
 
-	public static int getLastY() {
+	public static float getLastY() {
 		return ly;
 	}
 
@@ -199,6 +218,10 @@ public class Mouse {
 				list.remove(b);
 			}
 		}
+	}
+
+	public static Vector2f getPos() {
+		return new Vector2f(x,y);
 	}
 
 }

@@ -1,5 +1,6 @@
 package de.jcing.util;
 
+@Deprecated
 public abstract class PointMorph extends Point {
 	
 	public Point p;

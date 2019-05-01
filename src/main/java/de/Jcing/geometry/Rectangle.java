@@ -1,30 +1,33 @@
 package de.jcing.geometry;
 
-import de.jcing.util.Point;
+import org.joml.Vector2f;
 
 public class Rectangle {
 	
-	public double x,y;
-	public double width, height;
+	public Vector2f pos;
+	public Vector2f size;
 	
-	public Rectangle(double x, double y, double width, double height) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
+	public Rectangle(Vector2f pos, Vector2f size) {
+		this(pos.x,pos.y,size.x,size.y);
+	}
+	
+	
+	public Rectangle(float x, float y, float width, float height) {
+		pos = new Vector2f(x,y);
+		size = new Vector2f(width,height);
 	}
 	
 	public boolean collides(Rectangle r) {
 		return false; //TODO: implement rectangle collision logic
 	}
 
-	public boolean contains(Point point) {
-		return point.getXd() > x && point.getXd() < x+width && point.getYd() > y && point.getYd() < y + height;	
+	public boolean contains(Vector2f point) {
+		return point.x() > pos.x && point.x() < pos.x+size.x && point.y > pos.y && point.y < pos.y + size.y;	
 	}
 	
 	public int compare(Rectangle r) {
-		boolean w = width > r.width;
-		boolean h = height > r.height;
+		boolean w = size.x > r.getWidth();
+		boolean h = size.y > r.getHeight();
 		if(w && h)
 			return 1;
 		if(!w && !h)
@@ -34,37 +37,28 @@ public class Rectangle {
 	
 	@Override
 	public Rectangle clone() {
-		return new Rectangle(x, y, width, height);
+		return new Rectangle(pos,size);
 	}
 	
 	@Override 
 	public String toString() {
-		return "Rectangle: (" + x + "|" + y + ") - W: " + width + ", h: " + height;
+		return "Rectangle: (" + pos.x + "|" + pos.y + ") - W: " + size.x + ", h: " + size.y;
 	} 
+
+	public float getX() {
+		return pos.x;
+	}
 	
-	public Rectangle translate(Rectangle parent) {
-		if(parent == null)
-			return clone();
-		return new Rectangle(parent.x+x, parent.y+y,width,height);
+	public float getY() {
+		return pos.y;
+	}
+	
+	public float getWidth() {
+		return size.x;
+	}
+	
+	public float getHeight() {
+		return size.y;
 	}
 
-	public int getX() {
-		return (int)x;
-	}
-	
-	public int getY() {
-		return (int)y;
-	}
-	
-	public int getWidth() {
-		return (int)width;
-	}
-	
-	public int getHeight() {
-		return (int)height;
-	}
-
-	public Point getOrigin() {
-		return new Point(x,y);
-	}
 }

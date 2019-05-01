@@ -5,6 +5,7 @@ import de.jcing.utillities.task.Task;
 import de.jcing.utillities.task.Topic;
 import de.jcing.window.gui.utillities.Group;
 
+@Deprecated
 public abstract class Animator {
 	
 	public static final Topic ANIMATOR_TOPIC = new Topic("Animator");
