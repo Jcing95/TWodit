@@ -49,8 +49,6 @@ public class Mouse {
 	
 	private static final DoubleBuffer mouseX = BufferUtils.createDoubleBuffer(1);
 	private static final DoubleBuffer mouseY = BufferUtils.createDoubleBuffer(1);
-	
-	
 
 	private static final HashMap<Integer, LinkedList<Binding>> bindings = new HashMap<>();
 
@@ -189,10 +187,12 @@ public class Mouse {
 	}
 
 	public static DoubleBuffer getXBuffer() {
+		mouseX.clear();
 		return mouseX;
 	}
 	
 	public static DoubleBuffer getYBuffer() {
+		mouseY.clear();
 		return mouseY;
 	}
 	

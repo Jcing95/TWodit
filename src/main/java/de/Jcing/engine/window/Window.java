@@ -50,6 +50,7 @@ import de.jcing.Main;
 import de.jcing.engine.io.KeyBoard;
 import de.jcing.engine.io.Mouse;
 import de.jcing.utillities.log.Log;
+import de.jcing.utillities.log.appender.PrintStreamAppender;
 import de.jcing.utillities.task.Task;
 
 public class Window {
@@ -111,7 +112,8 @@ public class Window {
 	private void init() {
 		// Setup an error callback. The default implementation
 		// will print the error message in System.err.
-		GLFWErrorCallback.createPrint(log.getAppender(Log.LOG_LEVEL.error).getStream()).set();
+		
+		GLFWErrorCallback.createPrint(((PrintStreamAppender)log.getAppender(Log.LOG_LEVEL.error)).getStream()).set();
 
 		// Initialize GLFW. Most GLFW functions will not work before doing this.
 		if (!glfwInit())
@@ -139,7 +141,7 @@ public class Window {
 		});
 		
 		glfwSetMouseButtonCallback(window, Mouse.mouseButtonCallback);
-		Mouse.addBinding(Mouse.ONPRESS, (key) -> log.debug("click!"));
+		Mouse.addBinding(Mouse.ONPRESS, (key) -> log.debug("click @ (" + Mouse.getX() + "|" + Mouse.getY() + ")"));
 		
 		
 		glfwSetFramebufferSizeCallback(window, (window, width, height) -> {
@@ -203,11 +205,12 @@ public class Window {
 		for(Runnable r : loopInContext)
 			r.run();
 		// clear the framebuffer
-		
+			
+
 		//update the Mouse
+		GLFW.glfwGetCursorPos(window, Mouse.getXBuffer(), Mouse.getYBuffer());
 		Mouse.update(width, height);
 		
-		GLFW.glfwGetCursorPos(window, Mouse.getXBuffer(), Mouse.getYBuffer());
 		// swap the color buffers
 		glfwSwapBuffers(window); 
 
