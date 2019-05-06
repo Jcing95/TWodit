@@ -3,14 +3,11 @@ package de.jcing.game.stages;
 import java.util.HashMap;
 
 import org.joml.Vector2i;
-import org.lwjgl.glfw.GLFW;
 
 import de.jcing.engine.gl.Renderer;
 import de.jcing.engine.gl.Transformation;
 import de.jcing.engine.image.JMultiImage;
-import de.jcing.engine.image.texture.AtlasCallback;
 import de.jcing.engine.image.texture.TextureAssembler;
-import de.jcing.engine.io.KeyBoard;
 import de.jcing.engine.world.Chunk;
 import de.jcing.engine.world.Stage;
 import de.jcing.game.Player;

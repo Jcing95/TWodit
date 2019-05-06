@@ -33,11 +33,8 @@ import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-import java.nio.DoubleBuffer;
 import java.nio.IntBuffer;
-import java.util.LinkedList;
 
-import org.lwjgl.BufferUtils;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -51,6 +48,7 @@ import de.jcing.engine.io.KeyBoard;
 import de.jcing.engine.io.Mouse;
 import de.jcing.utillities.log.Log;
 import de.jcing.utillities.log.appender.PrintStreamAppender;
+import de.jcing.utillities.task.Context;
 import de.jcing.utillities.task.Task;
 
 public class Window {
@@ -60,12 +58,7 @@ public class Window {
 	private final Task windowTask;
 
 	private static final Log log = new Log(Window.class);
-	
-	private final LinkedList<Runnable> runInContext;
-	private final LinkedList<Runnable> loopInContext;
-	private final LinkedList<Runnable> runInContextBuffer;
-	private final LinkedList<Runnable> loopInContextBuffer;
-	
+		
 	private int width = 1280;
 	private int height = 720;
 	private boolean isResized;
@@ -74,14 +67,12 @@ public class Window {
 	
 	public Window() {
 		log.debug("Hello LWJGL " + Version.getVersion() + "!");
-		runInContext = new LinkedList<Runnable>();
-		loopInContext = new LinkedList<Runnable>();
-		runInContextBuffer = new LinkedList<Runnable>();
-		loopInContextBuffer = new LinkedList<Runnable>();
 		windowTask = new Task(() -> loop())
 				.name("GL_WINDOW")
 				.preExecute(() -> init())
 				.postExecute(() -> end())
+				.preLoop(() -> preLoop())
+				.postLoop(() -> postLoop())
 				.repeat(Task.perSecond(60));
 	}
 
@@ -90,25 +81,11 @@ public class Window {
 		return this;
 	}
 	
-	public void runInContext(Runnable runnable) {
-		runInContextBuffer.add(runnable);
-	}
-	
-	public void loopInContext(Runnable runnable) {
-		loopInContextBuffer.add(runnable);
-	}
-	
-	private void updateContext() {
-		runInContext.addAll(runInContextBuffer);
-		runInContextBuffer.clear();
-		loopInContext.addAll(loopInContextBuffer);
-		loopInContextBuffer.clear();
-	}
-	
-	private void cleanContext() {
-		runInContext.clear();
+	public Context getContext() {
+		return windowTask.getContext();
 	}
 
+	
 	private void init() {
 		// Setup an error callback. The default implementation
 		// will print the error message in System.err.
@@ -186,30 +163,30 @@ public class Window {
 	}
 
 
-	private void loop() {
+	private void preLoop() {
 		if (glfwWindowShouldClose(window)) {
 			Main.finish();
 		}
 
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+		// clear the framebuffer
+	}
+
+		
+	private void loop() {
+		//log the framerate once per second!
 		if (Task.millis() - lastMillis > 1000) {
-			//log the fps once per second!
 			lastMillis = Task.millis();
 			log.info(windowTask.getTps() + " FPS!");
 		}
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
-		//manage the runnables to be executed in the OpenGL context
-		updateContext();
-		for(Runnable r : runInContext)
-			r.run();
-		cleanContext();
-		for(Runnable r : loopInContext)
-			r.run();
-		// clear the framebuffer
-			
-
+		
 		//update the Mouse
 		GLFW.glfwGetCursorPos(window, Mouse.getXBuffer(), Mouse.getYBuffer());
 		Mouse.update(width, height);
+		
+	}
+		
+	private void postLoop() {
 		
 		// swap the color buffers
 		glfwSwapBuffers(window); 

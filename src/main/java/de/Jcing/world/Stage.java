@@ -1,7 +1,6 @@
 package de.jcing.world;
 
 import java.awt.Graphics2D;
-import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.HashSet;
 

@@ -55,12 +55,12 @@ public class Renderer {
 
 		camera.setPosition(0, 0, 5);
 		camera.setRotation(-45f, 0, 0);
-		window.runInContext(() -> init());
+		window.getContext().run(() -> init());
 	}
 
 	private void init() {
 		try {
-			log.debug("init shader");
+			log.debug("initializing shaders");
 			terrainShader = new TerrainShader();
 			entityShader = new EntityShader();
 			items.put(terrainShader, new LinkedList<>());
@@ -73,8 +73,8 @@ public class Renderer {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		window.loopInContext(() -> render());
+		log.debug("renderer initialized -> starting render loop");
+		window.getContext().loop(() -> render());
 
 	}
 
@@ -89,9 +89,11 @@ public class Renderer {
 		swapBuffers();
 		if(!buffersInitialized)
 			return;
+//		System.out.println("drawing");
 		drawTerrain(projectionMatrix);
 		drawEntities(projectionMatrix);
 		
+//		System.out.println("RENDERED");
 		//TODO: DRAW GUI HERE
 	}
 	
@@ -102,6 +104,7 @@ public class Renderer {
 
 		for (Renderable item : items.get(terrainShader)) { // DRAW TERRAIN
 			if (item.isInitialized()) {
+//				System.out.println("DRAWING ITEM");
 				terrainShader.setUniform(TerrainShader.WORLD_MATRIX, getModelViewMatrix(item));
 				item.getMesh().render();
 			}
@@ -126,16 +129,16 @@ public class Renderer {
 
 	public void addRenderable(Shader s, Renderable r) {
 		if (items.containsKey(s))
-			window.runInContext(() -> items.get(s).add(r));
+			window.getContext().run(() -> items.get(s).add(r));
 	}
 
 	public void removeRenderable(Shader s, Renderable r) {
 		if (items.containsKey(s))
-			window.runInContext(() -> items.get(s).remove(r));
+			window.getContext().run(() -> items.get(s).remove(r));
 	}
 
 	public void finish() {
-		window.runInContext(() -> {
+		window.getContext().run(() -> {
 			for (LinkedList<Renderable> l : items.values())
 				for (Renderable item : l)
 					item.getMesh().cleanUp();

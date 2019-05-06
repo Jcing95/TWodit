@@ -29,7 +29,6 @@ import java.util.List;
 
 import org.lwjgl.system.MemoryUtil;
 
-import de.jcing.engine.gl.shaders.Shader;
 import de.jcing.engine.image.texture.Texture;
 import de.jcing.utillities.log.Log;
 

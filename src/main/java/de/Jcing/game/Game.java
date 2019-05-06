@@ -24,7 +24,7 @@ public class Game {
 		this.renderer = renderer;
 		this.win = win;
 		isInitialized = false;
-		win.runInContext(() -> init());
+		win.getContext().run(() -> init());
 	}
 	
 	private void init() {
@@ -33,7 +33,8 @@ public class Game {
 		isInitialized = true;
 	}
 	
-	public void tick() {	
+	public void tick() {
+//		System.out.println("gametick");
 		mainstage.tick();
 
 	}

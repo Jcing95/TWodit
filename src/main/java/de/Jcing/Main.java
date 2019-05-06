@@ -27,7 +27,7 @@ public class Main {
 	
 	
 	public static void main(String[] args) {
-//		
+
 		win = new Window();
 		
 		renderer = new Renderer(win);

@@ -4,9 +4,6 @@ import java.awt.Graphics2D;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-import org.joml.Vector2f;
-
-import de.jcing.Main;
 import de.jcing.engine.gl.mesh.Mesh;
 import de.jcing.engine.gl.mesh.MeshFactory;
 import de.jcing.engine.gl.mesh.Renderable;
