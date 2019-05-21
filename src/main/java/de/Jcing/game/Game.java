@@ -29,14 +29,15 @@ public class Game {
 	
 	private void init() {
 		mainstage = new MainStage(renderer);
-		new Task(() -> tick()).name("Gametick").repeat(Task.perSecond(20)).start();
+		
+		//repeat tick method 20 times per second!
+		tick = new Task(() -> tick()).name("Gametick").repeat(Task.perSecond(20)).start();
 		isInitialized = true;
 	}
 	
 	public void tick() {
-//		System.out.println("gametick");
 		mainstage.tick();
-
+		//TODO: tick entities and manage game events here!
 	}
 
 	public boolean isInitialized() {

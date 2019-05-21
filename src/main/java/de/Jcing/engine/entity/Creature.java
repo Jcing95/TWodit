@@ -5,13 +5,9 @@ import java.util.LinkedList;
 
 import de.jcing.engine.image.texture.Animation;
 import de.jcing.geometry.Rectangle;
-import de.jcing.utillities.log.Log;
-import de.jcing.world.Stage;
 
 public class Creature extends Entity {
 	
-	private static final Log LOG = new Log(Creature.class);
-
 	public static final float DRAG = 0.6f;
 	public static final float MAXSPEED = 10;
 	
@@ -27,8 +23,6 @@ public class Creature extends Entity {
 	protected HashMap<ANIM, Animation> sprite;
 	
 	protected Animation currAnim;
-
-	protected Stage stage;
 
 	protected Rectangle collisionBox;
 

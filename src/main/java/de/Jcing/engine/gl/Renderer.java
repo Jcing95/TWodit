@@ -49,12 +49,17 @@ public class Renderer {
 
 	public Renderer(Window win) {
 		this.window = win;
+		
+		//transformation handles matrix calculations for 3D space.
+		//it creates View and projectionmatrix needed to render gameitems at their current worldposition.
 		transformation = new Transformation();
 		camera = new Camera();
 		items = new HashMap<>();
 
 		camera.setPosition(0, 0, 5);
 		camera.setRotation(-45f, 0, 0);
+		
+		//All OpenGL actions have to run in context of the window!
 		window.getContext().run(() -> init());
 	}
 
@@ -63,6 +68,8 @@ public class Renderer {
 			log.debug("initializing shaders");
 			terrainShader = new TerrainShader();
 			entityShader = new EntityShader();
+			
+			//items is a Shader-(List of Renderable) Map to render every item with corresponding shader.
 			items.put(terrainShader, new LinkedList<>());
 			items.put(entityShader, new LinkedList<>());
 
@@ -86,14 +93,14 @@ public class Renderer {
 		// update transformation
 		Matrix4f projectionMatrix = transformation.getProjectionMatrix(FOV, window.getWidth(), window.getHeight(),
 				Z_NEAR, Z_FAR);
+		
+		//swap Matrix buffers to prevent movement of items while frame is rendered (black gaps, tearing)
 		swapBuffers();
 		if(!buffersInitialized)
 			return;
-//		System.out.println("drawing");
 		drawTerrain(projectionMatrix);
 		drawEntities(projectionMatrix);
 		
-//		System.out.println("RENDERED");
 		//TODO: DRAW GUI HERE
 	}
 	
@@ -104,7 +111,6 @@ public class Renderer {
 
 		for (Renderable item : items.get(terrainShader)) { // DRAW TERRAIN
 			if (item.isInitialized()) {
-//				System.out.println("DRAWING ITEM");
 				terrainShader.setUniform(TerrainShader.WORLD_MATRIX, getModelViewMatrix(item));
 				item.getMesh().render();
 			}
@@ -154,7 +160,7 @@ public class Renderer {
 		}
 	}
 
-	public void swapUniformBuffer() {
+	public void swapMatrixBuffer() {
 		swapBuffers = true;
 		if(!buffersInitialized)
 			buffersInitialized = true;

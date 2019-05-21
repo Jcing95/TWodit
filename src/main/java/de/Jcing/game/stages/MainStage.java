@@ -41,6 +41,7 @@ public class MainStage extends Stage {
 				chunks.put(new Vector2i(x,y), new Chunk(x, y, assembler).init(assembler.getAnimation(grass)));
 	}
 
+	@Override
 	public void prepareRenderer(Renderer r) {
 		for(Chunk c : chunks.values())
 			r.addRenderable(r.getTerrainShader(),c);
@@ -53,7 +54,7 @@ public class MainStage extends Stage {
 		renderer.bufferWorldMatrix(player);
 		for(Chunk c : chunks.values())
 			renderer.bufferWorldMatrix(c);
-		renderer.swapUniformBuffer();
+		renderer.swapMatrixBuffer();
 	}
 
 }

@@ -5,13 +5,12 @@ import de.jcing.engine.window.SwingWindow;
 import de.jcing.engine.window.Window;
 import de.jcing.game.Game;
 import de.jcing.game.menu.MainMenu;
-import de.jcing.utillities.log.Log;
 import de.jcing.utillities.task.Topic;
 
 public class Main {
-	
-	private static final Log log = new Log(Main.class);
-	
+		
+	public static final String RESSOURCES = "src/main/resources/";
+
 	private static Game game;
 	
 	private static SwingWindow window;
@@ -20,10 +19,7 @@ public class Main {
 	
 	private static MainMenu mainMenu;
 	
-	public static final String RESSOURCES = "src/main/resources/";
-	
-	public static Renderer renderer;	
-	
+	private static Renderer renderer;	
 	
 	
 	public static void main(String[] args) {
@@ -31,16 +27,12 @@ public class Main {
 		win = new Window();
 		
 		renderer = new Renderer(win);
-		initGame();
-
+		game = new Game(win, renderer);
+		
 		win.run();
 		
 	}
 	
-	
-	public static void initGame() {
-		game = new Game(win, renderer);
-	}
 	
 	public static void finish() {
 		renderer.finish();

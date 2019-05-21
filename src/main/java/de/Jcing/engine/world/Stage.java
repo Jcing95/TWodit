@@ -19,10 +19,12 @@ public abstract class Stage {
 	
 	protected Camera camera;
 	
-	public Stage(String name, Renderer r, Camera cam) {
+	public Stage(String name, Renderer renderer, Camera camera) {
 		this.name = name;
-		this.renderer = r;
-		this.camera = cam;
+		this.renderer = renderer;
+		this.camera = camera;
+		
+		//store chunks in a IntegerVector - Chunk hashmap so that stages do not have to be rectangular.
 		chunks = new HashMap<Vector2i, Chunk>();
 		assembler = new TextureAssembler();
 	}
@@ -34,13 +36,34 @@ public abstract class Stage {
 		prepareRenderer(renderer);
 	}
 	
-	
+	/**
+	 * override this method to load all Images to the TextureAssembler whom will create an Atlas.
+	 * 
+	 * @param assembler - feed images here
+	 */
 	protected abstract void feedAssembler(TextureAssembler assembler);
 	
+	
+	/**
+	 * Initialize all chunks in this method.
+	 * 
+	 * @param chunks store chunks in here.
+	 * @param assembler use this assembler to provide textures to the chunks
+	 */
 	protected abstract void createChunks(HashMap<Vector2i, Chunk> chunks, TextureAssembler assembler);
 	
+	
+	/**
+	 * handle stage logic in here.
+	 * Also buffer Position Matrices here and swap buffers!
+	 * 
+	 */
 	public abstract void tick();
 	
+	/**
+	 * Add all renderables to the Renderer in here
+	 * 
+	 */
 	public abstract void prepareRenderer(Renderer r);
 	
 }
