@@ -1,10 +1,8 @@
 package de.jcing;
 
 import de.jcing.engine.gl.Renderer;
-import de.jcing.engine.window.SwingWindow;
 import de.jcing.engine.window.Window;
 import de.jcing.game.Game;
-import de.jcing.game.menu.MainMenu;
 import de.jcing.utillities.task.Topic;
 
 public class Main {
@@ -13,11 +11,7 @@ public class Main {
 
 	private static Game game;
 	
-	private static SwingWindow window;
-	
 	private static Window win;
-	
-	private static MainMenu mainMenu;
 	
 	private static Renderer renderer;	
 	
@@ -33,19 +27,10 @@ public class Main {
 		
 	}
 	
-	
 	public static void finish() {
 		renderer.finish();
 		//stop all scenes
 		Topic.stopAll();
-	}
-	
-	public static MainMenu getMainMenu() {
-		return mainMenu;
-	}
-	
-	public static SwingWindow getWindow() {
-		return window;
 	}
 	
 	public static Game getGame() {

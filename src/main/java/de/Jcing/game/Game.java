@@ -3,13 +3,10 @@ package de.jcing.game;
 import de.jcing.engine.gl.Renderer;
 import de.jcing.engine.window.Window;
 import de.jcing.game.stages.MainStage;
-import de.jcing.utillities.log.Log;
 import de.jcing.utillities.task.Task;
 
 public class Game {
-	
-	private static final Log LOG = new Log(Game.class);
-	
+		
 	private boolean isInitialized;
 	
 	MainStage mainstage;

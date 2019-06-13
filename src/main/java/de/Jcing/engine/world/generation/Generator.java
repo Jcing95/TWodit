@@ -1,4 +1,4 @@
-package de.jcing.world.generation;
+package de.jcing.engine.world.generation;
 
 import opensimplexnoise.OpenSimplexNoise;
 
