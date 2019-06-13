@@ -11,8 +11,8 @@ import de.jcing.engine.gl.mesh.Renderable;
 import de.jcing.engine.gl.shaders.EntityShader;
 import de.jcing.engine.gl.shaders.Shader;
 import de.jcing.engine.gl.shaders.TerrainShader;
-import de.jcing.engine.window.Window;
 import de.jcing.utillities.log.Log;
+import de.jcing.window.Window;
 
 public class Renderer {
 
@@ -111,7 +111,9 @@ public class Renderer {
 
 		for (Renderable item : items.get(terrainShader)) { // DRAW TERRAIN
 			if (item.isInitialized()) {
-				terrainShader.setUniform(TerrainShader.WORLD_MATRIX, getModelViewMatrix(item));
+				Matrix4f mat = getModelViewMatrix(item);
+				if(mat != null) //TODO: check why mat can be null!
+					terrainShader.setUniform(TerrainShader.WORLD_MATRIX, mat);
 				item.getMesh().render();
 			}
 		}

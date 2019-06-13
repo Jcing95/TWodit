@@ -35,5 +35,5 @@ public abstract class Renderable {
 	public float getAlpha() {
 		return 1f;
 	}
-	
+		
 }

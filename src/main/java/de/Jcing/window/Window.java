@@ -1,4 +1,4 @@
-package de.jcing.engine.window;
+package de.jcing.window;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.GLFW_FALSE;

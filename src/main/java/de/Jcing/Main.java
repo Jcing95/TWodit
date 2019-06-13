@@ -1,9 +1,9 @@
 package de.jcing;
 
 import de.jcing.engine.gl.Renderer;
-import de.jcing.engine.window.Window;
 import de.jcing.game.Game;
 import de.jcing.utillities.task.Topic;
+import de.jcing.window.Window;
 
 public class Main {
 		
