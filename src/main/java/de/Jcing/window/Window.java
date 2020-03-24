@@ -58,39 +58,32 @@ public class Window {
 	private final Task windowTask;
 
 	private static final Log log = new Log(Window.class);
-		
+
 	private int width = 1280;
 	private int height = 720;
+
 	private boolean isResized;
-	
-	int lastMillis = 0;
-	
+
+	private int lastMillis = 0;
+
 	public Window() {
-		log.debug("Hello LWJGL " + Version.getVersion() + "!");
-		windowTask = new Task(() -> loop())
-				.name("GL_WINDOW")
-				.preExecute(() -> init())
-				.postExecute(() -> end())
-				.preLoop(() -> preLoop())
-				.postLoop(() -> postLoop())
-				.repeat(Task.perSecond(60));
+		log.debug("Initializing Window using LWJGL " + Version.getVersion() + "!");
+		windowTask = new Task(this::loop).name("GL_WINDOW").preExecute(this::init).postExecute(this::end).preLoop(this::preLoop).postLoop(this::postLoop).repeat(Task.perSecond(60));
 	}
 
 	public Window run() {
 		windowTask.start();
 		return this;
 	}
-	
+
 	public Context getContext() {
 		return windowTask.getContext();
 	}
 
-	
 	private void init() {
 		// Setup an error callback. The default implementation
 		// will print the error message in System.err.
-		
-		GLFWErrorCallback.createPrint(((PrintStreamAppender)log.getAppender(Log.LOG_LEVEL.error)).getStream()).set();
+		GLFWErrorCallback.createPrint(((PrintStreamAppender) log.getAppender(Log.LOG_LEVEL.error)).getStream()).set();
 
 		// Initialize GLFW. Most GLFW functions will not work before doing this.
 		if (!glfwInit())
@@ -106,28 +99,25 @@ public class Window {
 		if (window == NULL)
 			throw new RuntimeException("Failed to create the GLFW window");
 
-		
 		// Setup a key callback. It will be called every time a key is pressed, repeated
 		// or released.
 		glfwSetKeyCallback(window, KeyBoard.keyCallBack);
-		
+
 		KeyBoard.addBinding(KeyBoard.ONPRESS, (key) -> {
-			if(key == GLFW.GLFW_KEY_ESCAPE)
+			if (key == GLFW.GLFW_KEY_ESCAPE)
 				glfwSetWindowShouldClose(window, true);
-				// We will detect this in the rendering loop
+			// We will detect this in the rendering loop
 		});
-		
+
 		glfwSetMouseButtonCallback(window, Mouse.mouseButtonCallback);
 		Mouse.addBinding(Mouse.ONPRESS, (key) -> log.debug("click @ (" + Mouse.getX() + "|" + Mouse.getY() + ")"));
-		
-		
+
 		glfwSetFramebufferSizeCallback(window, (window, width, height) -> {
-		    this.width = width;
-		    this.height = height;
-		    this.setResized(true);
+			this.width = width;
+			this.height = height;
+			this.setResized(true);
 		});
-		
-		
+
 		// Get the thread stack and push a new frame
 		try (MemoryStack stack = stackPush()) {
 			IntBuffer pWidth = stack.mallocInt(1); // int*
@@ -162,40 +152,37 @@ public class Window {
 		glClearColor(0.1f, 0.1f, 0.2f, 0.0f);
 	}
 
-
 	private void preLoop() {
 		if (glfwWindowShouldClose(window)) {
 			Main.finish();
 		}
 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		// clear the framebuffer
 	}
 
-		
 	private void loop() {
 		//log the framerate once per second!
 		if (Task.millis() - lastMillis > 1000) {
 			lastMillis = Task.millis();
 			log.info(windowTask.getTps() + " FPS!");
 		}
-		
+
 		//update the Mouse
 		GLFW.glfwGetCursorPos(window, Mouse.getXBuffer(), Mouse.getYBuffer());
 		Mouse.update(width, height);
-		
+
 	}
-		
+
 	private void postLoop() {
-		
+
 		// swap the color buffers
-		glfwSwapBuffers(window); 
+		glfwSwapBuffers(window);
 
 		// Poll for window events. The key callback above will only be
 		// invoked during this call.
 		glfwPollEvents();
 	}
-
 
 	public void end() {
 		windowTask.stop();
@@ -207,19 +194,19 @@ public class Window {
 		glfwTerminate();
 		glfwSetErrorCallback(null).free();
 	}
-	
+
 	public void setResized(boolean resized) {
 		isResized = resized;
 	}
-	
+
 	public boolean isResized() {
 		return isResized;
 	}
-	
+
 	public int getWidth() {
 		return width;
 	}
-	
+
 	public int getHeight() {
 		return height;
 	}

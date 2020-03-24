@@ -6,8 +6,8 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.nio.DoubleBuffer;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
@@ -32,28 +32,29 @@ public class Mouse {
 
 	public static final int ONMOVE = 20;
 	public static final int ONDRAG = 21;
-	
+
 	public static final int ONWHEEL = 30;
 
-	private static final LinkedList<Binding> onPress = new LinkedList<>();
-	private static final LinkedList<Binding> onRelease = new LinkedList<>();
-	private static final LinkedList<Binding> onClick = new LinkedList<>();
-	private static final LinkedList<Binding> onEnter = new LinkedList<>();
-	private static final LinkedList<Binding> onExit = new LinkedList<>();
-	private static final LinkedList<Binding> onMove = new LinkedList<>();
-	private static final LinkedList<Binding> onDrag = new LinkedList<>();
-	private static final LinkedList<Binding> onWheel = new LinkedList<>();
+	//using ArrayList for faster iteration
+	private static final ArrayList<Binding> onPress = new ArrayList<>();
+	private static final ArrayList<Binding> onRelease = new ArrayList<>();
+	private static final ArrayList<Binding> onClick = new ArrayList<>();
+	private static final ArrayList<Binding> onEnter = new ArrayList<>();
+	private static final ArrayList<Binding> onExit = new ArrayList<>();
+	private static final ArrayList<Binding> onMove = new ArrayList<>();
+	private static final ArrayList<Binding> onDrag = new ArrayList<>();
+	private static final ArrayList<Binding> onWheel = new ArrayList<>();
 
 	public static final int LEFT = MouseEvent.BUTTON1;
 	public static final int RIGHT = MouseEvent.BUTTON2;
-	
+
 	private static final DoubleBuffer mouseX = BufferUtils.createDoubleBuffer(1);
 	private static final DoubleBuffer mouseY = BufferUtils.createDoubleBuffer(1);
 
-	private static final HashMap<Integer, LinkedList<Binding>> bindings = new HashMap<>();
+	private static final HashMap<Integer, ArrayList<Binding>> bindings = new HashMap<>();
 
 	static {
-		synchronized(BLOCKER) {
+		synchronized (BLOCKER) {
 			bindings.put(ONPRESS, onPress);
 			bindings.put(ONRELEASE, onRelease);
 			bindings.put(ONCLICK, onClick);
@@ -65,8 +66,9 @@ public class Mouse {
 		}
 	}
 
-	private Mouse() {};
-	
+	private Mouse() {
+	};
+
 	public static final MouseListener mouseListener = new MouseListener() {
 
 		// TODO: check bindings for illegal modifications.
@@ -95,7 +97,6 @@ public class Mouse {
 				for (Binding b : onRelease)
 					b.onAction(e.getButton());
 			}
-
 		}
 
 		@Override
@@ -142,60 +143,58 @@ public class Mouse {
 			}
 		}
 	};
-	
-	public static final MouseWheelListener mouseWheelListener = new MouseWheelListener() {
 
+	public static final MouseWheelListener mouseWheelListener = new MouseWheelListener() {
 		@Override
 		public void mouseWheelMoved(MouseWheelEvent e) {
 			for (Binding b : onWheel)
 				b.onAction(e.getWheelRotation());
 		}
-		
 	};
-	
+
 	public static final GLFWMouseButtonCallbackI mouseButtonCallback = new GLFWMouseButtonCallbackI() {
 		@Override
 		public void invoke(long window, int button, int action, int mods) {
-			switch(action) {
-			case GLFW.GLFW_PRESS:
-				for (Binding b : onPress)
-					b.onAction(button);
-				break;
-			case GLFW.GLFW_RELEASE:
-				for (Binding b : onRelease)
-					b.onAction(button);
-				break;
+			switch (action) {
+				case GLFW.GLFW_PRESS:
+					for (Binding b : onPress)
+						b.onAction(button);
+					break;
+				case GLFW.GLFW_RELEASE:
+					for (Binding b : onRelease)
+						b.onAction(button);
+					break;
 			}
 		}
 	};
-	
+
 	public static Binding addBinding(int KEY, Binding binding) {
 		synchronized (BLOCKER) {
 			if (bindings.containsKey(KEY))
-					bindings.get(KEY).add(binding);
+				bindings.get(KEY).add(binding);
 			else
 				throw new IllegalArgumentException("invalid binding key!");
 		}
 		return binding;
 	}
-	
+
 	public static void update(int windowWidth, int windowHeight) {
 		lx = x;
 		ly = y;
-		x = (float) (mouseX.get()/windowWidth);
-		y = (float) (mouseY.get()/windowHeight);
+		x = (float) (mouseX.get() / windowWidth);
+		y = (float) (mouseY.get() / windowHeight);
 	}
 
 	public static DoubleBuffer getXBuffer() {
 		mouseX.clear();
 		return mouseX;
 	}
-	
+
 	public static DoubleBuffer getYBuffer() {
 		mouseY.clear();
 		return mouseY;
 	}
-	
+
 	public static float getX() {
 		return x;
 	}
@@ -213,15 +212,15 @@ public class Mouse {
 	}
 
 	public static void removeBinding(Binding b) {
-		synchronized(BLOCKER) {
-			for(LinkedList<Binding> list : bindings.values()) {
+		synchronized (BLOCKER) {
+			for (ArrayList<Binding> list : bindings.values()) {
 				list.remove(b);
 			}
 		}
 	}
 
 	public static Vector2f getPos() {
-		return new Vector2f(x,y);
+		return new Vector2f(x, y);
 	}
 
 }

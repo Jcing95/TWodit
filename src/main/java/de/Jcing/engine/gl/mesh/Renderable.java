@@ -9,7 +9,7 @@ public abstract class Renderable {
 	protected Mesh mesh;
 
 	public Vector3f getPosition() {
-		return new Vector3f(0,0,0);
+		return new Vector3f(0, 0, 0);
 	}
 
 	public float getScale() {
@@ -17,7 +17,7 @@ public abstract class Renderable {
 	}
 
 	public Vector3f getRotation() {
-		return new Vector3f(0,0,0);
+		return new Vector3f(0, 0, 0);
 	}
 
 	public Mesh getMesh() {
@@ -35,5 +35,5 @@ public abstract class Renderable {
 	public float getAlpha() {
 		return 1f;
 	}
-		
+
 }

@@ -2,9 +2,9 @@ package de.jcing.engine.io;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWKeyCallbackI;
@@ -17,17 +17,18 @@ public class KeyBoard {
 
 	private static final HashMap<Integer, Boolean> pressedKeys = new HashMap<>();
 
-	public static final LinkedList<Binding> onType = new LinkedList<>();
-	public static final LinkedList<Binding> onPress = new LinkedList<>();
-	public static final LinkedList<Binding> onRelease = new LinkedList<>();
+	public static final ArrayList<Binding> onType = new ArrayList<>();
+	public static final ArrayList<Binding> onPress = new ArrayList<>();
+	public static final ArrayList<Binding> onRelease = new ArrayList<>();
 
-	private static final HashMap<Integer, LinkedList<Binding>> bindings = new HashMap<>();
+	private static final HashMap<Integer, ArrayList<Binding>> bindings = new HashMap<>();
 
 	private static final HashSet<Integer> toggleable = new HashSet<>();
 	private static final HashMap<Integer, Boolean> keyToggled = new HashMap<>();
-	
-	private KeyBoard() {};
-	
+
+	private KeyBoard() {
+	};
+
 	private static final Binding pressKey = (key) -> {
 		pressedKeys.put(key, true);
 		if (toggleable.contains(key)) {
@@ -57,8 +58,7 @@ public class KeyBoard {
 	}
 
 	public static final KeyListener keyListener = new KeyListener() {
-		
-		
+
 		@Override
 		public void keyTyped(KeyEvent e) {
 			for (Binding b : onType)
@@ -77,26 +77,26 @@ public class KeyBoard {
 				b.onAction(e.getKeyCode());
 		}
 	};
-	
+
 	public static final GLFWKeyCallbackI keyCallBack = new GLFWKeyCallbackI() {
-		
+
 		//TODO: implement key typed functionality for GLFW. somehow abstract callback and create IO submodule!
-		
+
 		@Override
 		public void invoke(long window, int key, int scancode, int action, int mods) {
-			switch(action) {
-			case GLFW.GLFW_RELEASE:
-				for (Binding b : onRelease)
-					b.onAction(key);
-				break;
-			case GLFW.GLFW_PRESS:
-				for (Binding b : onPress)
-					b.onAction(key);
-				break;
+			switch (action) {
+				case GLFW.GLFW_RELEASE:
+					for (Binding b : onRelease)
+						b.onAction(key);
+					break;
+				case GLFW.GLFW_PRESS:
+					for (Binding b : onPress)
+						b.onAction(key);
+					break;
 			}
 		}
 	};
-	
+
 	public static void resetKey(int keyCode) {
 		keyToggled.remove(keyCode);
 	}

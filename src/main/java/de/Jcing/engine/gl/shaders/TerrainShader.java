@@ -1,11 +1,11 @@
 package de.jcing.engine.gl.shaders;
 
-public class TerrainShader extends Shader{
+public class TerrainShader extends Shader {
 
 	public static final String PROJECTION_MATRIX = "projectionMatrix";
 	public static final String WORLD_MATRIX = "worldMatrix";
 	public static final String TEXTURE_SAMPLER = "texture_sampler";
-	
+
 	public TerrainShader() {
 		super("shaders/terrain/vertex", "shaders/terrain/fragment");
 		try {

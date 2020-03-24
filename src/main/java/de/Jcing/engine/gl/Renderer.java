@@ -1,7 +1,7 @@
 package de.jcing.engine.gl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
@@ -36,8 +36,8 @@ public class Renderer {
 
 	private Camera camera;
 
-	private HashMap<Shader, LinkedList<Renderable>> items;
-	
+	private HashMap<Shader, ArrayList<Renderable>> items;
+
 	@SuppressWarnings("rawtypes")
 	private HashMap[] modelViewMatrices = { new HashMap<>(), new HashMap<>() };
 	int nextBufferIndex;
@@ -49,16 +49,16 @@ public class Renderer {
 
 	public Renderer(Window win) {
 		this.window = win;
-		
+
 		//transformation handles matrix calculations for 3D space.
 		//it creates View and projectionmatrix needed to render gameitems at their current worldposition.
 		transformation = new Transformation();
 		camera = new Camera();
 		items = new HashMap<>();
 
-		camera.setPosition(0, 0, 5);
-		camera.setRotation(-45f, 0, 0);
-		
+		camera.setPosition(0, 0, 10);
+		camera.setRotation(0, 0, 0);
+
 		//All OpenGL actions have to run in context of the window!
 		window.getContext().run(() -> init());
 	}
@@ -68,10 +68,10 @@ public class Renderer {
 			log.debug("initializing shaders");
 			terrainShader = new TerrainShader();
 			entityShader = new EntityShader();
-			
+
 			//items is a Shader-(List of Renderable) Map to render every item with corresponding shader.
-			items.put(terrainShader, new LinkedList<>());
-			items.put(entityShader, new LinkedList<>());
+			items.put(terrainShader, new ArrayList<>());
+			items.put(entityShader, new ArrayList<>());
 
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -91,19 +91,18 @@ public class Renderer {
 			window.setResized(false);
 		}
 		// update transformation
-		Matrix4f projectionMatrix = transformation.getProjectionMatrix(FOV, window.getWidth(), window.getHeight(),
-				Z_NEAR, Z_FAR);
-		
+		Matrix4f projectionMatrix = transformation.getProjectionMatrix(FOV, window.getWidth(), window.getHeight(), Z_NEAR, Z_FAR);
+
 		//swap Matrix buffers to prevent movement of items while frame is rendered (black gaps, tearing)
 		swapBuffers();
-		if(!buffersInitialized)
+		if (!buffersInitialized)
 			return;
 		drawTerrain(projectionMatrix);
 		drawEntities(projectionMatrix);
-		
+
 		//TODO: DRAW GUI HERE
 	}
-	
+
 	private void drawTerrain(Matrix4f projectionMatrix) {
 		terrainShader.bind();
 		terrainShader.setUniform(TerrainShader.PROJECTION_MATRIX, projectionMatrix);
@@ -112,14 +111,14 @@ public class Renderer {
 		for (Renderable item : items.get(terrainShader)) { // DRAW TERRAIN
 			if (item.isInitialized()) {
 				Matrix4f mat = getModelViewMatrix(item);
-				if(mat != null) //TODO: check why mat can be null!
+				if (mat != null) //TODO: check why mat can be null!
 					terrainShader.setUniform(TerrainShader.WORLD_MATRIX, mat);
 				item.getMesh().render();
 			}
 		}
 		terrainShader.unbind();
 	}
-	
+
 	private void drawEntities(Matrix4f projectionMatrix) {
 		entityShader.bind();
 		entityShader.setUniform(TerrainShader.PROJECTION_MATRIX, projectionMatrix);
@@ -147,16 +146,16 @@ public class Renderer {
 
 	public void finish() {
 		window.getContext().run(() -> {
-			for (LinkedList<Renderable> l : items.values())
+			for (ArrayList<Renderable> l : items.values())
 				for (Renderable item : l)
 					item.getMesh().cleanUp();
 		});
 	}
-	
+
 	private void swapBuffers() {
-		if(swapBuffers) {
+		if (swapBuffers) {
 			currentBufferIndex = nextBufferIndex;
-			nextBufferIndex = (nextBufferIndex+1) % modelViewMatrices.length;
+			nextBufferIndex = (nextBufferIndex + 1) % modelViewMatrices.length;
 			modelViewMatrices[nextBufferIndex].clear();
 			swapBuffers = false;
 		}
@@ -164,17 +163,17 @@ public class Renderer {
 
 	public void swapMatrixBuffer() {
 		swapBuffers = true;
-		if(!buffersInitialized)
+		if (!buffersInitialized)
 			buffersInitialized = true;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void bufferWorldMatrix(Renderable item) {
 		Matrix4f viewMatrix = transformation.getViewMatrix(camera);
 		Matrix4f modelViewMatrix = transformation.getModelViewMatrix(item, viewMatrix);
-		modelViewMatrices[nextBufferIndex].put(item,modelViewMatrix);
+		modelViewMatrices[nextBufferIndex].put(item, modelViewMatrix);
 	}
-	
+
 	private Matrix4f getModelViewMatrix(Renderable item) {
 		return (Matrix4f) modelViewMatrices[currentBufferIndex].get(item);
 	}

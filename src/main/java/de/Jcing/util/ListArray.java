@@ -1,27 +1,27 @@
 package de.jcing.util;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class ListArray<A> {
-	
-	private LinkedList<A[]> elements;
-	
+
+	private ArrayList<A[]> elements;
+
 	public ListArray() {
-		elements = new LinkedList<>();
+		elements = new ArrayList<>();
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public ListArray(A[]...elements) {
+	public ListArray(A[]... elements) {
 		this();
-		for(A[] a : elements) {
+		for (A[] a : elements) {
 			this.elements.add(a);
 		}
 	}
-	
+
 	public A get(int index) {
 		int reminding = index;
-		for(A[] a : elements) {
-			if(a.length > reminding) {
+		for (A[] a : elements) {
+			if (a.length > reminding) {
 				return a[reminding];
 			} else {
 				reminding -= a.length;
@@ -29,15 +29,15 @@ public class ListArray<A> {
 		}
 		throw new IndexOutOfBoundsException();
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public void add(A...elements) {
+	public void add(A... elements) {
 		this.elements.add(elements);
 	}
-	
+
 	public int size() {
 		int size = 0;
-		for(A[] a : elements)
+		for (A[] a : elements)
 			size += a.length;
 		return size;
 	}

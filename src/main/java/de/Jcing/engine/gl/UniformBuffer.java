@@ -10,15 +10,8 @@ import org.joml.Vector3f;
 public class UniformBuffer {
 
 	@SuppressWarnings("rawtypes")
-	private HashMap[] maps = { 
-			new HashMap<String, Float>(), 
-			new HashMap<String, Integer>(),
-			new HashMap<String, Vector3f>(), 
-			new HashMap<String, Vector2f>(), 
-			new HashMap<String, float[]>(),
-			new HashMap<String, Boolean>(), 
-			new HashMap<String, Matrix4f>(), 
-	};
+	private HashMap[] maps = { new HashMap<String, Float>(), new HashMap<String, Integer>(), new HashMap<String, Vector3f>(), new HashMap<String, Vector2f>(), new HashMap<String, float[]>(),
+			new HashMap<String, Boolean>(), new HashMap<String, Matrix4f>(), };
 
 	public static final int floats = 0;
 	public static final int integers = 1;
@@ -85,7 +78,7 @@ public class UniformBuffer {
 	}
 
 	public void clear() {
-		for(HashMap<?,?> m: maps) {
+		for (HashMap<?, ?> m : maps) {
 			m.clear();
 		}
 	}

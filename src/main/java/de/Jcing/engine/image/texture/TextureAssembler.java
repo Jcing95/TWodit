@@ -4,24 +4,23 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 import de.jcing.engine.image.JImage;
 import de.jcing.engine.image.JImageData;
 
 public class TextureAssembler {
-	
+
 	private ArrayList<JImageData> images;
 	private HashMap<Integer, Integer> animationLengths;
-	private LinkedList<AtlasCallback> callbacks;
-	
+	private ArrayList<AtlasCallback> callbacks;
+
 	private TextureAtlas atlas;
 	private boolean initialized;
-	
+
 	public TextureAssembler() {
 		images = new ArrayList<>();
 		animationLengths = new HashMap<>();
-		callbacks = new LinkedList<>();
+		callbacks = new ArrayList<>();
 		initialized = false;
 	}
 
@@ -31,17 +30,17 @@ public class TextureAssembler {
 		images.add(i.next());
 		return index;
 	}
-	
+
 	public int addFrames(JImage img) {
 		int index = images.size();
 		Iterator<JImageData> i = img.iterator();
-		while(i.hasNext()) {
+		while (i.hasNext()) {
 			images.add(i.next());
 		}
-		animationLengths.put(index,images.size()-index);
+		animationLengths.put(index, images.size() - index);
 		return index;
 	}
-	
+
 	public void addCallback(AtlasCallback callback) {
 		callbacks.add(callback);
 	}
@@ -53,32 +52,32 @@ public class TextureAssembler {
 		}
 		atlas = new TextureAtlas(imgs);
 		initialized = true;
-		
-		for(AtlasCallback c: callbacks) {
+
+		for (AtlasCallback c : callbacks) {
 			c.built(this);
 		}
 	}
-	
+
 	public Image getImage(int id) throws RuntimeException {
-		if(!initialized)
+		if (!initialized)
 			throw new RuntimeException("textures not yet assembled!");
-		return new Image(atlas,id);
+		return new Image(atlas, id);
 	}
-	
+
 	public Animation getAnimation(int id) throws RuntimeException {
-		if(!initialized)
+		if (!initialized)
 			throw new RuntimeException("textures not yet assembled!");
-		return new Animation(atlas,id,animationLengths.get(id));
+		return new Animation(atlas, id, animationLengths.get(id));
 	}
-	
+
 	public TextureAtlas getAtlas() throws RuntimeException {
-		if(!initialized)
+		if (!initialized)
 			throw new RuntimeException("textures not yet assembled!");
 		return atlas;
 	}
-	
+
 	public int size() {
 		return images.size();
 	}
-	
+
 }

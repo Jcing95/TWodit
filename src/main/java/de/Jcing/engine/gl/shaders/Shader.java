@@ -16,26 +16,25 @@ import org.lwjgl.system.MemoryStack;
 import de.jcing.utillities.log.Log;
 
 public abstract class Shader {
-	
+
 	public static final String SHADER_LOCATION = "";
 	public static final Log log = new Log(Shader.class);
-	
+
 	protected int programID;
 	protected int vertexShaderID;
 	protected int fragmentShaderID;
-	
-//	private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
-	
-	
+
+	//	private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
+
 	private final HashMap<String, Integer> uniforms;
-	
+
 	public Shader(String vertexFile, String fragmentFile) {
 		programID = GL30.glCreateProgram();
 		vertexShaderID = loadShader(vertexFile, GL30.GL_VERTEX_SHADER);
 		fragmentShaderID = loadShader(fragmentFile, GL30.GL_FRAGMENT_SHADER);
 		uniforms = new HashMap<>();
 	}
-		
+
 	private int loadShader(String file, int type) {
 		StringBuilder shaderSource = new StringBuilder();
 		try {
@@ -45,8 +44,7 @@ public abstract class Shader {
 				shaderSource.append(line).append("\n");
 			}
 			reader.close();
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			log.error("Could not read " + file);
 			e.printStackTrace();
 			//TODO: exit here?
@@ -55,7 +53,7 @@ public abstract class Shader {
 		int shaderID = GL30.glCreateShader(type);
 		GL30.glShaderSource(shaderID, shaderSource);
 		GL30.glCompileShader(shaderID);
-		
+
 		if (GL30.glGetShaderi(shaderID, GL30.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
 			log.info(GL30.glGetShaderInfoLog(shaderID, 500));
 			log.error("Could not compile shader.");
@@ -92,19 +90,17 @@ public abstract class Shader {
 
 	public void cleanUp() {
 		unbind();
-		if(programID != 0)
+		if (programID != 0)
 			GL30.glDeleteProgram(programID);
 	}
-	
-	public void createUniform(String uniformName){
-	    int uniformLocation = GL30.glGetUniformLocation(programID, uniformName);
-	    if (uniformLocation < 0) {
-	        log.error("Could not find uniform:" +
-	            uniformName);
-	    }
-	    uniforms.put(uniformName, uniformLocation);
+
+	public void createUniform(String uniformName) {
+		int uniformLocation = GL30.glGetUniformLocation(programID, uniformName);
+		if (uniformLocation < 0) {
+			log.error("Could not find uniform:" + uniformName);
+		}
+		uniforms.put(uniformName, uniformLocation);
 	}
-	
 
 	public void setUniform(String location, float value) {
 		GL30.glUniform1f(uniforms.get(location), value);
@@ -125,11 +121,11 @@ public abstract class Shader {
 	public void setUniform(String location, float[] value) {
 		GL30.glUniform1fv(uniforms.get(location), value);
 	}
-	
+
 	public void setUniform(String location, boolean value) {
 		GL30.glUniform1f(uniforms.get(location), value ? 1f : 0f);
 	}
-	
+
 	public void setUniform(String location, Matrix4f value) {
 		// Dump the matrix into a float buffer
 		try (MemoryStack stack = MemoryStack.stackPush()) {

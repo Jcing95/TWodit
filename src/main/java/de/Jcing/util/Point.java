@@ -17,7 +17,7 @@ public class Point implements Cloneable {
 	public double getYd() {
 		return y;
 	}
-	
+
 	public int getXi() {
 		return (int) x;
 	}
@@ -25,19 +25,19 @@ public class Point implements Cloneable {
 	public int getYi() {
 		return (int) y;
 	}
-	
+
 	public void setX(double x) {
 		this.x = x;
 	}
-	
+
 	public void setY(double y) {
 		this.y = y;
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
-		Point p = (Point)o;
-		return p.x == x && p.y == y; 
+		Point p = (Point) o;
+		return p.x == x && p.y == y;
 	}
 
 	@Override
@@ -64,13 +64,13 @@ public class Point implements Cloneable {
 	}
 
 	public double distance(Point point) {
-		return Math.sqrt((getXd()-point.getXd())*(getXd()-point.getXd())+(getYd()-point.getYd())*(getYd()-point.getYd()));
+		return Math.sqrt((getXd() - point.getXd()) * (getXd() - point.getXd()) + (getYd() - point.getYd()) * (getYd() - point.getYd()));
 	}
-	
+
 	public double yDist(Point p) {
 		return Math.abs(p.getYd() - getYd());
 	}
-	
+
 	public double xDist(Point p) {
 		return Math.abs(p.getXd() - getXd());
 	}

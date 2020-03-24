@@ -14,19 +14,17 @@ import de.jcing.game.Player;
 
 public class MainStage extends Stage {
 
-	
 	Player player;
-	
+
 	Transformation transformation;
-	
+
 	private int grass;
-	
+
 	public MainStage(Renderer renderer) {
 		super("Main", renderer, renderer.getCamera());
 		player = new Player(assembler);
 		init();
 	}
-
 
 	@Override
 	protected void feedAssembler(TextureAssembler assembler) {
@@ -38,21 +36,21 @@ public class MainStage extends Stage {
 	protected void createChunks(HashMap<Vector2i, Chunk> chunks, TextureAssembler assembler) {
 		for (int x = -10; x < 10; x++)
 			for (int y = -10; y < 10; y++)
-				chunks.put(new Vector2i(x,y), new Chunk(x, y, assembler).init(assembler.getAnimation(grass)));
+				chunks.put(new Vector2i(x, y), new Chunk(x, y, assembler).init(assembler.getAnimation(grass)));
 	}
 
 	@Override
 	public void prepareRenderer(Renderer r) {
-		for(Chunk c : chunks.values())
-			r.addRenderable(r.getTerrainShader(),c);
-		r.addRenderable(r.getEntityShader(),player);
+		for (Chunk c : chunks.values())
+			r.addRenderable(r.getTerrainShader(), c);
+		r.addRenderable(r.getEntityShader(), player);
 	}
-	
+
 	@Override
 	public void tick() {
 		player.tick(camera);
 		renderer.bufferWorldMatrix(player);
-		for(Chunk c : chunks.values())
+		for (Chunk c : chunks.values())
 			renderer.bufferWorldMatrix(c);
 		renderer.swapMatrixBuffer();
 	}
