@@ -5,11 +5,12 @@ import java.util.ArrayList;
 
 import de.jcing.Main;
 import de.jcing.utillities.log.Log;
+import de.jcing.utillities.log.Log.Logger;
 
 public class JMultiImage extends JImage {
 
-	private static Log log = new Log(JMultiImage.class).setLogLevel(Log.LOG_LEVEL.error);
-
+	private static final Logger log = Log.getInstance().setLevel(Log.LEVEL.error);
+	
 	public JMultiImage(String... path) {
 		super();
 		for (String s : path)

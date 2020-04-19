@@ -11,8 +11,6 @@ import de.jcing.utillities.log.Log;
 
 public class JImageData {
 
-	private static final Log log = new Log(JImageData.class);
-
 	public static final boolean FLIP_IMAGE_VERTICALLY = true;
 
 	protected static final HashMap<String, BufferedImage> LOADED_IMAGES = new HashMap<>();
@@ -31,7 +29,7 @@ public class JImageData {
 					flip(data);
 				LOADED_IMAGES.put(path, data);
 			} catch (IOException e) {
-				log.error("could not load: " + path);
+				Log.error("could not load: " + path);
 				e.printStackTrace();
 			}
 		}

@@ -1,4 +1,4 @@
-package de.jcing.engine.gl;
+package de.jcing.engine.opengl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,16 +7,14 @@ import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
-import de.jcing.engine.gl.mesh.Renderable;
-import de.jcing.engine.gl.shaders.EntityShader;
-import de.jcing.engine.gl.shaders.Shader;
-import de.jcing.engine.gl.shaders.TerrainShader;
+import de.jcing.engine.opengl.mesh.Renderable;
+import de.jcing.engine.opengl.shaders.EntityShader;
+import de.jcing.engine.opengl.shaders.Shader;
+import de.jcing.engine.opengl.shaders.TerrainShader;
 import de.jcing.utillities.log.Log;
 import de.jcing.window.Window;
 
 public class Renderer {
-
-	private static final Log log = new Log(Renderer.class);
 
 	/**
 	 * Field of View in Radians
@@ -65,7 +63,7 @@ public class Renderer {
 
 	private void init() {
 		try {
-			log.debug("initializing shaders");
+			Log.debug("initializing shaders");
 			terrainShader = new TerrainShader();
 			entityShader = new EntityShader();
 
@@ -80,7 +78,7 @@ public class Renderer {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		log.debug("renderer initialized -> starting render loop");
+		Log.debug("renderer initialized -> starting render loop");
 		window.getContext().loop(() -> render());
 
 	}

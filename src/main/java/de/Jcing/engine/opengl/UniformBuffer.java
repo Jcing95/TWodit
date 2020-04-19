@@ -1,4 +1,4 @@
-package de.jcing.engine.gl;
+package de.jcing.engine.opengl;
 
 import java.util.HashMap;
 

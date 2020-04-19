@@ -1,6 +1,6 @@
 package de.jcing.game;
 
-import de.jcing.engine.gl.Renderer;
+import de.jcing.engine.opengl.Renderer;
 import de.jcing.game.stages.MainStage;
 import de.jcing.utillities.task.Task;
 import de.jcing.window.Window;

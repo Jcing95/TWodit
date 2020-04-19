@@ -3,13 +3,14 @@ package de.jcing.game;
 import org.lwjgl.glfw.GLFW;
 
 import de.jcing.engine.entity.Creature;
-import de.jcing.engine.gl.Camera;
-import de.jcing.engine.gl.mesh.Mesh;
-import de.jcing.engine.gl.mesh.MeshFactory;
 import de.jcing.engine.image.JAnimation;
 import de.jcing.engine.image.texture.AtlasCallback;
 import de.jcing.engine.image.texture.TextureAssembler;
 import de.jcing.engine.io.KeyBoard;
+import de.jcing.engine.opengl.Camera;
+import de.jcing.engine.opengl.mesh.Mesh;
+import de.jcing.engine.opengl.mesh.MeshFactory;
+import de.jcing.utillities.log.Log;
 
 public class Player extends Creature {
 
@@ -36,7 +37,7 @@ public class Player extends Creature {
 		this.setAnim(ANIM.WALK_DOWN, assembler.getAnimation(anim_down));
 		setAnim(ANIM.WALK_UP);
 		setMesh(new Mesh(currAnim, MeshFactory.createRectData(0, 0, 0.1f, 1, 1, currAnim, false)));
-		System.out.println("player set up");
+		Log.info("player set up");
 	};
 
 	public void tick(Camera cam) {
@@ -60,8 +61,7 @@ public class Player extends Creature {
 
 			cam.getPosition().x = position.x;
 			cam.getPosition().y = position.y;
-
-			System.out.println(cam.getPosition());
+			Log.debug(cam.getPosition().toString());
 		}
 	}
 

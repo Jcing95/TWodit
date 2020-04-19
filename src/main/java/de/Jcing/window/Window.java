@@ -47,7 +47,6 @@ import de.jcing.Main;
 import de.jcing.engine.io.KeyBoard;
 import de.jcing.engine.io.Mouse;
 import de.jcing.utillities.log.Log;
-import de.jcing.utillities.log.appender.PrintStreamAppender;
 import de.jcing.utillities.task.Context;
 import de.jcing.utillities.task.Task;
 
@@ -57,8 +56,6 @@ public class Window {
 
 	private final Task windowTask;
 
-	private static final Log log = new Log(Window.class);
-
 	private int width = 1280;
 	private int height = 720;
 
@@ -67,7 +64,7 @@ public class Window {
 	private int lastMillis = 0;
 
 	public Window() {
-		log.debug("Initializing Window using LWJGL " + Version.getVersion() + "!");
+		Log.debug("Initializing Window using LWJGL " + Version.getVersion() + "!");
 		windowTask = new Task(this::loop).name("GL_WINDOW").preExecute(this::init).postExecute(this::end).preLoop(this::preLoop).postLoop(this::postLoop).repeat(Task.perSecond(60));
 	}
 
@@ -83,8 +80,7 @@ public class Window {
 	private void init() {
 		// Setup an error callback. The default implementation
 		// will print the error message in System.err.
-		GLFWErrorCallback.createPrint(((PrintStreamAppender) log.getAppender(Log.LOG_LEVEL.error)).getStream()).set();
-
+		GLFWErrorCallback.createPrint(Log.getError()).set();
 		// Initialize GLFW. Most GLFW functions will not work before doing this.
 		if (!glfwInit())
 			throw new IllegalStateException("Unable to initialize GLFW");
@@ -110,7 +106,7 @@ public class Window {
 		});
 
 		glfwSetMouseButtonCallback(window, Mouse.mouseButtonCallback);
-		Mouse.addBinding(Mouse.ONPRESS, (key) -> log.debug("click @ (" + Mouse.getX() + "|" + Mouse.getY() + ")"));
+		Mouse.addBinding(Mouse.ONPRESS, (key) -> Log.debug("click @ (" + Mouse.getX() + "|" + Mouse.getY() + ")"));
 
 		glfwSetFramebufferSizeCallback(window, (window, width, height) -> {
 			this.width = width;
@@ -165,7 +161,7 @@ public class Window {
 		//log the framerate once per second!
 		if (Task.millis() - lastMillis > 1000) {
 			lastMillis = Task.millis();
-			log.info(windowTask.getTps() + " FPS!");
+			Log.info(windowTask.getTps() + " FPS!");
 		}
 
 		//update the Mouse

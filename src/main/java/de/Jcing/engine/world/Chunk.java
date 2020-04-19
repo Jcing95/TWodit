@@ -6,11 +6,11 @@ import java.util.Random;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
 
-import de.jcing.engine.gl.mesh.Mesh;
-import de.jcing.engine.gl.mesh.Renderable;
-import de.jcing.engine.gl.mesh.VertexData;
 import de.jcing.engine.image.texture.Animation;
 import de.jcing.engine.image.texture.TextureAssembler;
+import de.jcing.engine.opengl.mesh.Mesh;
+import de.jcing.engine.opengl.mesh.Renderable;
+import de.jcing.engine.opengl.mesh.VertexData;
 
 public class Chunk extends Renderable {
 

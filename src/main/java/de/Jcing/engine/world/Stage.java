@@ -4,9 +4,9 @@ import java.util.HashMap;
 
 import org.joml.Vector2i;
 
-import de.jcing.engine.gl.Camera;
-import de.jcing.engine.gl.Renderer;
 import de.jcing.engine.image.texture.TextureAssembler;
+import de.jcing.engine.opengl.Camera;
+import de.jcing.engine.opengl.Renderer;
 
 public abstract class Stage {
 

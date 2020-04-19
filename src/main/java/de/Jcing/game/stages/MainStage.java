@@ -4,10 +4,10 @@ import java.util.HashMap;
 
 import org.joml.Vector2i;
 
-import de.jcing.engine.gl.Renderer;
-import de.jcing.engine.gl.Transformation;
 import de.jcing.engine.image.JMultiImage;
 import de.jcing.engine.image.texture.TextureAssembler;
+import de.jcing.engine.opengl.Renderer;
+import de.jcing.engine.opengl.Transformation;
 import de.jcing.engine.world.Chunk;
 import de.jcing.engine.world.Stage;
 import de.jcing.game.Player;

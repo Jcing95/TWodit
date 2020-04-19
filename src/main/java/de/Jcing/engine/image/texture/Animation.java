@@ -32,8 +32,6 @@ public class Animation extends Image {
 		Image img = new Image(this, startIndex);
 		float deltaX = getX() - img.getX();
 		float deltaY = getY() - img.getY();
-		//		if(index != img.getIndex())
-		//		System.out.println("x" + deltaX + " y" + deltaY );
 		return new Vector2f(deltaX, deltaY);
 	}
 

@@ -1,4 +1,4 @@
-package de.jcing.engine.gl.mesh;
+package de.jcing.engine.opengl.mesh;
 
 import de.jcing.engine.image.texture.Image;
 

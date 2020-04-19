@@ -10,8 +10,6 @@ import de.jcing.utillities.log.Log;
 
 public class TextureAtlas extends Texture {
 
-	private static final Log log = new Log(TextureAtlas.class);
-
 	private int subTextureTotalCount;
 	private int subTexturesPerSide;
 	private int subTextureSideLength;
@@ -47,7 +45,7 @@ public class TextureAtlas extends Texture {
 		if (assertSameSize(subImages)) {
 			int sides = Maths.roundUp(Math.sqrt(count));
 			int size = subImages[0].getWidth() * sides;
-			log.debug("combining " + count + " images to atlas with " + sides + " textures per side and a size of " + size + "px²");
+			Log.debug("combining " + count + " images to atlas with " + sides + " textures per side and a size of " + size + "px²");
 			BufferedImage combined = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g = combined.createGraphics();
 			int x = 0;

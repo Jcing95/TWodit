@@ -1,4 +1,4 @@
-package de.jcing.engine.gl.mesh;
+package de.jcing.engine.opengl.mesh;
 
 import org.joml.Vector2f;
 import org.joml.Vector3f;

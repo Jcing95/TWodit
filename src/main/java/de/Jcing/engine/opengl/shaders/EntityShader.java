@@ -1,4 +1,4 @@
-package de.jcing.engine.gl.shaders;
+package de.jcing.engine.opengl.shaders;
 
 public class EntityShader extends Shader {
 
