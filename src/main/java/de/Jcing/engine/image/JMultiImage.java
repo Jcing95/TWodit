@@ -17,7 +17,7 @@ public class JMultiImage extends JImage {
 			loadImagesRecursively(Main.RESSOURCES + s, content);
 	}
 
-	public static void loadImagesRecursively(String path, ArrayList<JImageData> destination) {
+	public static void loadImagesRecursively(String path, ArrayList<ImageFile> destination) {
 		File dir = new File(path);
 		File[] expanded = dir.listFiles();
 		log.debug("loading images recursively from: " + dir.getPath());
@@ -26,7 +26,7 @@ public class JMultiImage extends JImage {
 			if (f.isDirectory()) {
 				loadImagesRecursively(f.getPath(), destination);
 			} else if (JImage.isValidImage(f.getName())) {
-				destination.add(new JImageData(f.getPath()));
+				destination.add(new ImageFile(f.getPath()));
 				counter++;
 			}
 		}

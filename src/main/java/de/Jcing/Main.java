@@ -1,5 +1,7 @@
 package de.jcing;
 
+import de.jcing.engine.image.BufferedImageLoader;
+import de.jcing.engine.image.ImageLoader;
 import de.jcing.engine.opengl.Renderer;
 import de.jcing.game.Game;
 import de.jcing.utillities.task.Topic;
@@ -14,9 +16,11 @@ public class Main {
 	private static Window win;
 
 	private static Renderer renderer;
-
-	public static void main(String[] args) {
 	
+	public static void main(String[] args) {
+		
+		ImageLoader.init(new BufferedImageLoader());
+		
 		win = new Window();
 
 		renderer = new Renderer(win);
@@ -35,5 +39,5 @@ public class Main {
 	public static Game getGame() {
 		return game;
 	}
-
+	
 }

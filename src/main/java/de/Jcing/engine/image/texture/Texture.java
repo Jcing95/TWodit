@@ -15,7 +15,6 @@ import static org.lwjgl.opengl.GL11.glTexImage2D;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
 import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -27,6 +26,8 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryStack;
 
+import de.jcing.engine.image.ImageData;
+
 public class Texture {
 
 	protected final int id;
@@ -37,7 +38,7 @@ public class Texture {
 		this(loadTexture(fileName));
 	}
 
-	public Texture(BufferedImage image) {
+	public Texture(ImageData image) {
 		this(loadTexture(image));
 	}
 
@@ -113,21 +114,21 @@ public class Texture {
 		}
 	}
 
-	protected static Texture loadTexture(BufferedImage image) {
+	protected static Texture loadTexture(ImageData image) {
 		// Create a new OpenGL texture
 		int textureId = glGenTextures();
 		return loadTexture(textureId, image);
 	}
 
-	protected static Texture loadTexture(int textureId, BufferedImage image) {
-		int[] pixels = new int[image.getWidth() * image.getHeight()];
-		image.getRGB(0, 0, image.getWidth(), image.getHeight(), pixels, 0, image.getWidth());
+	protected static Texture loadTexture(int textureId, ImageData data) {
+		int[] pixels = data.getData();
+//		data.getRGB(0, 0, data.getWidth(), data.getHeight(), pixels, 0, data.getWidth());
 
-		ByteBuffer buffer = BufferUtils.createByteBuffer(image.getWidth() * image.getHeight() * BYTES_PER_PIXEL); //4 for RGBA, 3 for RGB
+		ByteBuffer buffer = BufferUtils.createByteBuffer(data.getWidth() * data.getHeight() * BYTES_PER_PIXEL); //4 for RGBA, 3 for RGB
 
-		for (int y = 0; y < image.getHeight(); y++) {
-			for (int x = 0; x < image.getWidth(); x++) {
-				int pixel = pixels[y * image.getWidth() + x];
+		for (int y = 0; y < data.getHeight(); y++) {
+			for (int x = 0; x < data.getWidth(); x++) {
+				int pixel = pixels[y * data.getWidth() + x];
 				buffer.put((byte) ((pixel >> 16) & 0xFF)); // Red component
 				buffer.put((byte) ((pixel >> 8) & 0xFF)); // Green component
 				buffer.put((byte) (pixel & 0xFF)); // Blue component
@@ -147,11 +148,11 @@ public class Texture {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 		// Upload the texture data
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.getWidth(), image.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, data.getWidth(), data.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 		// Generate Mip Map
 		glGenerateMipmap(GL_TEXTURE_2D);
 
-		return new Texture(textureId, image.getWidth(), image.getHeight());
+		return new Texture(textureId, data.getWidth(), data.getHeight());
 	}
 
 }

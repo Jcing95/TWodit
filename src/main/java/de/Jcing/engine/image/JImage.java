@@ -7,7 +7,7 @@ public abstract class JImage {
 
 	public static final String[] IMAGE_EXTENSIONS = { ".png", ".jpg" };
 
-	protected ArrayList<JImageData> content;
+	protected ArrayList<ImageFile> content;
 
 	protected int w, h;
 
@@ -31,7 +31,7 @@ public abstract class JImage {
 		return false;
 	}
 
-	public Iterator<JImageData> iterator() {
+	public Iterator<ImageFile> iterator() {
 		return content.iterator();
 	}
 

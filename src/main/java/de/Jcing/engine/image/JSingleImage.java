@@ -6,7 +6,7 @@ public class JSingleImage extends JImage {
 
 	public JSingleImage(String path) {
 		super();
-		JImageData data = new JImageData(Main.RESSOURCES + path);
+		ImageFile data = new ImageFile(Main.RESSOURCES + path);
 		w = data.getWidth();
 		h = data.getHeight();
 		content.add(data);

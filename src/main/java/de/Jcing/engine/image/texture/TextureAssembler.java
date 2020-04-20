@@ -1,16 +1,16 @@
 package de.jcing.engine.image.texture;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import de.jcing.engine.image.ImageData;
 import de.jcing.engine.image.JImage;
-import de.jcing.engine.image.JImageData;
+import de.jcing.engine.image.ImageFile;
 
 public class TextureAssembler {
 
-	private ArrayList<JImageData> images;
+	private ArrayList<ImageFile> images;
 	private HashMap<Integer, Integer> animationLengths;
 	private ArrayList<AtlasCallback> callbacks;
 
@@ -26,14 +26,14 @@ public class TextureAssembler {
 
 	public int addFrame(JImage img) {
 		int index = images.size();
-		Iterator<JImageData> i = img.iterator();
+		Iterator<ImageFile> i = img.iterator();
 		images.add(i.next());
 		return index;
 	}
 
 	public int addFrames(JImage img) {
 		int index = images.size();
-		Iterator<JImageData> i = img.iterator();
+		Iterator<ImageFile> i = img.iterator();
 		while (i.hasNext()) {
 			images.add(i.next());
 		}
@@ -46,7 +46,7 @@ public class TextureAssembler {
 	}
 
 	public void buildAtlas() {
-		BufferedImage[] imgs = new BufferedImage[images.size()];
+		ImageData[] imgs = new ImageData[images.size()];
 		for (int i = 0; i < images.size(); i++) {
 			imgs[i] = images.get(i).getBufferedImage();
 		}

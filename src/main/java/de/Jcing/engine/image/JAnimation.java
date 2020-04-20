@@ -18,13 +18,13 @@ public class JAnimation extends JImage {
 		loadAnimation(Main.RESSOURCES + path, content);
 	}
 
-	public static void loadAnimation(String path, ArrayList<JImageData> to) {
+	public static void loadAnimation(String path, ArrayList<ImageFile> to) {
 		File dir = new File(path).getAbsoluteFile();
 		Log.info("Loading animation from: " + dir.getAbsolutePath());
 		File[] expanded = dir.listFiles();
 		for (File f : expanded) {
 			if (JImage.isValidImage(f.getName()))
-				to.add(new JImageData(f.getAbsolutePath()));
+				to.add(new ImageFile(f.getAbsolutePath()));
 		}
 	}
 }
