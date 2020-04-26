@@ -1,7 +1,5 @@
 package de.jcing.engine.image;
 
-import de.jcing.utillities.log.Log;
-
 public class ImageData {
 	
 	private int width, height;
@@ -11,8 +9,6 @@ public class ImageData {
 	public ImageData(int width, int height) {
 		this.width = width;
 		this.height = height;
-		
-		//TODO: maybe switch width & height
 		data = new int[width*height];
 	}
 	

@@ -2,10 +2,9 @@ package de.jcing.engine.image.texture;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.List;
 
 import de.jcing.engine.image.ImageData;
-import de.jcing.engine.image.JImage;
 import de.jcing.engine.image.ImageFile;
 
 public class TextureAssembler {
@@ -24,20 +23,16 @@ public class TextureAssembler {
 		initialized = false;
 	}
 
-	public int addFrame(JImage img) {
+	public int addFrame(ImageFile img) {
 		int index = images.size();
-		Iterator<ImageFile> i = img.iterator();
-		images.add(i.next());
+		images.add(img);
 		return index;
 	}
 
-	public int addFrames(JImage img) {
+	public int addFrames(List<ImageFile> imgs) {
 		int index = images.size();
-		Iterator<ImageFile> i = img.iterator();
-		while (i.hasNext()) {
-			images.add(i.next());
-		}
-		animationLengths.put(index, images.size() - index);
+		images.addAll(imgs);
+		animationLengths.put(index, imgs.size());
 		return index;
 	}
 

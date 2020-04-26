@@ -3,6 +3,7 @@ package de.jcing.game;
 import org.lwjgl.glfw.GLFW;
 
 import de.jcing.engine.entity.Creature;
+import de.jcing.engine.image.ImageLoader;
 import de.jcing.engine.image.JAnimation;
 import de.jcing.engine.image.texture.AtlasCallback;
 import de.jcing.engine.image.texture.TextureAssembler;
@@ -21,7 +22,7 @@ public class Player extends Creature {
 
 	public Player(TextureAssembler assembler) {
 		super();
-		anim_left = assembler.addFrames(new JAnimation("gfx/player/left/"));
+		anim_left = assembler.addFrames("gfx/player/left/");
 		anim_right = assembler.addFrames(new JAnimation("gfx/player/right"));
 		anim_up = assembler.addFrames(new JAnimation("gfx/player/up/"));
 		anim_down = assembler.addFrames(new JAnimation("gfx/player/down/"));

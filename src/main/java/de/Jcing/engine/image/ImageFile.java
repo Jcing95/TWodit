@@ -10,8 +10,6 @@ public class ImageFile {
 
 	protected String path;
 
-	protected ImageData data;
-
 	public ImageFile(String path) {
 		if (LOADED_IMAGES.containsKey(path)) {
 			data = LOADED_IMAGES.get(path);
@@ -25,16 +23,5 @@ public class ImageFile {
 		return path.hashCode();
 	}
 
-	public int getWidth() {
-		return data.getWidth();
-	}
-
-	public int getHeight() {
-		return data.getHeight();
-	}
-
-	public ImageData getBufferedImage() {
-		return data;
-	}
 	
 }
