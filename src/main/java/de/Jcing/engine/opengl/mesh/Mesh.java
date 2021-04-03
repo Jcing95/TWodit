@@ -63,10 +63,10 @@ public class Mesh {
 			indiceSize += d.indices.length;
 		}
 		vertexCount = posSize;
-		Log.debug("datacount: " + data.length);
-		Log.debug("posSize: " + posSize);
-		Log.debug("texSize: " + texSize);
-		Log.debug("indiceSize: " + indiceSize);
+		log.debug("datacount: " + data.length);
+		log.debug("posSize: " + posSize);
+		log.debug("texSize: " + texSize);
+		log.debug("indiceSize: " + indiceSize);
 
 		try {
 			posBuffer = MemoryUtil.memAllocFloat(posSize);

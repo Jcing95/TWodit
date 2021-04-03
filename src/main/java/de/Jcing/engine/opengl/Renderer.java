@@ -92,7 +92,6 @@ public class Renderer {
 		Matrix4f projectionMatrix = transformation.getProjectionMatrix(FOV, window.getWidth(), window.getHeight(), Z_NEAR, Z_FAR);
 
 		//swap Matrix buffers to prevent movement of items while frame is rendered (black gaps, tearing)
-		swapBuffers();
 		if (!buffersInitialized)
 			return;
 		drawTerrain(projectionMatrix);

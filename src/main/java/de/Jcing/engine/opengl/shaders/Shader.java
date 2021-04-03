@@ -126,6 +126,7 @@ public abstract class Shader {
 
 	public void setUniform(String location, Matrix4f value) {
 		// Dump the matrix into a float buffer
+		if(value!=null)
 		try (MemoryStack stack = MemoryStack.stackPush()) {
 			FloatBuffer fb = stack.mallocFloat(16);
 			value.get(fb);

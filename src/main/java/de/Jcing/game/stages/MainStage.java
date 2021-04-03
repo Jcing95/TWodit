@@ -8,6 +8,9 @@ import de.jcing.engine.image.JMultiImage;
 import de.jcing.engine.image.texture.TextureAssembler;
 import de.jcing.engine.opengl.Renderer;
 import de.jcing.engine.opengl.Transformation;
+import de.jcing.engine.opengl.mesh.Mesh;
+import de.jcing.engine.opengl.mesh.Renderable;
+import de.jcing.engine.opengl.mesh.VertexData;
 import de.jcing.engine.world.Chunk;
 import de.jcing.engine.world.Stage;
 import de.jcing.game.Player;
@@ -19,7 +22,8 @@ public class MainStage extends Stage {
 	Transformation transformation;
 
 	private int grass;
-
+	private Renderable piece;
+	
 	public MainStage(Renderer renderer) {
 		super("Main", renderer, renderer.getCamera());
 		player = new Player(assembler);
@@ -36,13 +40,26 @@ public class MainStage extends Stage {
 	protected void createChunks(HashMap<Vector2i, Chunk> chunks, TextureAssembler assembler) {
 		for (int x = -10; x < 10; x++)
 			for (int y = -10; y < 10; y++)
-				chunks.put(new Vector2i(x, y), new Chunk(x, y, assembler).init(assembler.getAnimation(grass)));
+				chunks.put(new Vector2i(x, y), new Chunk(x, y).init(assembler.getAnimation(grass)));
+		piece = createRenderableStage();
 	}
-
+	
+	public Renderable createRenderableStage() {
+		VertexData datas[] = new VertexData[chunks.size()];
+		int i = 0;
+		for(Chunk c : chunks.values()) {
+			datas[i] = c.getVertices();
+			i++;
+		}
+		Mesh mesh = new Mesh(assembler.getAnimation(grass), datas);
+		return new Renderable(mesh);
+	}
+	
+	
 	@Override
 	public void prepareRenderer(Renderer r) {
-		for (Chunk c : chunks.values())
-			r.addRenderable(r.getTerrainShader(), c);
+//		for (Chunk c : chunks.values())
+			r.addRenderable(r.getTerrainShader(), piece);
 		r.addRenderable(r.getEntityShader(), player);
 	}
 
@@ -50,8 +67,7 @@ public class MainStage extends Stage {
 	public void tick() {
 		player.tick(camera);
 		renderer.bufferWorldMatrix(player);
-		for (Chunk c : chunks.values())
-			renderer.bufferWorldMatrix(c);
+		renderer.bufferWorldMatrix(piece);
 		renderer.swapMatrixBuffer();
 	}
 

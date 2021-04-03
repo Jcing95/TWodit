@@ -3,11 +3,20 @@ package de.jcing.engine.opengl.mesh;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-public abstract class Renderable {
+public class Renderable {
 
 	protected boolean initialized;
 	protected Mesh mesh;
-
+	
+	public Renderable() {
+		
+	}
+	
+	public Renderable(Mesh mesh) {
+		this.mesh = mesh;
+		initialized = true;
+	}
+	
 	public Vector3f getPosition() {
 		return new Vector3f(0, 0, 0);
 	}

@@ -62,10 +62,17 @@ public class Window {
 	private boolean isResized;
 
 	private int lastMillis = 0;
+	private static final boolean VSYNC = false;
 
 	public Window() {
 		Log.debug("Initializing Window using LWJGL " + Version.getVersion() + "!");
-		windowTask = new Task(this::loop).name("GL_WINDOW").preExecute(this::init).postExecute(this::end).preLoop(this::preLoop).postLoop(this::postLoop).repeat(Task.perSecond(60));
+		windowTask = new Task(this::loop).
+				name("GL_WINDOW").
+				preExecute(this::init).
+				postExecute(this::end).
+				preLoop(this::preLoop).
+				postLoop(this::postLoop).
+				repeat(0);
 	}
 
 	public Window run() {
@@ -132,7 +139,7 @@ public class Window {
 		// Make the OpenGL context current
 		glfwMakeContextCurrent(window);
 		// Enable v-sync
-		glfwSwapInterval(1);
+		glfwSwapInterval(VSYNC ? 1 : 0);
 
 		// Make the window visible
 		glfwShowWindow(window);

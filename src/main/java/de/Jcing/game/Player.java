@@ -61,7 +61,7 @@ public class Player extends Creature {
 
 			cam.getPosition().x = position.x;
 			cam.getPosition().y = position.y;
-			Log.debug(cam.getPosition().toString());
+//			Log.debug(cam.getPosition().toString());
 		}
 	}
 

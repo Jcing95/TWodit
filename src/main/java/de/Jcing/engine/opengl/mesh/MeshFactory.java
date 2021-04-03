@@ -9,7 +9,6 @@ public class MeshFactory {
 	}
 
 	public static VertexData createRectData(float x, float y, float z, float width, float height, Image texture, boolean texture_offset) {
-		VertexData data = new VertexData();
 		float[] vertices = new float[12];
 
 		//links oben
@@ -55,11 +54,7 @@ public class MeshFactory {
 		textureCoordinates[6] = tx + ts;
 		textureCoordinates[7] = ty + ts;
 
-		data.setPositions(vertices);
-		data.setIndices(indices);
-		data.setTexCoords(textureCoordinates);
-
-		return data;
+		return new VertexData(vertices, textureCoordinates, indices);
 	}
 
 }
