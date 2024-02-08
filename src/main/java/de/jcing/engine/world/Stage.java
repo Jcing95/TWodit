@@ -4,14 +4,12 @@ import java.util.HashMap;
 
 import org.joml.Vector2i;
 
-import de.jcing.engine.image.texture.TextureAssembler;
 import de.jcing.engine.opengl.Camera;
 import de.jcing.engine.opengl.Renderer;
 
 public abstract class Stage {
 
 	protected final String name;
-	protected final TextureAssembler assembler;
 
 	protected final HashMap<Vector2i, Chunk> chunks;
 
@@ -26,31 +24,19 @@ public abstract class Stage {
 
 		//store chunks in a IntegerVector - Chunk hashmap so that stages do not have to be rectangular.
 		chunks = new HashMap<>();
-		assembler = new TextureAssembler();
 	}
 
 	protected void init() {
-		feedAssembler(assembler);
-		assembler.buildAtlas();
-		createChunks(chunks, assembler);
+		createChunks(chunks);
 		prepareRenderer(renderer);
 	}
-
-	/**
-	 * override this method to load all Images to the TextureAssembler whom will
-	 * create an Atlas.
-	 * 
-	 * @param assembler - feed images here
-	 */
-	protected abstract void feedAssembler(TextureAssembler assembler);
 
 	/**
 	 * Initialize all chunks in this method.
 	 * 
 	 * @param chunks    store chunks in here.
-	 * @param assembler use this assembler to provide textures to the chunks
 	 */
-	protected abstract void createChunks(HashMap<Vector2i, Chunk> chunks, TextureAssembler assembler);
+	protected abstract void createChunks(HashMap<Vector2i, Chunk> chunks);
 
 	/**
 	 * handle stage logic in here. Also buffer Position Matrices here and swap

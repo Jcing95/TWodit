@@ -5,7 +5,7 @@ import org.lwjgl.glfw.GLFW;
 import de.jcing.engine.entity.Creature;
 import de.jcing.engine.image.JAnimation;
 import de.jcing.engine.image.texture.AtlasCallback;
-import de.jcing.engine.image.texture.TextureAssembler;
+import de.jcing.engine.image.TextureAssembler;
 import de.jcing.engine.io.KeyBoard;
 import de.jcing.engine.opengl.Camera;
 import de.jcing.engine.opengl.mesh.Mesh;

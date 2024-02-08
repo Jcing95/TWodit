@@ -3,7 +3,7 @@ package de.jcing.engine.entity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import de.jcing.engine.image.texture.Animation;
+import de.jcing.engine.image.Animation;
 import de.jcing.geometry.Rectangle;
 
 public class Creature extends Entity {
@@ -99,7 +99,7 @@ public class Creature extends Entity {
 
 	public void setAnim(ANIM anim) {
 		animationIndex = anim;
-		currAnim = sprite.get(anim).clone();
+		currAnim = sprite.get(anim);
 	}
 
 	public void setAnim(ANIM on, Animation img) {

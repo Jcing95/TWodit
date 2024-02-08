@@ -75,8 +75,6 @@ public class Window {
 				name("GL_WINDOW").
 				preExecute(this::init).
 				postExecute(this::end).
-				preLoop(this::preLoop).
-				postLoop(this::postLoop).
 				repeat(0);
 	}
 
@@ -161,16 +159,13 @@ public class Window {
 		glClearColor(0.1f, 0.1f, 0.2f, 0.0f);
 	}
 
-	private void preLoop() {
+	private void loop() {
 		if (glfwWindowShouldClose(window)) {
 			Main.finish();
 		}
-
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		// clear the framebuffer
-	}
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	private void loop() {
 		//LOG the framerate once per second!
 		if (Clock.millis() - lastMillis > 1000) {
 			lastMillis = Clock.millis();
@@ -180,10 +175,6 @@ public class Window {
 		//update the Mouse
 		GLFW.glfwGetCursorPos(window, Mouse.getXBuffer(), Mouse.getYBuffer());
 		Mouse.update(width, height);
-
-	}
-
-	private void postLoop() {
 
 		// swap the color buffers
 		glfwSwapBuffers(window);

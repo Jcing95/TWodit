@@ -1,6 +1,6 @@
 package de.jcing.engine.opengl.mesh;
 
-import de.jcing.engine.image.texture.Image;
+import de.jcing.engine.image.Image;
 
 public class MeshFactory {
 

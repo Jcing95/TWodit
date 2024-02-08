@@ -1,4 +1,4 @@
-package de.jcing.engine.image.texture;
+package de.jcing.engine.image;
 
 import org.joml.Vector2f;
 

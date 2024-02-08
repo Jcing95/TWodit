@@ -1,4 +1,4 @@
-package de.jcing.engine.image.texture;
+package de.jcing.engine.image;
 
 import de.jcing.util.Clock;
 import org.joml.Vector2f;
@@ -42,10 +42,6 @@ public class Animation extends Image {
 
 	public Image getImage(int index) {
 		return new Image(this, startIndex + index);
-	}
-
-	public Animation clone() {
-		return new Animation(this, this.startIndex, this.length, this.millisWait);
 	}
 
 	public void reset() {

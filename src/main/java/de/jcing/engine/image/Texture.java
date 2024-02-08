@@ -1,4 +1,4 @@
-package de.jcing.engine.image.texture;
+package de.jcing.engine.image;
 
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_RGBA;
@@ -25,8 +25,6 @@ import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryStack;
-
-import de.jcing.engine.image.ImageData;
 
 public class Texture {
 

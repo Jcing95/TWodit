@@ -5,7 +5,7 @@ import java.util.HashMap;
 import org.joml.Vector2i;
 
 import de.jcing.engine.image.JMultiImage;
-import de.jcing.engine.image.texture.TextureAssembler;
+import de.jcing.engine.image.TextureAssembler;
 import de.jcing.engine.opengl.Renderer;
 import de.jcing.engine.opengl.Transformation;
 import de.jcing.engine.opengl.mesh.Mesh;
@@ -26,21 +26,15 @@ public class MainStage extends Stage {
 	
 	public MainStage(Renderer renderer) {
 		super("Main", renderer, renderer.getCamera());
-		player = new Player(assembler);
+		player = new Player();
 		init();
 	}
 
 	@Override
-	protected void feedAssembler(TextureAssembler assembler) {
-		JMultiImage grass = new JMultiImage("gfx/terrain/grass");
-		this.grass = assembler.addFrames(grass);
-	}
-
-	@Override
-	protected void createChunks(HashMap<Vector2i, Chunk> chunks, TextureAssembler assembler) {
+	protected void createChunks(HashMap<Vector2i, Chunk> chunks) {
 		for (int x = -10; x < 10; x++)
 			for (int y = -10; y < 10; y++)
-				chunks.put(new Vector2i(x, y), new Chunk(x, y).init(assembler.getAnimation(grass)));
+				chunks.put(new Vector2i(x, y), new Chunk(x, y).init());
 		piece = createRenderableStage();
 	}
 	

@@ -29,7 +29,7 @@ import java.util.List;
 
 import org.lwjgl.system.MemoryUtil;
 
-import de.jcing.engine.image.texture.Texture;
+import de.jcing.engine.image.Texture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
