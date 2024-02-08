@@ -7,9 +7,12 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import de.jcing.engine.image.exceptions.ImageLoadingException;
-import de.jcing.util.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BufferedImageLoader extends ImageLoader {
+
+	private static final Logger LOG = LoggerFactory.getLogger(BufferedImageLoader.class);
 
 	public ImageData load(String path, boolean flip) {
 		try {
@@ -20,7 +23,7 @@ public class BufferedImageLoader extends ImageLoader {
 			img.getRGB(0, 0, img.getWidth(), img.getHeight(), data.getData(), 0, img.getWidth());
 			return data;
 		} catch (IOException e) {
-			Log.error("could not load: " + path);
+			LOG.error("could not load: {}", path);
 			throw new ImageLoadingException("could not load: " + path);
 		}
 	}

@@ -1,8 +1,7 @@
 package de.jcing.engine.image.texture;
 
+import de.jcing.util.Clock;
 import org.joml.Vector2f;
-
-import de.jcing.util.task.Task;
 
 public class Animation extends Image {
 
@@ -25,7 +24,7 @@ public class Animation extends Image {
 	}
 
 	public void update() {
-		index = startIndex + ((Task.millis() / millisWait) % length);
+		index = startIndex + ((Clock.millis() / millisWait) % length);
 	}
 
 	public Vector2f getOffset() {

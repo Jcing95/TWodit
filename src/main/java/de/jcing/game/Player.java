@@ -10,10 +10,12 @@ import de.jcing.engine.io.KeyBoard;
 import de.jcing.engine.opengl.Camera;
 import de.jcing.engine.opengl.mesh.Mesh;
 import de.jcing.engine.opengl.mesh.MeshFactory;
-import de.jcing.util.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Player extends Creature {
 
+	private static final Logger LOG = LoggerFactory.getLogger(Player.class);
 	private static final float DEFAULT_SPEED = 0.1f;
 	private static final float SHIFT_MULT = 2.5f;
 
@@ -37,7 +39,7 @@ public class Player extends Creature {
 			this.setAnim(ANIM.WALK_DOWN, assemb.getAnimation(anim_down));
 			setAnim(ANIM.WALK_UP);
 			setMesh(new Mesh(currAnim, MeshFactory.createRectData(0, 0, 0.1f, 1, 1, currAnim, false)));
-			Log.info("player set up");
+			LOG.info("player set up");
 		};
 		assembler.addCallback(initTex);
 	}

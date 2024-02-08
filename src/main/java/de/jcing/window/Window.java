@@ -35,9 +35,10 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.nio.IntBuffer;
 
+import de.jcing.util.Clock;
+import de.jcing.util.task.Context;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL30;
@@ -46,11 +47,15 @@ import org.lwjgl.system.MemoryStack;
 import de.jcing.Main;
 import de.jcing.engine.io.KeyBoard;
 import de.jcing.engine.io.Mouse;
-import de.jcing.util.Log;
-import de.jcing.util.task.Context;
 import de.jcing.util.task.Task;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Window {
+
+	private static final Logger LOG = LoggerFactory.getLogger(Window.class);
+	private static final Logger GLFW_LOG = LoggerFactory.getLogger(GLFW.class);
+
 	// The window handle
 	private long window;
 
@@ -65,7 +70,7 @@ public class Window {
 	private static final boolean VSYNC = false;
 
 	public Window() {
-		Log.debug("Initializing Window using LWJGL " + Version.getVersion() + "!");
+		LOG.debug("Initializing Window using LWJGL " + Version.getVersion() + "!");
 		windowTask = new Task(this::loop).
 				name("GL_WINDOW").
 				preExecute(this::init).
@@ -87,7 +92,8 @@ public class Window {
 	private void init() {
 		// Set up an error callback. The default implementation
 		// will print the error message in System.err.
-		GLFWErrorCallback.createPrint(Log.getError()).set();
+		GLFW.glfwSetErrorCallback((id, error) -> GLFW_LOG.error("GLFW {}: {}", id, error));
+
 		// Initialize GLFW. Most GLFW functions will not work before doing this.
 		if (!glfwInit())
 			throw new IllegalStateException("Unable to initialize GLFW");
@@ -113,7 +119,7 @@ public class Window {
 		});
 
 		glfwSetMouseButtonCallback(window, Mouse.mouseButtonCallback);
-		Mouse.addBinding(Mouse.ONPRESS, (key) -> Log.debug("click @ (" + Mouse.getX() + "|" + Mouse.getY() + ")"));
+		Mouse.addBinding(Mouse.ONPRESS, (key) -> LOG.debug("click @ (" + Mouse.getX() + "|" + Mouse.getY() + ")"));
 
 		glfwSetFramebufferSizeCallback(window, (window, width, height) -> {
 			this.width = width;
@@ -165,10 +171,10 @@ public class Window {
 	}
 
 	private void loop() {
-		//log the framerate once per second!
-		if (Task.millis() - lastMillis > 1000) {
-			lastMillis = Task.millis();
-			Log.info(windowTask.getTps() + " FPS!");
+		//LOG the framerate once per second!
+		if (Clock.millis() - lastMillis > 1000) {
+			lastMillis = Clock.millis();
+			LOG.info(windowTask.getTps() + " FPS!");
 		}
 
 		//update the Mouse

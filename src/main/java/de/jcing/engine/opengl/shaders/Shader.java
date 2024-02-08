@@ -12,10 +12,11 @@ import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryStack;
-
-import de.jcing.util.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class Shader {
+	private static final Logger LOG = LoggerFactory.getLogger(Shader.class);
 
 	public static final String SHADER_LOCATION = "";
 	protected final int programID;
@@ -43,7 +44,7 @@ public abstract class Shader {
 			}
 			reader.close();
 		} catch (IOException e) {
-			Log.error("Could not read " + file);
+			LOG.error("Could not read " + file);
 			e.printStackTrace();
 			//TODO: exit here?
 			System.exit(-1);
@@ -53,8 +54,8 @@ public abstract class Shader {
 		GL30.glCompileShader(shaderID);
 
 		if (GL30.glGetShaderi(shaderID, GL30.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
-			Log.info(GL30.glGetShaderInfoLog(shaderID, 500));
-			Log.error("Could not compile shader.");
+			LOG.info(GL30.glGetShaderInfoLog(shaderID, 500));
+			LOG.error("Could not compile shader.");
 			System.exit(-1);
 		}
 		GL30.glAttachShader(programID, shaderID);
@@ -74,7 +75,7 @@ public abstract class Shader {
 		}
 		GL30.glValidateProgram(programID);
 		if (GL30.glGetProgrami(programID, GL30.GL_VALIDATE_STATUS) == 0) {
-			Log.error("Warning validating Shader code: " + GL30.glGetProgramInfoLog(programID, 1024));
+			LOG.error("Warning validating Shader code: " + GL30.glGetProgramInfoLog(programID, 1024));
 		}
 	}
 
@@ -95,7 +96,7 @@ public abstract class Shader {
 	public void createUniform(String uniformName) {
 		int uniformLocation = GL30.glGetUniformLocation(programID, uniformName);
 		if (uniformLocation < 0) {
-			Log.error("Could not find uniform:" + uniformName);
+			LOG.error("Could not find uniform:" + uniformName);
 		}
 		uniforms.put(uniformName, uniformLocation);
 	}

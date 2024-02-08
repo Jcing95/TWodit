@@ -11,10 +11,13 @@ import de.jcing.engine.opengl.mesh.Renderable;
 import de.jcing.engine.opengl.shaders.EntityShader;
 import de.jcing.engine.opengl.shaders.Shader;
 import de.jcing.engine.opengl.shaders.TerrainShader;
-import de.jcing.util.Log;
 import de.jcing.window.Window;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Renderer {
+
+	private static final Logger LOG = LoggerFactory.getLogger(Renderer.class);
 
 	/**
 	 * Field of View in Radians
@@ -63,7 +66,7 @@ public class Renderer {
 
 	private void init() {
 		try {
-			Log.debug("initializing shaders");
+			LOG.debug("initializing shaders");
 			terrainShader = new TerrainShader();
 			entityShader = new EntityShader();
 
@@ -78,7 +81,7 @@ public class Renderer {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		Log.debug("renderer initialized -> starting render loop");
+		LOG.debug("renderer initialized -> starting render loop");
 		window.getContext().loop(this::render);
 
 	}

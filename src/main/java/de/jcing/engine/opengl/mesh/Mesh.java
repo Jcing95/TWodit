@@ -30,11 +30,12 @@ import java.util.List;
 import org.lwjgl.system.MemoryUtil;
 
 import de.jcing.engine.image.texture.Texture;
-import de.jcing.util.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Mesh {
 	
-	final Log.Logger log = Log.getInstance().setLevel(Log.LEVEL.info);
+	final Logger LOG = LoggerFactory.getLogger(Mesh.class);
 	
 	private final int vaoId;
 
@@ -62,10 +63,10 @@ public class Mesh {
 			indiceSize += d.indices.length;
 		}
 		vertexCount = posSize;
-		log.debug("datacount: " + data.length);
-		log.debug("posSize: " + posSize);
-		log.debug("texSize: " + texSize);
-		log.debug("indiceSize: " + indiceSize);
+		LOG.debug("datacount: " + data.length);
+		LOG.debug("posSize: " + posSize);
+		LOG.debug("texSize: " + texSize);
+		LOG.debug("indiceSize: " + indiceSize);
 
 		try {
 			posBuffer = MemoryUtil.memAllocFloat(posSize);

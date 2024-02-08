@@ -4,10 +4,12 @@ import org.joml.Vector2f;
 
 import de.jcing.engine.image.ImageData;
 import de.jcing.util.Maths;
-import de.jcing.util.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TextureAtlas extends Texture {
 
+	private static final Logger LOG = LoggerFactory.getLogger(TextureAtlas.class);
 	private final int subTextureTotalCount;
 	private final int subTexturesPerSide;
 	private final int subTextureSideLength;
@@ -43,7 +45,7 @@ public class TextureAtlas extends Texture {
 		if (assertSameSize(subImages)) {
 			int sides = Maths.roundUp(Math.sqrt(count));
 			int size = subImages[0].getWidth() * sides;
-			Log.debug("combining " + count + " images to atlas with " + sides + " textures per side and a size of " + size + "px�");
+			LOG.debug("combining {} images to atlas with {} textures per side and a size of {}px", count, sides, count);
 			ImageData combined = new ImageData(size, size);
 			int x = 0;
 			int y = 0;
