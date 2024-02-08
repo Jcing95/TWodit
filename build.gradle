@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // LWJGL dependencies
+    implementation 'org.lwjgl:lwjgl:3.3.2'
+    implementation 'org.lwjgl:lwjgl-glfw:3.3.2'
+    implementation 'org.lwjgl:lwjgl-opengl:3.3.2'
+    implementation 'org.lwjgl:lwjgl-stb:3.3.2'
+    runtimeOnly 'org.lwjgl:lwjgl:3.3.2:natives-windows'
+    runtimeOnly 'org.lwjgl:lwjgl-glfw:3.3.2:natives-windows'
+    runtimeOnly 'org.lwjgl:lwjgl-opengl:3.3.2:natives-windows'
+    runtimeOnly 'org.lwjgl:lwjgl-stb:3.3.2:natives-windows'
+    
+    // JOML dependency
+    implementation 'org.joml:joml:1.10.5'
+
+    // SLF4J and Log4j dependencies
+    implementation 'org.slf4j:slf4j-api:1.7.32'
+    implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.17.1'
+    implementation 'org.apache.logging.log4j:log4j-api:2.17.1'
+    implementation 'org.apache.logging.log4j:log4j-core:2.17.1'
+}
+
+application {
+    // Define the main class for the application
+    mainClassName = 'de.jcing.Main'
+}
+
+tasks.run {
+    // Specify the classpath for running the application
+    classpath = sourceSets.main.runtimeClasspath
+}
