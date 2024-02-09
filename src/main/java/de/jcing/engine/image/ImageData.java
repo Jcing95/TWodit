@@ -38,7 +38,7 @@ public class ImageData {
 		int width = img.getWidth();
 		int height = img.getHeight();
 		int[] data = img.getRGB(0, 0, width, height, null, 0, width);
-		return new ImageData(data, width, height);
+		return new ImageData(data, width, height).flip();
 	}
 
 	public void writeTo(ImageData data, int xOffset, int yOffset) {
@@ -47,6 +47,20 @@ public class ImageData {
 				this.data[xOffset + x + width * (y + yOffset)] = data.data[x + data.width * y];
 			}
 		}
+	}
+
+	public ImageData flip() {
+		for (int y = 0; y < height / 2; y++) {
+            int topRowIndex = y * width;
+            int bottomRowIndex = (height - y - 1) * width;
+            for (int x = 0; x < width; x++) {
+                // Swap the top and bottom pixels
+                int temp = data[topRowIndex + x];
+                data[topRowIndex + x] = data[bottomRowIndex + x];
+                data[bottomRowIndex + x] = temp;
+            }
+        }
+		return this;
 	}
 
 	public ImageData[] split(int rows, int cols, int total) {

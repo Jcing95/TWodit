@@ -8,6 +8,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_VISIBLE;
 import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
 import static org.lwjgl.glfw.GLFW.glfwDefaultWindowHints;
 import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
+import static org.lwjgl.glfw.GLFW.glfwFocusWindow;
 import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
 import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
 import static org.lwjgl.glfw.GLFW.glfwGetWindowSize;
@@ -34,32 +35,34 @@ import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.nio.IntBuffer;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Future;
 
-import de.jcing.util.Clock;
-import de.jcing.util.task.Context;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryStack;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.jcing.Main;
 import de.jcing.engine.io.KeyBoard;
 import de.jcing.engine.io.Mouse;
-import de.jcing.util.task.Task;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import de.jcing.engine.opengl.Renderer;
+import de.jcing.util.Clock;
 
 public class Window {
 
 	private static final Logger LOG = LoggerFactory.getLogger(Window.class);
 	private static final Logger GLFW_LOG = LoggerFactory.getLogger(GLFW.class);
 
+	private final Renderer renderer;
+
 	// The window handle
 	private long window;
-
-	private final Task windowTask;
 
 	private int width = 1280;
 	private int height = 720;
@@ -69,23 +72,51 @@ public class Window {
 	private int lastMillis = 0;
 	private static final boolean VSYNC = false;
 
-	public Window() {
+	private boolean shouldStop = false;
+	private Thread windowThread;
+
+	private final ConcurrentLinkedQueue<Runnable> tasks = new ConcurrentLinkedQueue<>();
+
+	Future<Void> windowExecution;
+
+	public Window(Renderer renderer) {
 		LOG.debug("Initializing Window using LWJGL " + Version.getVersion() + "!");
-		windowTask = new Task(this::loop).
-				name("GL_WINDOW").
-				preExecute(this::init).
-				postExecute(this::end).
-				repeat(0);
+		this.renderer = renderer;
 	}
 
 	public Window run() {
-		windowTask.start();
+		windowThread = Thread.ofPlatform().name("Window").start(this::handleLoop);
 		return this;
 	}
 
-	public Context getContext() {
-		return windowTask.getContext();
+	public Future<Void> stop() {
+		shouldStop = true;
+		return CompletableFuture.runAsync(() -> {
+			try {
+				windowThread.join();
+			} catch (InterruptedException e) {
+				windowThread.interrupt();
+			}
+		});
 	}
+
+	private void handleLoop() {
+		init();
+		while(!shouldStop) {
+			preLoop();
+			loop();
+			postLoop();
+			Runnable t = tasks.poll();
+			if(t != null){
+				t.run();
+			}
+		}
+		for(Runnable r : tasks){
+			r.run();
+		}
+		end();
+	}
+
 
 	private void init() {
 		// Set up an error callback. The default implementation
@@ -106,7 +137,8 @@ public class Window {
 		if (window == NULL)
 			throw new RuntimeException("Failed to create the GLFW window");
 
-		// Set up a key callback. It will be called every time a key is pressed, repeated
+		// Set up a key callback. It will be called every time a key is pressed,
+		// repeated
 		// or released.
 		glfwSetKeyCallback(window, KeyBoard.keyCallBack);
 
@@ -157,35 +189,41 @@ public class Window {
 		GL30.glEnable(GL30.GL_DEPTH_TEST);
 		// Set the clear color
 		glClearColor(0.1f, 0.1f, 0.2f, 0.0f);
+		glfwFocusWindow(window);
 	}
 
-	private void loop() {
+	private void preLoop() {
 		if (glfwWindowShouldClose(window)) {
 			Main.finish();
 		}
-		// clear the framebuffer
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//LOG the framerate once per second!
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		// clear the framebuffer
+	}
+
+	private void loop() {
+		// LOG the framerate once per second!
 		if (Clock.millis() - lastMillis > 1000) {
 			lastMillis = Clock.millis();
 			LOG.info(windowTask.getTps() + " FPS!");
 		}
 
-		//update the Mouse
+		// update the Mouse
 		GLFW.glfwGetCursorPos(window, Mouse.getXBuffer(), Mouse.getYBuffer());
 		Mouse.update(width, height);
 
+	}
+
+	private void postLoop() {
 		// swap the color buffers
 		glfwSwapBuffers(window);
-
 		// Poll for window events. The key callback above will only be
 		// invoked during this call.
 		glfwPollEvents();
 	}
 
 	public void end() {
-		windowTask.stop();
+		shouldStop = true;
 		// Free the window callbacks and destroy the window
 		glfwFreeCallbacks(window);
 		glfwDestroyWindow(window);
@@ -209,5 +247,9 @@ public class Window {
 
 	public int getHeight() {
 		return height;
+	}
+
+	public void runOnGraphicsThread(Runnable task) {
+		tasks.add(task);
 	}
 }

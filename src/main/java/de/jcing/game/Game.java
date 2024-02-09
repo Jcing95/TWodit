@@ -1,6 +1,5 @@
 package de.jcing.game;
 
-import java.io.File;
 import java.io.IOException;
 
 import de.jcing.engine.image.TextureAtlas;

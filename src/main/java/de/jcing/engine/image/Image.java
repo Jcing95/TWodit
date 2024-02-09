@@ -14,11 +14,11 @@ public class Image {
 	}
 
 	public float getX() {
-		return index % atlas.getNumTexturesHorizontal() * atlas.getTextureWidth();
+		return (index % atlas.getNumTexturesHorizontal()) * atlas.getTextureWidth();
 	}
 
 	public float getY() {
-		return index / atlas.getNumTexturesHorizontal() * atlas.getTextureHeight();
+		return (index / atlas.getNumTexturesHorizontal()) * atlas.getTextureHeight();
 	}
 
     public float getWidth() {

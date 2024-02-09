@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 public class Task {
 
+	Logger log = new Logger() {};
 	public static final int NUM_CORES = Runtime.getRuntime().availableProcessors() / 2;
 	public static final int RESERVED_CORES = 0;
 
@@ -88,10 +89,29 @@ public class Task {
 	}
 
 	/***
+	 * @param runnables to be executed <b>every time</b> before this Task is
+	 *                  executed.
+	 *
+	 */
+	public Task preLoop(Runnable... runnables) {
+		context.preLoop(runnables);
+		return this;
+	}
+
+	/***
+	 * @param runnables to be executed <b>every time</b> after this Task is executed.
+	 *
+	 */
+	public Task postLoop(Runnable... runnables) {
+		context.postLoop(runnables);
+		return this;
+	}
+
+	/***
 	 * delays the execution after <b>start()</b> is called.
-	 *
+	 * 
 	 * @param delay by milliseconds
-	 *
+	 * 
 	 */
 	public Task delay(long delay) {
 		this.delay = delay;
@@ -103,7 +123,7 @@ public class Task {
 	 * times in parallel. This spawns one or more threads every time when
 	 * <b>start()</b> is called!</br>
 	 * </br>
-	 *
+	 * 
 	 * When Multi Execution is <b>disabled</b> This task can be executed only once
 	 * at a time! when <b>start()</b> is called it will return, if this task is
 	 * <i>already running</i> and start normally <i>otherwise</i>!
@@ -116,7 +136,7 @@ public class Task {
 	/***
 	 * Distributes the runnables of this Task into <b>NUM_CORES</b> -
 	 * <b>RESERVED_CORES</b> threads.
-	 *
+	 * 
 	 */
 	public Task spread() {
 		return spread(NUM_CORES - RESERVED_CORES);
@@ -161,6 +181,7 @@ public class Task {
 			if (!inTopic) {
 				Topic.addDefault(this);
 			}
+			log.debug(name += ": starting...");
 			if (spread) {
 				runParallel();
 			} else {
@@ -186,20 +207,49 @@ public class Task {
 		running = false;
 	}
 
+	/*
+	 * Verbose all logging by this Task.
+	 * logging in the Runnables added to it won't be muted.
+	 */
+	public void enablelogging(Logger logger) {
+		log = logger;
+	}
+	
+	/*
+	 * Verbose all logging by this Task via system.out.
+	 * logging in the Runnables added to it won't be muted.
+	 */
+	public void enablelogging(boolean log) {
+		if(log)
+			this.log = new Logger() {
+				@Override
+				public void debug(String s) {
+					System.out.println(s);
+				}
+			};
+		else
+			this.log = new Logger() {};
+	}
 
 	private void delayAndPretasks() {
 		if (delay > 0) {
+			log.debug(name += ": delaying " + delay + "ms!");
 			sleep(delay);
 		}
+		if (preExecute.length > 0)
+			log.debug(name += ": executing pretask(s)...");
 		for (Runnable r : preExecute) {
 			r.run();
 		}
 	}
 
 	private void postExecAndFinish() {
+		if (preExecute.length > 0)
+			log.debug(name += ": executing posttask(s)...");
 		for (Runnable r : postExecute) {
 			r.run();
 		}
+		log.debug(name += ": finished!");
 	}
 
 	private void runSerial() {
@@ -210,6 +260,11 @@ public class Task {
 			long lastTick;
 			int ticks = 0;
 			double difft = 0;
+
+			if (repeating)
+				log.debug(name += ": starting loop...");
+			else
+				log.debug(name += ": executing task(s)...");
 
 			do {
 				lastTick = System.currentTimeMillis();
@@ -240,6 +295,8 @@ public class Task {
 				ticks++;
 			} while (repeating && running);
 
+			if (repeating)
+				log.debug(name += ": finished loop!");
 			finished = true;
 			postExecAndFinish();
 		}).start();
@@ -251,6 +308,7 @@ public class Task {
 			delayAndPretasks();
 			final boolean[] fin = new boolean[threads];
 
+			log.debug(name += ": starting spreaded " + (repeating ? "loop!" : "task!"));
 			for (int i = 0; i < threads; i++) {
 				final int index = i;
 				new Thread(() -> {
@@ -302,6 +360,7 @@ public class Task {
 	}
 
 	// Getters
+
 	/**
 	 * 
 	 * @return ticks per second of this task
@@ -311,7 +370,7 @@ public class Task {
 	}
 
 	/***
-	 *
+	 * 
 	 * @return the name of this task.
 	 */
 	public String getName() {
@@ -319,7 +378,7 @@ public class Task {
 	}
 
 	/**
-	 *
+	 * 
 	 * @return if this task is terminated
 	 */
 	public boolean isTerminated() {
@@ -375,4 +434,10 @@ public class Task {
 		}
 	}
 
+	
+	private interface Logger {
+		default void debug(String s) {
+//			System.out.println(s);
+		}
+	}
 }

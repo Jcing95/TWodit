@@ -48,9 +48,7 @@ public class Renderer {
 
 	private boolean buffersInitialized;
 
-	public Renderer(Window win) {
-		this.window = win;
-
+	public Renderer() {
 		//transformation handles matrix calculations for 3D space.
 		//it creates View and projectionmatrix needed to render gameitems at their current worldposition.
 		transformation = new Transformation();
@@ -59,9 +57,6 @@ public class Renderer {
 
 		camera.setPosition(0, 0, 10);
 		camera.setRotation(0, 0, 0);
-
-		//All OpenGL actions have to run in context of the window!
-		window.getContext().run(this::init);
 	}
 
 	private void init() {
@@ -82,8 +77,6 @@ public class Renderer {
 			e.printStackTrace();
 		}
 		LOG.debug("renderer initialized -> starting render loop");
-		window.getContext().loop(this::render);
-
 	}
 
 	public void render() {
@@ -132,29 +125,20 @@ public class Renderer {
 
 	public void addRenderable(Shader s, Sprite r) {
 		if (items.containsKey(s))
-			window.getContext().run(() -> items.get(s).add(r));
+			items.get(s).add(r);
 	}
 
 	public void removeRenderable(Shader s, Sprite r) {
 		if (items.containsKey(s))
-			window.getContext().run(() -> items.get(s).remove(r));
+			items.get(s).remove(r);
 	}
 
 	public void finish() {
-		window.getContext().run(() -> {
+		window.runOnGraphicsThread(() -> {
 			for (ArrayList<Sprite> l : items.values())
 				for (Sprite item : l)
 					item.getMesh().cleanUp();
 		});
-	}
-
-	private void swapBuffers() {
-		if (swapBuffers) {
-			currentBufferIndex = nextBufferIndex;
-			nextBufferIndex = (nextBufferIndex + 1) % modelViewMatrices.length;
-			modelViewMatrices[nextBufferIndex].clear();
-			swapBuffers = false;
-		}
 	}
 
 	public void swapMatrixBuffer() {
