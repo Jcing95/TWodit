@@ -3,7 +3,7 @@ package de.jcing.engine.opengl;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-import de.jcing.engine.opengl.mesh.Renderable;
+import de.jcing.engine.opengl.mesh.Sprite;
 
 public class Transformation {
 
@@ -39,7 +39,7 @@ public class Transformation {
 		return viewMatrix;
 	}
 
-	public Matrix4f getModelViewMatrix(Renderable gameItem, Matrix4f viewMatrix) {
+	public Matrix4f getModelViewMatrix(Sprite gameItem, Matrix4f viewMatrix) {
 		Vector3f rotation = gameItem.getRotation();
 		modelViewMatrix.identity().translate(gameItem.getPosition()).rotateX((float) Math.toRadians(-rotation.x)).rotateY((float) Math.toRadians(-rotation.y))
 				.rotateZ((float) Math.toRadians(-rotation.z)).scale(gameItem.getScale());

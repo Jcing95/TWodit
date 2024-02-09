@@ -1,4 +1,5 @@
 *.log
 .gradle/
+.vscode/
 build/
 bin/

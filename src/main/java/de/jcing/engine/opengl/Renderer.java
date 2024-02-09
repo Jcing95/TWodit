@@ -7,7 +7,7 @@ import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
-import de.jcing.engine.opengl.mesh.Renderable;
+import de.jcing.engine.opengl.mesh.Sprite;
 import de.jcing.engine.opengl.shaders.EntityShader;
 import de.jcing.engine.opengl.shaders.Shader;
 import de.jcing.engine.opengl.shaders.TerrainShader;
@@ -37,7 +37,7 @@ public class Renderer {
 
 	private final Camera camera;
 
-	private final HashMap<Shader, ArrayList<Renderable>> items;
+	private final HashMap<Shader, ArrayList<Sprite>> items;
 
 	@SuppressWarnings("rawtypes")
 	private final HashMap[] modelViewMatrices = { new HashMap<>(), new HashMap<>() };
@@ -108,13 +108,11 @@ public class Renderer {
 		terrainShader.setUniform(TerrainShader.PROJECTION_MATRIX, projectionMatrix);
 		terrainShader.setUniform(TerrainShader.TEXTURE_SAMPLER, 0);
 
-		for (Renderable item : items.get(terrainShader)) { // DRAW TERRAIN
-			if (item.isInitialized()) {
-				Matrix4f mat = getModelViewMatrix(item);
-				if (mat != null) //TODO: check why mat can be null!
-					terrainShader.setUniform(TerrainShader.WORLD_MATRIX, mat);
-				item.getMesh().render();
-			}
+		for (Sprite item : items.get(terrainShader)) { // DRAW TERRAIN
+			Matrix4f mat = getModelViewMatrix(item);
+			if (mat != null) //TODO: check why mat can be null!
+				terrainShader.setUniform(TerrainShader.WORLD_MATRIX, mat);
+			item.getMesh().render();
 		}
 		terrainShader.unbind();
 	}
@@ -123,31 +121,29 @@ public class Renderer {
 		entityShader.bind();
 		entityShader.setUniform(TerrainShader.PROJECTION_MATRIX, projectionMatrix);
 		entityShader.setUniform(TerrainShader.TEXTURE_SAMPLER, 0);
-		for (Renderable item : items.get(entityShader)) { // DRAW ENTITIES
-			if (item.isInitialized()) {
-				entityShader.setUniform(TerrainShader.WORLD_MATRIX, getModelViewMatrix(item));
-				entityShader.setUniform("texOffset", item.getTextureOffset());
-				entityShader.setUniform("alpha", item.getAlpha());
-				item.getMesh().render();
-			}
+		for (Sprite item : items.get(entityShader)) { // DRAW ENTITIES
+			entityShader.setUniform(TerrainShader.WORLD_MATRIX, getModelViewMatrix(item));
+			entityShader.setUniform("texOffset", item.getTextureOffset());
+			entityShader.setUniform("alpha", item.getAlpha());
+			item.getMesh().render();
 		}
 		entityShader.unbind();
 	}
 
-	public void addRenderable(Shader s, Renderable r) {
+	public void addRenderable(Shader s, Sprite r) {
 		if (items.containsKey(s))
 			window.getContext().run(() -> items.get(s).add(r));
 	}
 
-	public void removeRenderable(Shader s, Renderable r) {
+	public void removeRenderable(Shader s, Sprite r) {
 		if (items.containsKey(s))
 			window.getContext().run(() -> items.get(s).remove(r));
 	}
 
 	public void finish() {
 		window.getContext().run(() -> {
-			for (ArrayList<Renderable> l : items.values())
-				for (Renderable item : l)
+			for (ArrayList<Sprite> l : items.values())
+				for (Sprite item : l)
 					item.getMesh().cleanUp();
 		});
 	}
@@ -168,13 +164,13 @@ public class Renderer {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void bufferWorldMatrix(Renderable item) {
+	public void bufferWorldMatrix(Sprite item) {
 		Matrix4f viewMatrix = transformation.getViewMatrix(camera);
 		Matrix4f modelViewMatrix = transformation.getModelViewMatrix(item, viewMatrix);
 		modelViewMatrices[nextBufferIndex].put(item, modelViewMatrix);
 	}
 
-	private Matrix4f getModelViewMatrix(Renderable item) {
+	private Matrix4f getModelViewMatrix(Sprite item) {
 		return (Matrix4f) modelViewMatrices[currentBufferIndex].get(item);
 	}
 

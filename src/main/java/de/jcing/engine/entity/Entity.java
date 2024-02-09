@@ -3,25 +3,21 @@ package de.jcing.engine.entity;
 import org.joml.Vector3f;
 
 import de.jcing.engine.opengl.mesh.Mesh;
-import de.jcing.engine.opengl.mesh.Renderable;
+import de.jcing.engine.opengl.mesh.Sprite;
 
-public class Entity extends Renderable {
+public class Entity extends Sprite {
 
 	protected Vector3f position;
 	protected float scale;
 	protected final Vector3f rotation;
 
-	public Entity() {
+	public Entity(Mesh mesh) {
+		super(mesh);
 		position = new Vector3f(0, 0, 0);
 		rotation = new Vector3f(0, 0, 0);
 		scale = 1;
-		initialized = false;
 	}
 
-	public void setMesh(Mesh mesh) {
-		this.mesh = mesh;
-		initialized = true;
-	}
 
 	@Override
 	public Vector3f getPosition() {
@@ -66,8 +62,4 @@ public class Entity extends Renderable {
 		return mesh;
 	}
 
-	@Override
-	public boolean isInitialized() {
-		return initialized;
-	}
 }

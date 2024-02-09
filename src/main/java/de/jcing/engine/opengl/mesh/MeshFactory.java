@@ -1,14 +1,8 @@
 package de.jcing.engine.opengl.mesh;
 
-import de.jcing.engine.image.Image;
-
 public class MeshFactory {
 
-	public static VertexData createRectData(float x, float y, float z, float width, float height, Image texture) {
-		return createRectData(x, y, z, width, height, texture, true);
-	}
-
-	public static VertexData createRectData(float x, float y, float z, float width, float height, Image texture, boolean texture_offset) {
+	public static VertexData createRectData(float x, float y, float z, float width, float height, float texX, float texY, float texWidth, float texHeight) {
 		float[] vertices = new float[12];
 
 		//links oben
@@ -37,22 +31,23 @@ public class MeshFactory {
 		indices[4] = 2;
 		indices[5] = 3;
 
-		float ts = texture.getWidth();
-		float tx = texture_offset ? texture.getX() : 0;
-		float ty = texture_offset ? texture.getY() : 0;
+		float tw = texWidth;
+		float th = texHeight;
+		float tx = texX;
+		float ty = texY;
 
 		float[] textureCoordinates = new float[8];
 		textureCoordinates[0] = tx;
 		textureCoordinates[1] = ty;
 
-		textureCoordinates[2] = tx + ts;
+		textureCoordinates[2] = tx + tw;
 		textureCoordinates[3] = ty;
 
 		textureCoordinates[4] = tx;
-		textureCoordinates[5] = ty + ts;
+		textureCoordinates[5] = ty + th;
 
-		textureCoordinates[6] = tx + ts;
-		textureCoordinates[7] = ty + ts;
+		textureCoordinates[6] = tx + tw;
+		textureCoordinates[7] = ty + th;
 
 		return new VertexData(vertices, textureCoordinates, indices);
 	}

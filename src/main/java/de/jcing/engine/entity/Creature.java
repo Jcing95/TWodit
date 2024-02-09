@@ -3,9 +3,14 @@ package de.jcing.engine.entity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import de.jcing.engine.image.Animation;
-import de.jcing.geometry.Rectangle;
+import org.joml.Vector2f;
 
+import de.jcing.engine.image.Animation;
+import de.jcing.engine.opengl.mesh.Mesh;
+import de.jcing.geometry.Rectangle;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class Creature extends Entity {
 
 	public static final float DRAG = 0.6f;
@@ -31,16 +36,17 @@ public class Creature extends Entity {
 
 	protected final ArrayList<Runnable> onTick;
 
-	public Creature() {
-		super();
+	public Creature(Mesh mesh) {
+		super(mesh);
 		onTick = new ArrayList<>();
 		sprite = new HashMap<>();
+		animationIndex = ANIM.WALK_DOWN;
 	}
 
 	public void tick() {
 
 		movePosition(speedX, speedY, 0);
-
+		
 		speedX *= DRAG;
 		speedY *= DRAG;
 
@@ -65,7 +71,8 @@ public class Creature extends Entity {
 		if (speedY > 0)
 			animationIndex = ANIM.WALK_UP;
 
-		currAnim.set(sprite.get(animationIndex));
+		currAnim = sprite.get(animationIndex);
+
 		if (speedX == 0 && speedY == 0)
 			standing();
 		else
@@ -105,5 +112,9 @@ public class Creature extends Entity {
 	public void setAnim(ANIM on, Animation img) {
 		sprite.put(on, img);
 	}
-
+	
+	@Override
+	public Vector2f getTextureOffset() {
+		return currAnim.getOffset();
+	}
 }

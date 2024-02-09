@@ -2,40 +2,46 @@ package de.jcing.engine.image;
 
 import org.joml.Vector2f;
 
-public class Image extends TextureAtlas {
+public class Image {
 
-	protected int index;
+    protected int index;
+
+    private final TextureAtlas atlas;
 
 	public Image(TextureAtlas atlas, int index) {
-		super(atlas);
+        this.atlas = atlas;
 		this.index = index % atlas.getSubTextureTotalCount();
 	}
 
 	public float getX() {
-		return (float) (index % getSubTexturesPerSide()) / getSubTexturesPerSide();
+		return index % atlas.getNumTexturesHorizontal() * atlas.getTextureWidth();
 	}
 
 	public float getY() {
-		return (float) (index / getSubTexturesPerSide()) / getSubTexturesPerSide();
+		return index / atlas.getNumTexturesHorizontal() * atlas.getTextureHeight();
 	}
 
-	public float getWidth() {
-		return 1.0f / getSubTexturesPerSide();
-	}
+    public float getWidth() {
+        return atlas.getTextureWidth();
+    }
 
-	@Override
-	public Vector2f getOffset() {
-		return new Vector2f(0, 0);
-	}
+    public float getHeight() {
+        return atlas.getTextureHeight();
+    }
 
 	public int getIndex() {
 		return index;
 	}
 
-	public void set(Image image) {
-		//TODO: throw exception...
-		if (id == image.id)
-			index = image.getIndex();
-	}
+    public void setIndex(int index) {
+        this.index = index % atlas.getSubTextureTotalCount();
+    }
 
+    public TextureAtlas getAtlas() {
+        return atlas;
+    }
+
+    public Vector2f getOffset() {
+        return new Vector2f(getX(), getY());
+    }
 }

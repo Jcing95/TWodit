@@ -11,8 +11,7 @@ public class Tile {
 	private final VertexData data;
 
 	public Tile(Chunk chunk, int xPos, int yPos, Image tex) {
-		Vector2i pos = new Vector2i(xPos, yPos);
-		data = MeshFactory.createRectData(xPos, yPos, 0, 1, 1, tex);
+		data = MeshFactory.createRectData(xPos, yPos, 0, 1, 1, tex.getX(), tex.getY(), tex.getWidth(), tex.getHeight());
 	}
 
 	public VertexData getVertexData() {

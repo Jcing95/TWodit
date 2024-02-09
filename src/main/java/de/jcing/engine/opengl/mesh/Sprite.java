@@ -3,18 +3,12 @@ package de.jcing.engine.opengl.mesh;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-public class Renderable {
+public class Sprite {
 
-	protected boolean initialized;
 	protected Mesh mesh;
 	
-	public Renderable() {
-		
-	}
-	
-	public Renderable(Mesh mesh) {
+	public Sprite(Mesh mesh) {
 		this.mesh = mesh;
-		initialized = true;
 	}
 	
 	public Vector3f getPosition() {
@@ -33,16 +27,12 @@ public class Renderable {
 		return mesh;
 	}
 
-	public boolean isInitialized() {
-		return initialized;
+	public float getAlpha() {
+		return 1f;
 	}
 
 	public Vector2f getTextureOffset() {
-		return mesh.getTexture().getOffset();
-	}
-
-	public float getAlpha() {
-		return 1f;
+		return new Vector2f(0,0);
 	}
 
 }

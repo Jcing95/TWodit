@@ -5,7 +5,8 @@ import java.util.Random;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
 
-import de.jcing.engine.image.Animation;
+import de.jcing.engine.image.Image;
+import de.jcing.engine.image.TextureAtlas;
 import de.jcing.engine.opengl.mesh.VertexData;
 
 public class Chunk {
@@ -24,12 +25,12 @@ public class Chunk {
 		tiles = new Tile[NUM_TILES][NUM_TILES];
 	}
 
-	public Chunk init(Animation images) {
+	public Chunk init(TextureAtlas atlas) {
 		Random random = new Random();
 		VertexData[] datas = new VertexData[NUM_TILES * NUM_TILES];
 		for (int xi = 0; xi < tiles.length; xi++) {
 			for (int yi = 0; yi < tiles.length; yi++) {
-				tiles[xi][yi] = new Tile(this, xi, yi, images.getImage(random.nextInt(images.getLength())));
+				tiles[xi][yi] = new Tile(this, xi, yi, new Image(atlas, random.nextInt(atlas.getSubTextureTotalCount())));
 				datas[xi*tiles.length+yi] = tiles[xi][yi].getVertexData();
 			}
 		}

@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'application'
+    id "io.freefair.lombok" version "8.4"
 }
 
 repositories {
@@ -8,11 +9,15 @@ repositories {
 }
 
 dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
     // LWJGL dependencies
     implementation 'org.lwjgl:lwjgl:3.3.2'
     implementation 'org.lwjgl:lwjgl-glfw:3.3.2'
     implementation 'org.lwjgl:lwjgl-opengl:3.3.2'
     implementation 'org.lwjgl:lwjgl-stb:3.3.2'
+
     runtimeOnly 'org.lwjgl:lwjgl:3.3.2:natives-windows'
     runtimeOnly 'org.lwjgl:lwjgl-glfw:3.3.2:natives-windows'
     runtimeOnly 'org.lwjgl:lwjgl-opengl:3.3.2:natives-windows'
@@ -20,6 +25,9 @@ dependencies {
     
     // JOML dependency
     implementation 'org.joml:joml:1.10.5'
+
+    // JSON
+    implementation group: 'org.json', name: 'json', version: '20240205'
 
     // SLF4J and Log4j dependencies
     implementation 'org.slf4j:slf4j-api:1.7.32'
@@ -30,7 +38,15 @@ dependencies {
 
 application {
     // Define the main class for the application
-    mainClassName = 'de.jcing.Main'
+    mainClass = 'de.jcing.Main'
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDirs = ['res/gfx', 'config']
+        }
+    }
 }
 
 tasks.run {

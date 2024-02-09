@@ -1,0 +1,29 @@
+{
+    "name": "player",
+    "data": {
+        "down": {
+            "path": "down/",
+            "type": "single",
+            "count": 4,
+            "ext": "png"
+        },
+        "right": {
+            "path": "right/",
+            "type": "single",
+            "count": 4,
+            "ext": "png"
+        },
+        "up": {
+            "path": "up/",
+            "type": "single",
+            "count": 4,
+            "ext": "png"
+        },
+        "left": {
+            "path": "left/",
+            "type": "single",
+            "count": 4,
+            "ext": "png"
+        }
+    }
+}

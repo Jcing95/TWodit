@@ -1,36 +1,39 @@
 package de.jcing.engine.image;
 
-import org.joml.Vector2f;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.IOException;
 
 public class TextureAtlas extends Texture {
 
-	private static final Logger LOG = LoggerFactory.getLogger(TextureAtlas.class);
-	private final int subTextureTotalCount;
-	private final int subTexturesPerSide;
-	private final int subTextureSideLength;
+	private final int numTexturesHorizontal;
+	private final int numTexturesVertical;
+	private final int numTexturesTotal;
 
-
-	protected TextureAtlas(TextureAtlas tex) {
-		super(tex);
-		this.subTextureSideLength = tex.subTextureSideLength;
-		this.subTexturesPerSide = tex.subTexturesPerSide;
-		this.subTextureTotalCount = tex.subTextureTotalCount;
-	}
-
-	@Override
-	public Vector2f getOffset() {
-		return new Vector2f(0.2f, 1f);
+	public TextureAtlas(ImageData imageData, int numTexturesHorizontal, int numTexturesVertical, int numTexturesTotal) throws IOException {
+		super(imageData);
+		this.numTexturesHorizontal = numTexturesHorizontal;
+		this.numTexturesVertical = numTexturesVertical;
+		this.numTexturesTotal = numTexturesTotal;
 	}
 
 	public int getSubTextureTotalCount() {
-		return subTextureTotalCount;
+		return numTexturesTotal;
 	}
 
-	public int getSubTexturesPerSide() {
-		return subTexturesPerSide;
+
+	public float getTextureWidth() {
+		return 1f / numTexturesHorizontal;
+	}
+
+	public float getTextureHeight() {
+		return 1f / numTexturesVertical;
+	}
+
+	public int getNumTexturesHorizontal() {
+		return numTexturesHorizontal;
+	}
+
+	public int getNumTexturesVertical() {
+		return numTexturesVertical;
 	}
 
 }

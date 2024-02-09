@@ -1,0 +1,11 @@
+{
+    "name" : "grass",
+    "data": {
+        "grass" : {
+            "path": "grass ",
+            "type": "single",
+            "count": 18,
+            "ext": "png"
+        }
+    }
+}
