@@ -28,8 +28,6 @@ public class Renderer {
 
 	private static final float Z_FAR = 1000.f;
 
-	private final Window window;
-
 	private TerrainShader terrainShader;
 	private EntityShader entityShader;
 
@@ -59,7 +57,7 @@ public class Renderer {
 		camera.setRotation(0, 0, 0);
 	}
 
-	private void init() {
+	public void init(Window window) {
 		try {
 			LOG.debug("initializing shaders");
 			terrainShader = new TerrainShader();
@@ -79,7 +77,7 @@ public class Renderer {
 		LOG.debug("renderer initialized -> starting render loop");
 	}
 
-	public void render() {
+	public void render(Window window) {
 		if (window.isResized()) {
 			GL30.glViewport(0, 0, window.getWidth(), window.getHeight());
 			window.setResized(false);
@@ -134,11 +132,9 @@ public class Renderer {
 	}
 
 	public void finish() {
-		window.runOnGraphicsThread(() -> {
-			for (ArrayList<Sprite> l : items.values())
-				for (Sprite item : l)
-					item.getMesh().cleanUp();
-		});
+		for (ArrayList<Sprite> l : items.values())
+			for (Sprite item : l)
+				item.getMesh().cleanUp();
 	}
 
 	public void swapMatrixBuffer() {

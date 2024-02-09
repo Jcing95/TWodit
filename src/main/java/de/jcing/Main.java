@@ -12,9 +12,9 @@ public class Main {
 	private static Renderer renderer;
 	
 	public static void main(String[] args) {
-		Window win = new Window();
-		renderer = new Renderer(win);
-		Game game = new Game(win, renderer);
+		renderer = new Renderer();
+		Game game = new Game(renderer);
+		Window win = new Window(renderer, game);
 		win.run();
 	}
 	

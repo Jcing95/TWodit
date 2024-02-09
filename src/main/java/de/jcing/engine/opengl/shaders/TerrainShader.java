@@ -7,7 +7,7 @@ public class TerrainShader extends Shader {
 	public static final String TEXTURE_SAMPLER = "texture_sampler";
 
 	public TerrainShader() {
-		super("shaders/terrain/vertex", "shaders/terrain/fragment");
+		super("shaders/terrain.vert", "shaders/terrain.frag");
 		try {
 			link();
 		} catch (Exception e) {

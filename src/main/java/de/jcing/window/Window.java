@@ -45,13 +45,14 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryStack;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import de.jcing.Main;
 import de.jcing.engine.io.KeyBoard;
 import de.jcing.engine.io.Mouse;
 import de.jcing.engine.opengl.Renderer;
+import de.jcing.game.Game;
 import de.jcing.util.Clock;
 
 public class Window {
@@ -60,7 +61,8 @@ public class Window {
 	private static final Logger GLFW_LOG = LoggerFactory.getLogger(GLFW.class);
 
 	private final Renderer renderer;
-
+	private final Game game;
+	
 	// The window handle
 	private long window;
 
@@ -79,9 +81,10 @@ public class Window {
 
 	Future<Void> windowExecution;
 
-	public Window(Renderer renderer) {
+	public Window(Renderer renderer, Game game) {
 		LOG.debug("Initializing Window using LWJGL " + Version.getVersion() + "!");
 		this.renderer = renderer;
+		this.game = game;
 	}
 
 	public Window run() {
@@ -102,21 +105,45 @@ public class Window {
 
 	private void handleLoop() {
 		init();
-		while(!shouldStop) {
-			preLoop();
-			loop();
-			postLoop();
+		final int targetUpdatesPerSecond = 120;
+		final long targetTimeBetweenUpdates = 1_000_000_000 / targetUpdatesPerSecond; // Nanoseconds
+		long lastUpdateTime = System.nanoTime();
+		int frames = 0;
+		while (!shouldStop) {
+			long now = System.nanoTime();
+			long elapsedTime = now - lastUpdateTime;
+			if (elapsedTime >= targetTimeBetweenUpdates) {
+				loop();
+				lastUpdateTime = now - (elapsedTime % targetTimeBetweenUpdates);
+				frames++;
+			}
+			// LOG the framerate once per second!
+			if (Clock.millis() - lastMillis > 1000) {
+				lastMillis = Clock.millis();
+				LOG.info("{} FPS!", frames);
+				frames = 0;
+			}
+			// Run only one task if it exists to keep latency low.
 			Runnable t = tasks.poll();
-			if(t != null){
+			if (t != null) {
 				t.run();
 			}
+			// wait nanotime until next frame should be drawn.
+			long timeToNextUpdate = (lastUpdateTime + targetTimeBetweenUpdates) - System.nanoTime();
+			if (timeToNextUpdate > 0) {
+				try {
+					Thread.sleep(timeToNextUpdate / 1_000_000, (int) (timeToNextUpdate % 1_000_000)); // Convert to ms
+																										// and ns
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt(); // Restore the interrupted status
+				}
+			}
 		}
-		for(Runnable r : tasks){
+		for (Runnable r : tasks) {
 			r.run();
 		}
 		end();
 	}
-
 
 	private void init() {
 		// Set up an error callback. The default implementation
@@ -190,40 +217,36 @@ public class Window {
 		// Set the clear color
 		glClearColor(0.1f, 0.1f, 0.2f, 0.0f);
 		glfwFocusWindow(window);
-	}
-
-	private void preLoop() {
-		if (glfwWindowShouldClose(window)) {
-			Main.finish();
-		}
-
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		// clear the framebuffer
+		renderer.init(this);
+		game.init();
 	}
 
 	private void loop() {
-		// LOG the framerate once per second!
-		if (Clock.millis() - lastMillis > 1000) {
-			lastMillis = Clock.millis();
-			LOG.info(windowTask.getTps() + " FPS!");
+		if (glfwWindowShouldClose(window)) {
+			Main.finish();
 		}
+		// clear the framebuffer
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// update the Mouse
 		GLFW.glfwGetCursorPos(window, Mouse.getXBuffer(), Mouse.getYBuffer());
 		Mouse.update(width, height);
 
-	}
+		// Render the scene
+		renderer.render(this);
 
-	private void postLoop() {
 		// swap the color buffers
 		glfwSwapBuffers(window);
+
 		// Poll for window events. The key callback above will only be
 		// invoked during this call.
 		glfwPollEvents();
 	}
 
-	public void end() {
-		shouldStop = true;
+	private void end() {
+		// cleanup renderer
+		renderer.finish();
+
 		// Free the window callbacks and destroy the window
 		glfwFreeCallbacks(window);
 		glfwDestroyWindow(window);

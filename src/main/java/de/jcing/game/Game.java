@@ -24,24 +24,17 @@ public class Game {
 
 	final Renderer renderer;
 
-	final Window win;
-
-	public Game(Window win, Renderer renderer) {
+	public Game(Renderer renderer) {
 		this.renderer = renderer;
-		this.win = win;
 		isInitialized = false;
-		win.getContext().run(this::init);
 	}
 
-	private void init() {
+	public void init() {
 		try {
 			TextureFactory.TextureBuilder b = new TextureFactory().addJSONInstructions("/player/player.json").build();
 			TextureAtlas playerAtlas = b.getAtlas();
-
 			Player player = new Player(new Mesh(playerAtlas, MeshFactory.createRectData(0, 0, 0.1f, 1, 1, 0,0,playerAtlas.getTextureWidth(), playerAtlas.getTextureHeight())), b);
-			
 			mainstage = new Stage(renderer, new TextureFactory().addJSONInstructions("/terrain/grass/grass.json").build().getAtlas(), player);
-
 			// repeat tick method 20 times per second!
 			tick = new Task(this::tick).name("Gametick").repeat(Task.perSecond(20)).start();
 			isInitialized = true;

@@ -10,7 +10,7 @@ public class EntityShader extends Shader {
 	public static final String ALPHA = "alpha";
 
 	public EntityShader() {
-		super("shaders/entity/vertex", "shaders/entity/fragment");
+		super("shaders/entity.vert", "shaders/entity.frag");
 		try {
 			link();
 		} catch (Exception e) {

@@ -49,7 +49,14 @@ sourceSets {
     }
 }
 
+tasks.withType(JavaCompile) {
+    options.compilerArgs += ['--enable-preview', '--release', '21'] // Replace VERSION with your Java version, e.g., 17
+    sourceCompatibility = '21'
+    targetCompatibility = '21'
+}
+
 tasks.run {
+    jvmArgs += '--enable-preview'
     // Specify the classpath for running the application
     classpath = sourceSets.main.runtimeClasspath
 }
