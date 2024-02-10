@@ -14,11 +14,11 @@ import de.jcing.engine.opengl.mesh.Mesh;
 import de.jcing.engine.opengl.mesh.Sprite;
 
 public class Player extends Sprite {
-	
+
 	public enum ANIM {
 		WALK_UP, WALK_LEFT, WALK_RIGHT, WALK_DOWN,
 	}
-	
+
 	private Vector3f position;
 
 	private static final float DEFAULT_SPEED = 0.1f;
@@ -89,9 +89,9 @@ public class Player extends Sprite {
 		currAnim = animations.get(animationIndex);
 
 		if (speedX == 0 && speedY == 0)
-			standing();
+			currAnim.reset();
 		else
-			walking();
+			currAnim.update();
 
 		cam.getPosition().x = position.x;
 		cam.getPosition().y = position.y;
@@ -100,14 +100,6 @@ public class Player extends Sprite {
 	@Override
 	public Mesh getMesh() {
 		return mesh;
-	}
-
-	private void walking() {
-		currAnim.update();
-	}
-
-	private void standing() {
-		currAnim.reset();
 	}
 
 	public Vector2f getTextureOffset() {
