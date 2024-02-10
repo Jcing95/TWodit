@@ -1,5 +1,7 @@
 package de.jcing.engine.image;
 
+import de.jcing.game.Game;
+
 public class Animation extends Image {
 
     public static final int DEFAULT_WAIT_MILLIS = 100;
@@ -20,7 +22,7 @@ public class Animation extends Image {
     }
 
     public void update() {
-        index = startIndex + ((int) (System.currentTimeMillis() / millisWait) % length);
+        index = startIndex + (Game.time() / millisWait) % length;
     }
 
     public int getLength() {

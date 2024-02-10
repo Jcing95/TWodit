@@ -17,7 +17,8 @@ public class Rectangle {
 	}
 
 	public boolean collides(Rectangle r) {
-		return false; // TODO: implement rectangle collision logic
+		return contains(r.pos) || contains(r.pos.add(r.getWidth(), 0)) || contains(r.pos.add(0, r.getHeight()))
+				|| contains(r.pos.add(r.getWidth(), r.getHeight()));
 	}
 
 	public boolean contains(Vector2f point) {
