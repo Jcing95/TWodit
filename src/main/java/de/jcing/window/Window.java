@@ -143,6 +143,7 @@ public class Window {
 			r.run();
 		}
 		end();
+		log.debug("Window has finished.");
 	}
 
 	private void init() {
