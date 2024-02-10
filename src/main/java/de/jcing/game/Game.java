@@ -8,7 +8,7 @@ import de.jcing.engine.image.TextureAtlas;
 import de.jcing.engine.image.generation.TextureBuilder;
 import de.jcing.engine.opengl.Renderer;
 import de.jcing.engine.opengl.mesh.Mesh;
-import de.jcing.engine.opengl.mesh.MeshFactory;
+import de.jcing.engine.opengl.mesh.VertexData;
 import de.jcing.game.stages.Stage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,7 +34,7 @@ public class Game {
 		try {
 			TextureBuilder.BuiltTexture b = new TextureBuilder().addJSONInstructions("/player/player.json").build();
 			TextureAtlas playerAtlas = b.getAtlas();
-			Player player = new Player(new Mesh(playerAtlas, MeshFactory.createRectData(0, 0, 0.1f, 1, 1, 0, 0,
+			Player player = new Player(new Mesh(playerAtlas, VertexData.createRectangle(0, 0, 0.1f, 1, 1, 0, 0,
 					playerAtlas.getTextureWidth(), playerAtlas.getTextureHeight())), b);
 			mainstage = new Stage(renderer,
 					new TextureBuilder().addJSONInstructions("/terrain/grass/grass.json").build().getAtlas(), player);
