@@ -3,7 +3,6 @@ package de.jcing.engine.io;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.nio.DoubleBuffer;
 import java.util.ArrayList;
@@ -35,7 +34,7 @@ public class Mouse {
 
 	public static final int ONWHEEL = 30;
 
-	//using ArrayList for faster iteration
+	// using ArrayList for faster iteration
 	private static final ArrayList<Binding> onPress = new ArrayList<>();
 	private static final ArrayList<Binding> onRelease = new ArrayList<>();
 	private static final ArrayList<Binding> onClick = new ArrayList<>();

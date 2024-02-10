@@ -30,15 +30,16 @@ public class Chunk {
 		VertexData[] datas = new VertexData[NUM_TILES * NUM_TILES];
 		for (int xi = 0; xi < tiles.length; xi++) {
 			for (int yi = 0; yi < tiles.length; yi++) {
-				tiles[xi][yi] = new Tile(this, xi, yi, new Image(atlas, random.nextInt(atlas.getSubTextureTotalCount())));
-				datas[xi*tiles.length+yi] = tiles[xi][yi].getVertexData();
+				tiles[xi][yi] = new Tile(this, xi, yi,
+						new Image(atlas, random.nextInt(atlas.getSubTextureTotalCount())));
+				datas[xi * tiles.length + yi] = tiles[xi][yi].getVertexData();
 			}
 		}
 		data = new VertexData(datas);
 		data.offset(offset.x, offset.y, 0);
 		return this;
 	}
-	
+
 	public VertexData getVertices() {
 		return data;
 	}

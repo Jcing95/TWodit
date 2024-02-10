@@ -1,7 +1,5 @@
 package de.jcing.engine.world;
 
-import org.joml.Vector2i;
-
 import de.jcing.engine.image.Image;
 import de.jcing.engine.opengl.mesh.MeshFactory;
 import de.jcing.engine.opengl.mesh.VertexData;

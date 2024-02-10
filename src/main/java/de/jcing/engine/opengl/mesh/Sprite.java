@@ -6,11 +6,11 @@ import org.joml.Vector3f;
 public class Sprite {
 
 	protected Mesh mesh;
-	
+
 	public Sprite(Mesh mesh) {
 		this.mesh = mesh;
 	}
-	
+
 	public Vector3f getPosition() {
 		return new Vector3f(0, 0, 0);
 	}
@@ -32,7 +32,7 @@ public class Sprite {
 	}
 
 	public Vector2f getTextureOffset() {
-		return new Vector2f(0,0);
+		return new Vector2f(0, 0);
 	}
 
 }

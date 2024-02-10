@@ -18,7 +18,6 @@ public class Entity extends Sprite {
 		scale = 1;
 	}
 
-
 	@Override
 	public Vector3f getPosition() {
 		return position;

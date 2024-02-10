@@ -78,7 +78,8 @@ public class KeyBoard {
 		}
 	};
 
-	//TODO: implement key typed functionality for GLFW. somehow abstract callback and create IO submodule!
+	// TODO: implement key typed functionality for GLFW. somehow abstract callback
+	// and create IO submodule!
 	public static final GLFWKeyCallbackI keyCallBack = (window, key, scancode, action, mods) -> {
 		switch (action) {
 			case GLFW.GLFW_RELEASE -> {

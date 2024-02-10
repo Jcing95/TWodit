@@ -34,7 +34,9 @@ public class Texture {
 	}
 
 	private void loadImage() {
-		ByteBuffer buffer = BufferUtils.createByteBuffer(imageData.getWidth() * imageData.getHeight() * BYTES_PER_PIXEL); //4 for RGBA, 3 for RGB
+		ByteBuffer buffer = BufferUtils
+				.createByteBuffer(imageData.getWidth() * imageData.getHeight() * BYTES_PER_PIXEL); // 4 for RGBA, 3 for
+																									// RGB
 		int[] pixels = imageData.getData();
 		for (int y = 0; y < imageData.getHeight(); y++) {
 			for (int x = 0; x < imageData.getWidth(); x++) {
@@ -46,7 +48,7 @@ public class Texture {
 			}
 		}
 
-		buffer.flip(); //FOR THE LOVE OF GOD DO NOT FORGET THIS
+		buffer.flip(); // FOR THE LOVE OF GOD DO NOT FORGET THIS
 
 		// Bind the texture
 		glBindTexture(GL_TEXTURE_2D, id);
@@ -58,7 +60,8 @@ public class Texture {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 		// Upload the texture data
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageData.getWidth(), imageData.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageData.getWidth(), imageData.getHeight(), 0, GL_RGBA,
+				GL_UNSIGNED_BYTE, buffer);
 		// Generate Mip Map
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}

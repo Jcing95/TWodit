@@ -23,7 +23,7 @@ public abstract class Shader {
 	protected final int vertexShaderID;
 	protected final int fragmentShaderID;
 
-	//	private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
+	// private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 
 	private final HashMap<String, Integer> uniforms;
 
@@ -46,7 +46,7 @@ public abstract class Shader {
 		} catch (IOException e) {
 			LOG.error("Could not read " + file);
 			e.printStackTrace();
-			//TODO: exit here?
+			// TODO: exit here?
 			System.exit(-1);
 		}
 		int shaderID = GL30.glCreateShader(type);
@@ -127,7 +127,7 @@ public abstract class Shader {
 
 	public void setUniform(String location, Matrix4f value) {
 		// Dump the matrix into a float buffer
-		if(value!=null)
+		if (value != null)
 			try (MemoryStack stack = MemoryStack.stackPush()) {
 				FloatBuffer fb = stack.mallocFloat(16);
 				value.get(fb);

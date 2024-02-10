@@ -2,22 +2,23 @@ package de.jcing.engine.opengl.mesh;
 
 public class MeshFactory {
 
-	public static VertexData createRectData(float x, float y, float z, float width, float height, float texX, float texY, float texWidth, float texHeight) {
+	public static VertexData createRectData(float x, float y, float z, float width, float height, float texX,
+			float texY, float texWidth, float texHeight) {
 		float[] vertices = new float[12];
 
-		//links oben
+		// links oben
 		vertices[0] = x;
 		vertices[1] = y;
 		vertices[2] = z;
-		//rechts oben
+		// rechts oben
 		vertices[3] = x + width;
 		vertices[4] = y;
 		vertices[5] = z;
-		//links unten
+		// links unten
 		vertices[6] = x;
 		vertices[7] = y + height;
 		vertices[8] = z;
-		//rechts unten
+		// rechts unten
 		vertices[9] = x + width;
 		vertices[10] = y + height;
 		vertices[11] = z;

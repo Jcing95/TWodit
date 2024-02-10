@@ -8,18 +8,18 @@ public class Image {
 
     private final TextureAtlas atlas;
 
-	public Image(TextureAtlas atlas, int index) {
+    public Image(TextureAtlas atlas, int index) {
         this.atlas = atlas;
-		this.index = index % atlas.getSubTextureTotalCount();
-	}
+        this.index = index % atlas.getSubTextureTotalCount();
+    }
 
-	public float getX() {
-		return (index % atlas.getNumTexturesHorizontal()) * atlas.getTextureWidth();
-	}
+    public float getX() {
+        return (index % atlas.getNumTexturesHorizontal()) * atlas.getTextureWidth();
+    }
 
-	public float getY() {
-		return (index / atlas.getNumTexturesHorizontal()) * atlas.getTextureHeight();
-	}
+    public float getY() {
+        return (index / atlas.getNumTexturesHorizontal()) * atlas.getTextureHeight();
+    }
 
     public float getWidth() {
         return atlas.getTextureWidth();
@@ -29,9 +29,9 @@ public class Image {
         return atlas.getTextureHeight();
     }
 
-	public int getIndex() {
-		return index;
-	}
+    public int getIndex() {
+        return index;
+    }
 
     public void setIndex(int index) {
         this.index = index % atlas.getSubTextureTotalCount();

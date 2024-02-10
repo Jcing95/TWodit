@@ -47,7 +47,7 @@ public class TextureFactory {
                 jsonContent.append(line);
             }
             JSONObject o = new JSONObject(jsonContent.toString());
-            
+
             JSONObject data = o.getJSONObject("data");
             for (String key : data.keySet()) {
                 JSONObject img = data.getJSONObject(key);
@@ -119,7 +119,7 @@ public class TextureFactory {
                 datas.addAll(Arrays.asList(data));
             }
             atlas = mergeAtlas(datas);
-            for(ImageGroup g : groups) {
+            for (ImageGroup g : groups) {
                 LOG.debug("found animation '{}' with {} frames.", g.name, g.count);
                 animations.put(g.name, new Animation(atlas, g.startIndex, g.count));
             }

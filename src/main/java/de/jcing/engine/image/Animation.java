@@ -20,7 +20,7 @@ public class Animation extends Image {
     }
 
     public void update() {
-        index = startIndex + ((int)(System.currentTimeMillis() / millisWait) % length);
+        index = startIndex + ((int) (System.currentTimeMillis() / millisWait) % length);
     }
 
     public int getLength() {

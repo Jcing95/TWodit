@@ -13,19 +13,19 @@ public class VertexData {
 		this.texCoords = texCoords;
 		this.indices = indices;
 	}
-	
-	public VertexData(VertexData...toCombine) {
+
+	public VertexData(VertexData... toCombine) {
 		ArrayList<Float> pos = new ArrayList<>();
 		ArrayList<Float> tex = new ArrayList<>();
 		ArrayList<Integer> id = new ArrayList<>();
 		int lastPos = 0;
-		for(VertexData d : toCombine) {
-			for(float f: d.positions)
+		for (VertexData d : toCombine) {
+			for (float f : d.positions)
 				pos.add(f);
-			for(float f: d.texCoords)
+			for (float f : d.texCoords)
 				tex.add(f);
-			for(int f: d.indices)
-				id.add(f+lastPos);
+			for (int f : d.indices)
+				id.add(f + lastPos);
 			lastPos += d.positions.length;
 		}
 		positions = new float[pos.size()];
@@ -41,13 +41,13 @@ public class VertexData {
 			indices[i] = id.get(i);
 		}
 	}
-	
+
 	public void offset(float x, float y, float z) {
-		for (int i = 0; i < positions.length; i+=3) {
+		for (int i = 0; i < positions.length; i += 3) {
 			positions[i] += x;
-			positions[i+1] += y;
-			positions[i+2] += z;
+			positions[i + 1] += y;
+			positions[i + 2] += z;
 		}
 	}
-	
+
 }

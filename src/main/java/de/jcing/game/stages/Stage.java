@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import org.joml.Vector2i;
 
-import de.jcing.engine.image.Image;
 import de.jcing.engine.image.TextureAtlas;
 import de.jcing.engine.opengl.Camera;
 import de.jcing.engine.opengl.Renderer;

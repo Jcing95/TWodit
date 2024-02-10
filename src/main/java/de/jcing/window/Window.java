@@ -61,7 +61,7 @@ public class Window {
 
 	private final Renderer renderer;
 	private final Game game;
-	
+
 	// The window handle
 	private long window;
 

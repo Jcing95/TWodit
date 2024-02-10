@@ -8,9 +8,7 @@ import org.joml.Vector2f;
 import de.jcing.engine.image.Animation;
 import de.jcing.engine.opengl.mesh.Mesh;
 import de.jcing.geometry.Rectangle;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class Creature extends Entity {
 
 	public static final float DRAG = 0.6f;
@@ -46,7 +44,7 @@ public class Creature extends Entity {
 	public void tick() {
 
 		movePosition(speedX, speedY, 0);
-		
+
 		speedX *= DRAG;
 		speedY *= DRAG;
 
@@ -112,7 +110,7 @@ public class Creature extends Entity {
 	public void setAnim(ANIM on, Animation img) {
 		sprite.put(on, img);
 	}
-	
+
 	@Override
 	public Vector2f getTextureOffset() {
 		return currAnim.getOffset();

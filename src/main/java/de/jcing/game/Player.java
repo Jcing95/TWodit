@@ -1,8 +1,6 @@
 package de.jcing.game;
 
 import org.lwjgl.glfw.GLFW;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import de.jcing.engine.entity.Creature;
 import de.jcing.engine.image.generation.TextureFactory.TextureBuilder;
@@ -25,7 +23,7 @@ public class Player extends Creature {
 		this.setAnim(ANIM.WALK_DOWN, b.getAnimation("down"));
 		currAnim = b.getAnimation("down");
 	}
-	
+
 	public void tick(Camera cam) {
 		float speed = DEFAULT_SPEED;
 		float speedX = 0, speedY = 0;
@@ -45,7 +43,7 @@ public class Player extends Creature {
 		super.tick();
 
 		cam.getPosition().x = position.x;
-		cam.getPosition().y = position.y;		
+		cam.getPosition().y = position.y;
 	}
 
 	@Override

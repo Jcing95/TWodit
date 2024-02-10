@@ -6,14 +6,14 @@ import java.util.HashMap;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.jcing.engine.opengl.mesh.Sprite;
 import de.jcing.engine.opengl.shaders.EntityShader;
 import de.jcing.engine.opengl.shaders.Shader;
 import de.jcing.engine.opengl.shaders.TerrainShader;
 import de.jcing.window.Window;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Renderer {
 
@@ -47,8 +47,9 @@ public class Renderer {
 	private boolean buffersInitialized;
 
 	public Renderer() {
-		//transformation handles matrix calculations for 3D space.
-		//it creates View and projectionmatrix needed to render gameitems at their current worldposition.
+		// transformation handles matrix calculations for 3D space.
+		// it creates View and projectionmatrix needed to render gameitems at their
+		// current worldposition.
 		transformation = new Transformation();
 		camera = new Camera();
 		items = new HashMap<>();
@@ -63,7 +64,8 @@ public class Renderer {
 			terrainShader = new TerrainShader();
 			entityShader = new EntityShader();
 
-			//items is a Shader-(List of Renderable) Map to render every item with corresponding shader.
+			// items is a Shader-(List of Renderable) Map to render every item with
+			// corresponding shader.
 			items.put(terrainShader, new ArrayList<>());
 			items.put(entityShader, new ArrayList<>());
 
@@ -83,15 +85,17 @@ public class Renderer {
 			window.setResized(false);
 		}
 		// update transformation
-		Matrix4f projectionMatrix = transformation.getProjectionMatrix(FOV, window.getWidth(), window.getHeight(), Z_NEAR, Z_FAR);
+		Matrix4f projectionMatrix = transformation.getProjectionMatrix(FOV, window.getWidth(), window.getHeight(),
+				Z_NEAR, Z_FAR);
 
-		//swap Matrix buffers to prevent movement of items while frame is rendered (black gaps, tearing)
+		// swap Matrix buffers to prevent movement of items while frame is rendered
+		// (black gaps, tearing)
 		if (!buffersInitialized)
 			return;
 		drawTerrain(projectionMatrix);
 		drawEntities(projectionMatrix);
 
-		//TODO: DRAW GUI HERE
+		// TODO: DRAW GUI HERE
 	}
 
 	private void drawTerrain(Matrix4f projectionMatrix) {
@@ -101,7 +105,7 @@ public class Renderer {
 
 		for (Sprite item : items.get(terrainShader)) { // DRAW TERRAIN
 			Matrix4f mat = getModelViewMatrix(item);
-			if (mat != null) //TODO: check why mat can be null!
+			if (mat != null) // TODO: check why mat can be null!
 				terrainShader.setUniform(TerrainShader.WORLD_MATRIX, mat);
 			item.getMesh().render();
 		}

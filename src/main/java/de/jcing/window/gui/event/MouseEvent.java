@@ -6,5 +6,4 @@ public record MouseEvent(de.jcing.window.gui.event.MouseEvent.Action action, flo
 		PRESS, RELEASE
 	}
 
-
 }

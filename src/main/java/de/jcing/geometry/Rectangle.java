@@ -17,7 +17,7 @@ public class Rectangle {
 	}
 
 	public boolean collides(Rectangle r) {
-		return false; //TODO: implement rectangle collision logic
+		return false; // TODO: implement rectangle collision logic
 	}
 
 	public boolean contains(Vector2f point) {

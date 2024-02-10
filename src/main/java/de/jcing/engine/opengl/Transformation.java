@@ -32,8 +32,10 @@ public class Transformation {
 
 		viewMatrix.identity();
 		// First do the rotation so camera rotates over its position
-		viewMatrix.rotate((float) Math.toRadians(rotation.x), new Vector3f(1, 0, 0)).rotate((float) Math.toRadians(rotation.y), new Vector3f(0, 1, 0)).rotate((float) Math.toRadians(rotation.z),
-				new Vector3f(0, 0, 1));
+		viewMatrix.rotate((float) Math.toRadians(rotation.x), new Vector3f(1, 0, 0))
+				.rotate((float) Math.toRadians(rotation.y), new Vector3f(0, 1, 0))
+				.rotate((float) Math.toRadians(rotation.z),
+						new Vector3f(0, 0, 1));
 		// Then do the translation
 		viewMatrix.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
 		return viewMatrix;
@@ -41,7 +43,8 @@ public class Transformation {
 
 	public Matrix4f getModelViewMatrix(Sprite gameItem, Matrix4f viewMatrix) {
 		Vector3f rotation = gameItem.getRotation();
-		modelViewMatrix.identity().translate(gameItem.getPosition()).rotateX((float) Math.toRadians(-rotation.x)).rotateY((float) Math.toRadians(-rotation.y))
+		modelViewMatrix.identity().translate(gameItem.getPosition()).rotateX((float) Math.toRadians(-rotation.x))
+				.rotateY((float) Math.toRadians(-rotation.y))
 				.rotateZ((float) Math.toRadians(-rotation.z)).scale(gameItem.getScale());
 		Matrix4f viewCurr = new Matrix4f(viewMatrix);
 		return viewCurr.mul(modelViewMatrix);
