@@ -2,7 +2,6 @@ package de.jcing;
 
 import de.jcing.engine.opengl.Renderer;
 import de.jcing.game.Game;
-import de.jcing.util.task.Topic;
 import de.jcing.window.Window;
 
 public class Main {
@@ -20,7 +19,6 @@ public class Main {
 	
 	public static void finish() {
 		renderer.finish();
-		Topic.stopAll();
 	}
 	
 }

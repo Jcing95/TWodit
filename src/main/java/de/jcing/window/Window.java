@@ -45,15 +45,14 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryStack;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.jcing.Main;
 import de.jcing.engine.io.KeyBoard;
 import de.jcing.engine.io.Mouse;
 import de.jcing.engine.opengl.Renderer;
 import de.jcing.game.Game;
-import de.jcing.util.Clock;
 
 public class Window {
 
@@ -71,7 +70,6 @@ public class Window {
 
 	private boolean isResized;
 
-	private int lastMillis = 0;
 	private static final boolean VSYNC = false;
 
 	private boolean shouldStop = false;
@@ -108,6 +106,7 @@ public class Window {
 		final int targetUpdatesPerSecond = 120;
 		final long targetTimeBetweenUpdates = 1_000_000_000 / targetUpdatesPerSecond; // Nanoseconds
 		long lastUpdateTime = System.nanoTime();
+		long lastMillis = System.currentTimeMillis();
 		int frames = 0;
 		while (!shouldStop) {
 			long now = System.nanoTime();
@@ -118,8 +117,8 @@ public class Window {
 				frames++;
 			}
 			// LOG the framerate once per second!
-			if (Clock.millis() - lastMillis > 1000) {
-				lastMillis = Clock.millis();
+			if (System.currentTimeMillis() - lastMillis > 1000) {
+				lastMillis = System.currentTimeMillis();
 				LOG.info("{} FPS!", frames);
 				frames = 0;
 			}
