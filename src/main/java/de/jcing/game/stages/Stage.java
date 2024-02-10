@@ -64,9 +64,6 @@ public class Stage {
 
 	public void tick() {
 		player.tick(camera);
-		renderer.bufferWorldMatrix(player);
-		renderer.bufferWorldMatrix(piece);
-		renderer.swapMatrixBuffer();
 	}
 
 }

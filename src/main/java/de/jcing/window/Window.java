@@ -53,10 +53,11 @@ import de.jcing.engine.io.KeyBoard;
 import de.jcing.engine.io.Mouse;
 import de.jcing.engine.opengl.Renderer;
 import de.jcing.game.Game;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class Window {
 
-	private static final Logger LOG = LoggerFactory.getLogger(Window.class);
 	private static final Logger GLFW_LOG = LoggerFactory.getLogger(GLFW.class);
 
 	private final Renderer renderer;
@@ -80,7 +81,7 @@ public class Window {
 	Future<Void> windowExecution;
 
 	public Window(Renderer renderer, Game game) {
-		LOG.debug("Initializing Window using LWJGL " + Version.getVersion() + "!");
+		log.debug("Initializing Window using LWJGL " + Version.getVersion() + "!");
 		this.renderer = renderer;
 		this.game = game;
 	}
@@ -119,7 +120,7 @@ public class Window {
 			// LOG the framerate once per second!
 			if (System.currentTimeMillis() - lastMillis > 1000) {
 				lastMillis = System.currentTimeMillis();
-				LOG.info("{} FPS!", frames);
+				log.info("{} FPS!", frames);
 				frames = 0;
 			}
 			// Run only one task if it exists to keep latency low.
@@ -175,7 +176,7 @@ public class Window {
 		});
 
 		glfwSetMouseButtonCallback(window, Mouse.mouseButtonCallback);
-		Mouse.addBinding(Mouse.ONPRESS, (key) -> LOG.debug("click @ (" + Mouse.getX() + "|" + Mouse.getY() + ")"));
+		Mouse.addBinding(Mouse.ONPRESS, (key) -> log.debug("click @ (" + Mouse.getX() + "|" + Mouse.getY() + ")"));
 
 		glfwSetFramebufferSizeCallback(window, (window, width, height) -> {
 			this.width = width;

@@ -144,21 +144,6 @@ public class TextureFactory {
             return animations.get(key);
         }
 
-        private List<File> loadFullDirectory(String directoryPath) {
-            File dir = new File(directoryPath);
-            LOG.info("Loading animation from: {}", dir.getAbsolutePath());
-            File[] expanded = dir.listFiles();
-            ArrayList<File> imageFiles = new ArrayList<>();
-            if (expanded != null) {
-                for (File f : expanded) {
-                    if (isValidImagePath(f.getName())) {
-                        imageFiles.add(f);
-                    }
-                }
-            }
-            return imageFiles;
-        }
-
         private TextureAtlas mergeAtlas(Collection<ImageData> images) throws IOException {
             int count = images.size();
 

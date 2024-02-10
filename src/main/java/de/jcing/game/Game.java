@@ -82,6 +82,7 @@ public class Game {
 				}
 			}
 		}
+		log.debug("Game has finished.");
 	}
 
 	public void tick() {

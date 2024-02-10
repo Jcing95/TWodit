@@ -37,15 +37,6 @@ public class Renderer {
 
 	private final HashMap<Shader, ArrayList<Sprite>> items;
 
-	@SuppressWarnings("rawtypes")
-	private final HashMap[] modelViewMatrices = { new HashMap<>(), new HashMap<>() };
-	int nextBufferIndex;
-	private boolean swapBuffers;
-
-	private int currentBufferIndex;
-
-	private boolean buffersInitialized;
-
 	public Renderer() {
 		// transformation handles matrix calculations for 3D space.
 		// it creates View and projectionmatrix needed to render gameitems at their
@@ -88,10 +79,6 @@ public class Renderer {
 		Matrix4f projectionMatrix = transformation.getProjectionMatrix(FOV, window.getWidth(), window.getHeight(),
 				Z_NEAR, Z_FAR);
 
-		// swap Matrix buffers to prevent movement of items while frame is rendered
-		// (black gaps, tearing)
-		if (!buffersInitialized)
-			return;
 		drawTerrain(projectionMatrix);
 		drawEntities(projectionMatrix);
 
@@ -141,21 +128,9 @@ public class Renderer {
 				item.getMesh().cleanUp();
 	}
 
-	public void swapMatrixBuffer() {
-		swapBuffers = true;
-		if (!buffersInitialized)
-			buffersInitialized = true;
-	}
-
-	@SuppressWarnings("unchecked")
-	public void bufferWorldMatrix(Sprite item) {
-		Matrix4f viewMatrix = transformation.getViewMatrix(camera);
-		Matrix4f modelViewMatrix = transformation.getModelViewMatrix(item, viewMatrix);
-		modelViewMatrices[nextBufferIndex].put(item, modelViewMatrix);
-	}
-
 	private Matrix4f getModelViewMatrix(Sprite item) {
-		return (Matrix4f) modelViewMatrices[currentBufferIndex].get(item);
+		Matrix4f viewMatrix = transformation.getViewMatrix(camera);
+		return transformation.getModelViewMatrix(item, viewMatrix);
 	}
 
 	public Camera getCamera() {
