@@ -38,7 +38,6 @@ public class Game {
 					playerAtlas.getTextureWidth(), playerAtlas.getTextureHeight())), b);
 			mainstage = new Stage(renderer,
 					new TextureBuilder().addJSONInstructions("/terrain/grass/grass.json").build().getAtlas(), player);
-			// repeat tick method 20 times per second!
 			gameThread = Thread.ofPlatform().name("Gameloop").start(this::handleLoop);
 		} catch (IOException e) {
 			log.error("Could not initialize Game!", e);
