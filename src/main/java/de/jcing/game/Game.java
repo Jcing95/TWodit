@@ -9,7 +9,7 @@ import de.jcing.engine.image.generation.TextureBuilder;
 import de.jcing.engine.opengl.Renderer;
 import de.jcing.engine.opengl.mesh.Mesh;
 import de.jcing.engine.opengl.mesh.VertexData;
-import de.jcing.game.stages.Stage;
+import de.jcing.engine.world.Stage;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

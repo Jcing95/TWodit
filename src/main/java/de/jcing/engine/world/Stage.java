@@ -1,4 +1,4 @@
-package de.jcing.game.stages;
+package de.jcing.engine.world;
 
 import java.util.HashMap;
 
@@ -10,14 +10,11 @@ import de.jcing.engine.opengl.Renderer;
 import de.jcing.engine.opengl.mesh.Mesh;
 import de.jcing.engine.opengl.mesh.Sprite;
 import de.jcing.engine.opengl.mesh.VertexData;
-import de.jcing.engine.world.Chunk;
 import de.jcing.game.Player;
 
 public class Stage {
 
 	private final HashMap<Vector2i, Chunk> chunks;
-
-	private final Renderer renderer;
 
 	private final Camera camera;
 
@@ -27,7 +24,6 @@ public class Stage {
 	private TextureAtlas tilemap;
 
 	public Stage(Renderer renderer, TextureAtlas tilemap, Player player) {
-		this.renderer = renderer;
 		this.camera = renderer.getCamera();
 		this.tilemap = tilemap;
 		this.player = player;
@@ -35,7 +31,6 @@ public class Stage {
 		chunks = new HashMap<>();
 		createChunks(chunks);
 		prepareRenderer(renderer);
-
 	}
 
 	protected void createChunks(HashMap<Vector2i, Chunk> chunks) {
@@ -57,7 +52,6 @@ public class Stage {
 	}
 
 	public void prepareRenderer(Renderer r) {
-		// for (Chunk c : chunks.values())
 		r.addRenderable(r.getTerrainShader(), piece);
 		r.addRenderable(r.getEntityShader(), player);
 	}

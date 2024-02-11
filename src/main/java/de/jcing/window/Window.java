@@ -49,7 +49,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.jcing.Main;
-import de.jcing.engine.io.KeyBoard;
+import de.jcing.engine.io.Keyboard;
 import de.jcing.engine.io.Mouse;
 import de.jcing.engine.opengl.Renderer;
 import de.jcing.game.Game;
@@ -168,16 +168,8 @@ public class Window {
 		// Set up a key callback. It will be called every time a key is pressed,
 		// repeated
 		// or released.
-		glfwSetKeyCallback(window, KeyBoard.keyCallBack);
-
-		KeyBoard.addBinding(KeyBoard.ONPRESS, (key) -> {
-			if (key == GLFW.GLFW_KEY_ESCAPE)
-				glfwSetWindowShouldClose(window, true);
-			// We will detect this in the rendering loop
-		});
-
-		glfwSetMouseButtonCallback(window, Mouse.mouseButtonCallback);
-		Mouse.addBinding(Mouse.ONPRESS, (key) -> log.debug("click @ (" + Mouse.getX() + "|" + Mouse.getY() + ")"));
+		Keyboard.setCallbacks(window);
+		Mouse.setCallbacks(window);
 
 		glfwSetFramebufferSizeCallback(window, (window, width, height) -> {
 			this.width = width;
@@ -229,15 +221,15 @@ public class Window {
 		// clear the framebuffer
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// update the Mouse
-		GLFW.glfwGetCursorPos(window, Mouse.getXBuffer(), Mouse.getYBuffer());
-		Mouse.update(width, height);
-
 		// Render the scene
 		renderer.render(this);
 
 		// swap the color buffers
 		glfwSwapBuffers(window);
+
+		if (Keyboard.isPressed(GLFW.GLFW_KEY_ESCAPE)) {
+			glfwSetWindowShouldClose(window, true);
+		}
 
 		// Poll for window events. The key callback above will only be
 		// invoked during this call.

@@ -8,7 +8,7 @@ import org.lwjgl.glfw.GLFW;
 
 import de.jcing.engine.image.Animation;
 import de.jcing.engine.image.generation.TextureBuilder.BuiltTexture;
-import de.jcing.engine.io.KeyBoard;
+import de.jcing.engine.io.Keyboard;
 import de.jcing.engine.opengl.Camera;
 import de.jcing.engine.opengl.mesh.Mesh;
 import de.jcing.engine.opengl.mesh.Sprite;
@@ -52,15 +52,15 @@ public class Player extends Sprite {
 		float speed = DEFAULT_SPEED;
 		float accelerationX = 0;
 		float accelerationY = 0;
-		if (KeyBoard.isPressed(GLFW.GLFW_KEY_LEFT_SHIFT))
+		if (Keyboard.isPressed(GLFW.GLFW_KEY_LEFT_SHIFT))
 			speed *= SHIFT_MULT;
-		if (KeyBoard.isPressed(GLFW.GLFW_KEY_W))
+		if (Keyboard.isPressed(GLFW.GLFW_KEY_W))
 			accelerationY = speed;
-		if (KeyBoard.isPressed(GLFW.GLFW_KEY_A))
+		if (Keyboard.isPressed(GLFW.GLFW_KEY_A))
 			accelerationX = -speed;
-		if (KeyBoard.isPressed(GLFW.GLFW_KEY_S))
+		if (Keyboard.isPressed(GLFW.GLFW_KEY_S))
 			accelerationY = -speed;
-		if (KeyBoard.isPressed(GLFW.GLFW_KEY_D))
+		if (Keyboard.isPressed(GLFW.GLFW_KEY_D))
 			accelerationX = speed;
 
 		speedX *= DRAG;
