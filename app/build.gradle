@@ -16,7 +16,8 @@ repositories {
 }
 
 project.ext.lwjglVersion = "3.3.6"
-project.ext.lwjglNatives = "natives-macos-arm64"
+//project.ext.lwjglNatives = "natives-macos-arm64"
+project.ext.lwjglNatives = "natives-windows"
 
 dependencies {
     implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
@@ -58,6 +59,5 @@ application {
 tasks.run {
     // Specify the classpath for running the application
     classpath = sourceSets.main.runtimeClasspath
-    jvmArgs = ["-XstartOnFirstThread"]
+    //jvmArgs = ["-XstartOnFirstThread"]
 }
-

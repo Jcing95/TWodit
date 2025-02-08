@@ -94,10 +94,7 @@ public class Window {
 		running = true;
 		try {
 			init();
-			while(running) {
-				loop();
-				tracker.tick();
-			}
+			loop();
 		} catch(Throwable t){
 			t.printStackTrace();
 		} finally {
@@ -198,23 +195,26 @@ public class Window {
 	}
 
 	private void loop() {
-		runContext(tasks);
-		tasks.clear();
-		if (!tracker.shouldTick()) {
-			tracker.sleep();			
-		}
-		preLoop();
-		runContext(loopTasks);
-		//LOG the framerate once per second!
-		if (Clock.millis() - lastMillis > 1000) {
-			lastMillis = Clock.millis();
-			LOG.info(tracker.getCurrentTps() + " FPS!");
-		}
+		while(running) {
+			runContext(tasks);
+			tasks.clear();
+			if (!tracker.shouldTick()) {
+				continue;	
+			}
+			tracker.tick();
+			preLoop();
+			runContext(loopTasks);
+			//LOG the framerate once per second!
+			if (Clock.millis() - lastMillis > 1000) {
+				lastMillis = Clock.millis();
+				LOG.info(tracker.getCurrentTps() + " FPS!");
+			}
 
-		//update the Mouse
-		GLFW.glfwGetCursorPos(window, Mouse.getXBuffer(), Mouse.getYBuffer());
-		Mouse.update(width, height);
-		postLoop();
+			//update the Mouse
+			GLFW.glfwGetCursorPos(window, Mouse.getXBuffer(), Mouse.getYBuffer());
+			Mouse.update(width, height);
+			postLoop();
+		}
 	}
 
 	private void postLoop() {

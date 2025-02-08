@@ -8,6 +8,7 @@ import lombok.Setter;
 
 public class TimeTracker {
     
+    private long lastSecond;
     private long lastTick;
     private int ticks;
     
@@ -18,22 +19,23 @@ public class TimeTracker {
     private int currentTps;
 
     public TimeTracker(float tps) {
-        lastTick = System.currentTimeMillis();
+        lastTick = 0;
         this.tps = tps;
     }
 
     public void tick() {
         ticks++;
         long current = System.currentTimeMillis();
-        if (current - lastTick > 1000) {
+        if (current - lastSecond > 1000) {
             currentTps = ticks;
+            lastSecond = current;
             ticks = 0;
-            lastTick = current;
         }
+        lastTick = current;
     }
 
     public boolean shouldTick() {
-        return System.currentTimeMillis() - lastTick < 1000 / tps;
+        return System.currentTimeMillis() - lastTick > 1000 / tps;
     }
 
     public long remainingWaitTime() {
@@ -43,6 +45,7 @@ public class TimeTracker {
 
     public void sleep() {
         CompletableFuture<Void> f = new CompletableFuture<>();
+        //TODO: use only one thread or a threadpool.
         new Thread(() -> {
             try {
                 Thread.sleep(Long.max(0,remainingWaitTime()));
