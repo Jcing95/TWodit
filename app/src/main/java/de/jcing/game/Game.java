@@ -2,7 +2,7 @@ package de.jcing.game;
 
 import de.jcing.engine.opengl.Renderer;
 import de.jcing.game.stages.MainStage;
-import de.jcing.util.task.Task;
+import de.jcing.util.Timer;
 import de.jcing.window.Window;
 
 public class Game {
@@ -11,7 +11,7 @@ public class Game {
 
 	MainStage mainstage;
 
-	Task tick;
+	Timer timer;
 
 	final Renderer renderer;
 
@@ -21,14 +21,14 @@ public class Game {
 		this.renderer = renderer;
 		this.win = win;
 		isInitialized = false;
-		win.getContext().run(this::init);
+		win.runInContext(this::init);
 	}
 
 	private void init() {
 		mainstage = new MainStage(renderer);
 
 		//repeat tick method 20 times per second!
-		tick = new Task(this::tick).name("Gametick").repeat(Task.perSecond(20)).start();
+		timer = new Timer(this::tick).per(20).second().start();
 		isInitialized = true;
 	}
 

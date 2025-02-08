@@ -61,7 +61,7 @@ public class Renderer {
 		camera.setRotation(0, 0, 0);
 
 		//All OpenGL actions have to run in context of the window!
-		window.getContext().run(this::init);
+		window.runInContext(this::init);
 	}
 
 	private void init() {
@@ -82,7 +82,7 @@ public class Renderer {
 			e.printStackTrace();
 		}
 		LOG.debug("renderer initialized -> starting render loop");
-		window.getContext().loop(this::render);
+		window.loopInContext(this::render);
 
 	}
 
@@ -136,16 +136,16 @@ public class Renderer {
 
 	public void addRenderable(Shader s, Renderable r) {
 		if (items.containsKey(s))
-			window.getContext().run(() -> items.get(s).add(r));
+			window.runInContext(() -> items.get(s).add(r));
 	}
 
 	public void removeRenderable(Shader s, Renderable r) {
 		if (items.containsKey(s))
-			window.getContext().run(() -> items.get(s).remove(r));
+			window.runInContext(() -> items.get(s).remove(r));
 	}
 
 	public void finish() {
-		window.getContext().run(() -> {
+		window.runInContext(() -> {
 			for (ArrayList<Renderable> l : items.values())
 				for (Renderable item : l)
 					item.getMesh().cleanUp();

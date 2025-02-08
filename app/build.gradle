@@ -20,8 +20,11 @@ project.ext.lwjglNatives = "natives-macos-arm64"
 
 dependencies {
     implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
-
-	implementation "org.lwjgl:lwjgl"
+    
+    compileOnly 'org.projectlombok:lombok:1.18.36'
+	annotationProcessor 'org.projectlombok:lombok:1.18.36'
+	
+    implementation "org.lwjgl:lwjgl"
 	implementation "org.lwjgl:lwjgl-glfw"
 	implementation "org.lwjgl:lwjgl-opengl"
 	implementation "org.lwjgl:lwjgl-stb"
@@ -55,5 +58,6 @@ application {
 tasks.run {
     // Specify the classpath for running the application
     classpath = sourceSets.main.runtimeClasspath
+    jvmArgs = ["-XstartOnFirstThread"]
 }
 
